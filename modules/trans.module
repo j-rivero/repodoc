@@ -67,7 +67,7 @@ exec_module () {
 	# Diff between tags files. Original vs Translation
 	OUTPUT_TEXT=$(diff -Nut ${TMP_OUTPUT1} ${TMP_OUTPUT2})
 
-	if [ "${OUTPUT_TEXT}" = "" ]; then
+	if [[ -z ${OUTPUT_TEXT} ]]; then
 		OUTPUT_RESULT="ok"
 	else
 		OUTPUT_RESULT="warning"

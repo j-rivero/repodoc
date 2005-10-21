@@ -15,7 +15,7 @@ exec_module () {
 	# Look for Header label
 	TMP_HEADER=$(grep '<!-- $Header:' ${DOC})
 
-	if [ "${TMP_HEADER}" = "" ]; then
+	if [[ -z ${TMP_HEADER} ]]; then
 		OUTPUT_RESULT="warning"
 		OUTPUT_TEXT="You should add \"<!-- \$Header: -->\" a line after xml version tag."
 	else

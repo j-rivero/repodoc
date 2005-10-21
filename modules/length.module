@@ -31,7 +31,7 @@ exec_module () {
 
 	LONG_LINES=$(cat ${REPO_TMP_DIR}/long_lines.txt)
 
-	if [ "${LONG_LINES}" = "" ]; then
+	if [[ -z ${LONG_LINES} ]]; then
 		OUTPUT_RESULT="ok"
 	else
 		OUTPUT_RESULT="warning"

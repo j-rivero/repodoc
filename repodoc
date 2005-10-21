@@ -59,10 +59,10 @@ search_www_dir () {
 
 create_environment () {
 	# Create dirs. -p will create REPO_DIR if needed.
-	[ ! -d ${REPO_TMP_DIR} ] && mkdir -p "${REPO_TMP_DIR}"
+	[[ ! -d ${REPO_TMP_DIR} ]] && mkdir -p "${REPO_TMP_DIR}"
 
 	# Remove old log
-	[ -f ${REPODOC_LOG} ] && rm ${REPODOC_LOG}
+	[[ -f ${REPODOC_LOG} ]] && rm ${REPODOC_LOG}
 }
 
 
@@ -146,7 +146,7 @@ DIR_FILTER=${PARAM1%/*}
 
 # Ferdy echale un ojo a esto a ver si podemos quitarlo
 
-if [ $DIR_FILTER == $PARAM1 ]; then
+if [[ ${DIR_FILTER} == ${PARAM1} ]]; then
 	# Param is a file
 	DOC_NAME=${PARAM1}
 	DIR=`pwd`
@@ -187,7 +187,7 @@ VIEW_LOG="no"
 
 # Handling modules
 for MOD in $(ls ${MOD_DIR}); do
-	if [ -f ${MOD_DIR}/${MOD} ]; then
+	if [[ -f ${MOD_DIR}/${MOD} ]]; then
 		# Initializing variables
 		TRANSLATION_MODULE=""
 		OUTPUT_RESULT=""
@@ -200,17 +200,15 @@ for MOD in $(ls ${MOD_DIR}); do
 		# Checking module level
 		#if [ "${SCRIPT_LEVEL}" = "${LEVEL}" ]
 		#then
-			if [[ ${TRANSLATION_MODULE} != "yes" || ${TRANSLATION} = "yes" ]]
-			then
+			if [[ ${TRANSLATION_MODULE} != "yes" ]] \
+				|| [[ ${TRANSLATION} = "yes" ]]; then
 				# Checking module's keywords
-				for TMP_DOC_TYPE in ${KEYWORDS}
-				do
+				for TMP_DOC_TYPE in ${KEYWORDS}; do
 					# Checking "-KEYWORD" to jump the module
-					if [[ ${TMP_DOC_TYPE} != "-${DOC_TYPE}" ]]
-					then 
+					if [[ ${TMP_DOC_TYPE} != "-${DOC_TYPE}" ]]; then
 						# Checking keyword 
-						if [[ ${TMP_DOC_TYPE} = ${DOC_TYPE} || ${TMP_DOC_TYPE} = "ALL" ]]
-						then
+						if [[ ${TMP_DOC_TYPE} = ${DOC_TYPE} ]] \
+							|| [[ ${TMP_DOC_TYPE} = "ALL" ]]; then
 								echo -n " * Processing module " ${MOD} " ...  "
 							# Call exec_module (function from module)
 							exec_module
