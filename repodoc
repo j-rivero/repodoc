@@ -14,20 +14,19 @@
 # -------------------- SEARCH DIR_ROOT ----------------------------
 search_dir_root () {
 	DIR_PROJ_TMP=${DIR##*/proj/*}
-	
+
 	[[ -z ${DIR_PROJ_TMP} ]] && DIR_ROOT="proj" || DIR_ROOT="doc"
 }
 
 # ----------------- SEARCH LANGUAGE --------------------------------
 search_language () {
-	
 	# First, check if it's under /doc/ or under /proj/ using WWW_DIR
 	[[ ${DIR_ROOT} == "proj" ]] &&  TMP1=${DIR##*/proj/} || TMP1=${DIR##*/doc/}
-	
+
 	# Next "/item/" after /proj/ or /doc/ should be the language
 	LANGUAGE=${TMP1%/*}
 
-	# Set translation variable 
+	# Set translation variable
 	[[ ${LANGUAGE} == "en" ]] && TRANSLATION="no" || TRANSLATION="yes"
 }
 
@@ -35,8 +34,6 @@ search_language () {
 
 # Search for path of original version only in case of doc is a translation
 search_original_doc (){
-
-	
 	if [[ ${DIR_ROOT} == "doc" ]]; then
 		# Doc is under /doc/
 		ORIGINAL_DOC=`sed -e "s:doc/${LANGUAGE}:doc/en:g" <<< ${DOC}`
@@ -72,7 +69,7 @@ create_environment () {
 #  ---------------- SEARCH DOCTYPE -----------------------------
 search_doctype () {
 	TMP_DOC_TYPE=$(grep -m 1 DOCTYPE ${DOC})
-	TMP_DOC_TYPE2=${TMP_DOC_TYPE##<!DOCTYPE } 
+	TMP_DOC_TYPE2=${TMP_DOC_TYPE##<!DOCTYPE }
 	DOC_TYPE=${TMP_DOC_TYPE2%% SYSTEM*}
 }
 
@@ -80,28 +77,28 @@ search_doctype () {
 generate_output () {
 	# Screen output 
 	echo "[ ${OUTPUT_RESULT} ]"
-	
+
 	# Log message
-	
-	# Module header 
+
+	# Module header
 	cat <<- EOF >> ${REPODOC_LOG}
-	------- Module ${MOD} ------- 
+	------- Module ${MOD} -------
 	Result: ${OUTPUT_RESULT}
-	
+
 	EOF
-	
+
 	# Checking if output is not empty
 	if [[ ! -z ${OUTPUT_TEXT} ]]; then
 		# Checking if output is a command
 		if [[ -z ${OUTPUT_TEXT##*::*} ]]; then
 			# Executing the command
-			# need to use eval since otherwise 
+			# need to use eval since otherwise
 			# parameters doesn't work as expected
 			eval ${OUTPUT_TEXT##*::}
 		else
 			# Output is just plain text
 			cat <<- EOF >> ${REPODOC_LOG}
-			Reason: 
+			Reason:
 			${OUTPUT_TEXT}
 			EOF
 		fi
@@ -113,7 +110,7 @@ generate_output () {
 show_log() {
 	# Set up the log viewer app
 	LOG_VIEWER="less ${REPODOC_LOG}"
-	
+
 	echo ""
 	echo -n "Do you want to see the error log? [y/n] "
 	read TMP_OPT
@@ -154,11 +151,11 @@ if [ $DIR_FILTER == $PARAM1 ]; then
 	DOC_NAME=${PARAM1}
 	DIR=`pwd`
 else
-	# Param is a dir 
+	# Param is a dir
 	DOC_NAME=${PARAM1##*/}
 	cd ${PARAM1%/*}
 	DIR=`pwd`
-	cd - > /dev/null	
+	cd - > /dev/null
 fi
 
 DOC=${DIR}/${DOC_NAME}
@@ -191,8 +188,6 @@ VIEW_LOG="no"
 # Handling modules
 for MOD in $(ls ${MOD_DIR}); do
 	if [ -f ${MOD_DIR}/${MOD} ]; then
-		
-		
 		# Initializing variables
 		TRANSLATION_MODULE=""
 		OUTPUT_RESULT=""
@@ -205,7 +200,7 @@ for MOD in $(ls ${MOD_DIR}); do
 		# Checking module level
 		#if [ "${SCRIPT_LEVEL}" = "${LEVEL}" ]
 		#then
-			if [[ ${TRANSLATION_MODULE} != "yes" || ${TRANSLATION} = "yes" ]] 
+			if [[ ${TRANSLATION_MODULE} != "yes" || ${TRANSLATION} = "yes" ]]
 			then
 				# Checking module's keywords
 				for TMP_DOC_TYPE in ${KEYWORDS}
@@ -215,26 +210,24 @@ for MOD in $(ls ${MOD_DIR}); do
 					then 
 						# Checking keyword 
 						if [[ ${TMP_DOC_TYPE} = ${DOC_TYPE} || ${TMP_DOC_TYPE} = "ALL" ]]
-			        		then
-		               				echo -n " * Processing module " ${MOD} " ...  "	
+						then
+								echo -n " * Processing module " ${MOD} " ...  "
 							# Call exec_module (function from module)
 							exec_module
 							# Generating output for the log
 							generate_output
 							# Checking if there was any error
 							[[ ${OUTPUT_RESULT} != "ok" ]] && VIEW_LOG="yes"
-		       				fi
+						fi
 					else
 						# If found "-keyword", exit the loop
 						break
 					fi
 				done
-								
 			fi
-		#fi end of LEVEL 
+		#fi end of LEVEL
 	fi
 done
 
 # Show the log if needed
 [[ ${VIEW_LOG} = "yes" ]] && show_log
-

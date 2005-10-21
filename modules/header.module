@@ -12,7 +12,6 @@ LEVEL="BASIC"
 
 # Check the doc to find if lang attribute is set on guide label
 exec_module () {
-
 	# Look for Header label
 	TMP_HEADER=$(grep '<!-- $Header:' ${DOC})
 

@@ -15,17 +15,16 @@ LEVEL="BASIC"
 TRANSLATION_MODULE="yes"
 
 exec_module () {
-	
 	# The evil-sed (tm) line-by-line:
 	#
 	#   - 1. Remove lines beggining with <?
 	#   - 2. Remove lineas beggining with <!
 	#   - 3. Remove all except whatever inside < > (tags)
-	#   - 4. Remove tags attributes 
+	#   - 4. Remove tags attributes
 	#   - 5. Close un-closed tags
 	#   - 6. Set one-tag-per-line
 	#   - 7. Remove author and mail tags
-	#   - 8. Remove spaces only lines 
+	#   - 8. Remove spaces only lines
 	#
 	#   - awk add counter to <p> and </p> tags
 
@@ -34,14 +33,14 @@ exec_module () {
 
 	TMP_OUTPUT1="${REPO_TMP_DIR}/repodoc-1"
 	TMP_OUTPUT2="${REPO_TMP_DIR}/repodoc-2"
-	
+
 	# First output
 	TMP_OUTPUT=${TMP_OUTPUT1}
-	
+
 	for TMP_DOC in "$DOC" "$ENG_DOC"; do
 
 		# First time saves the result on TMP_OUTPUT = 1
-		# Second time saves the result on TMP_OUTPUT = 2 
+		# Second time saves the result on TMP_OUTPUT = 2
 		sed -e '
 			/^.*<?.*$/d
 			/^.*<!.*$/d
@@ -60,14 +59,14 @@ exec_module () {
 			else
 				printf("%s\n",$0);
 			}' > $TMP_OUTPUT
-		
-		# Change the file for output 
+
+		# Change the file for output
 		TMP_OUTPUT=${TMP_OUTPUT2}
 	done
 
-	# Diff between tags files. Original vs Translation 
+	# Diff between tags files. Original vs Translation
 	OUTPUT_TEXT=$(diff -Nut ${TMP_OUTPUT1} ${TMP_OUTPUT2})
-		
+
 	if [ "${OUTPUT_TEXT}" = "" ]; then
 		OUTPUT_RESULT="ok"
 	else
