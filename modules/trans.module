@@ -1,0 +1,77 @@
+#!/bin/bash
+
+# Repodoc Tool written by José Luis Rivero (yoswink@gentoo.org)
+# Version 0.0.1_alpha
+#
+# This module is mainly work of ferdy@gentoo.org so send thanks to him.
+#
+# Distributed under the terms of the GNU General Public License v2
+
+MODULE_NAME="Translations module"
+KEYWORDS="-metadoc -inserts ALL"
+
+LEVEL="BASIC"
+
+TRANSLATION_MODULE="yes"
+
+exec_module () {
+	
+	# The evil-sed (tm) line-by-line:
+	#
+	#   - 1. Remove lines beggining with <?
+	#   - 2. Remove lineas beggining with <!
+	#   - 3. Remove all except whatever inside < > (tags)
+	#   - 4. Remove tags attributes 
+	#   - 5. Close un-closed tags
+	#   - 6. Set one-tag-per-line
+	#   - 7. Remove author and mail tags
+	#   - 8. Remove spaces only lines 
+	#
+	#   - awk add counter to <p> and </p> tags
+
+	# Locate the original doc 
+	ENG_DOC=$(sed -e "s:doc/${LANGUAGE}:doc/en:g" <<< ${DOC})
+
+	TMP_OUTPUT1="${REPO_TMP_DIR}/repodoc-1"
+	TMP_OUTPUT2="${REPO_TMP_DIR}/repodoc-2"
+	
+	# First output
+	TMP_OUTPUT=${TMP_OUTPUT1}
+	
+	for TMP_DOC in "$DOC" "$ENG_DOC"; do
+
+		# First time saves the result on TMP_OUTPUT = 1
+		# Second time saves the result on TMP_OUTPUT = 2 
+		sed -e '
+			/^.*<?.*$/d
+			/^.*<!.*$/d
+			s-\(>\|^\)[^<]*\(<\)\{0,1\}-\1\2-g
+			/<\([^ ]*\)[^>]*\(\/\)\{0,1\}\(>\|$\)/s--<\1\2>-g
+			s-<\([^ >]*\) *$-<\1>-
+			s-><->\n<-g
+			/<\/\{0,1\}\(author\|mail\)>/d
+			/^ *$/d
+			' ${TMP_DOC} | awk '
+			BEGIN { p_number=1 } {
+			if ($0 == "<p>")
+				printf("<p %d>\n",p_number);
+			else if ($0 == "</p>")
+				printf("</p %d>\n",p_number++);
+			else
+				printf("%s\n",$0);
+			}' > $TMP_OUTPUT
+		
+		# Change the file for output 
+		TMP_OUTPUT=${TMP_OUTPUT2}
+	done
+
+	# Diff between tags files. Original vs Translation 
+	OUTPUT_TEXT=$(diff -Nut ${TMP_OUTPUT1} ${TMP_OUTPUT2})
+		
+	if [ "${OUTPUT_TEXT}" = "" ]; then
+		OUTPUT_RESULT="ok"
+	else
+		OUTPUT_RESULT="warning"
+	fi
+}
+

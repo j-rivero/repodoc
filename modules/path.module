@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Repodoc Tool written by José Luis Rivero (yoswink@gentoo.org)
+# Version 0.0.1_alpha
+# Distributed under the terms of the GNU General Public License v2
+
+MODULE_NAME="Path to doc"
+KEYWORDS="-metadoc -sections -inserts ALL"
+
+LEVEL="BASIC"
+
+exec_module () {
+	# Select the line to extract link attribute
+	LINK_TYPE="<${DOC_TYPE}"
+	# Get link_type line
+	LINE_LINK_TYPE=$(grep ${LINK_TYPE} ${DOC})
+	# Delete all before link=" 
+	TMP_LINK_ATTRIBUTE=${LINE_LINK_TYPE##*link=\"}
+	# Delete all after first "
+	LINK_ATTRIBUTE=${TMP_LINK_ATTRIBUTE%%\"*}
+	
+	# The correct tag should be
+	CORRECT_LINK=${WWW_DIR}"/"${DOC_NAME}
+	
+	if [ "${CORRECT_LINK}" != "${LINK_ATTRIBUTE}" ]; then
+        	# Path is not right
+		OUTPUT_RESULT="critical"
+		# Building log message
+		LINK_TAG=$(grep "${LINK_TYPE}" ${DOC})
+		OUTPUT_TEXT="The attribute link on ${LINK_TAG} is wrong. Should point to the absolute path (link=\"${CORRECT_LINK}\")"
+	else
+        	# Path is ok 
+		OUTPUT_RESULT="ok"
+	fi
+}

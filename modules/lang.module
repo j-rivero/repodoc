@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Repodoc Tool written by José Luis Rivero (yoswink@gentoo.org)
+# Version 0.0.1_alpha
+# Distributed under the terms of the GNU General Public License v2
+
+MODULE_NAME="Check language label"
+
+KEYWORDS="guide"
+LEVEL="BASIC"
+
+TRANSLATION_MODULE="yes"
+
+exec_module () {
+	# Check the doc to find if lang attribute is set on guide label
+
+	TMP_LANG=$(grep '<guide link' /${DOC} | grep lang=\"${LANGUAGE}\")
+
+	if [ "${TMP_LANG}" = "" ]; then
+		OUTPUT_RESULT="critical"
+		OUTPUT_TEXT="Your guide link should use the attribute lang=\"${LANGUAGE}\""
+	else
+		OUTPUT_RESULT="ok"
+	fi
+}

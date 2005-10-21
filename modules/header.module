@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Repodoc Tool written by José Luis Rivero (yoswink@gentoo.org)
+# Version 0.0.1_alpha
+# Distributed under the terms of the GNU General Public License v2
+
+MODULE_NAME="Header"
+
+KEYWORDS="ALL"
+LEVEL="BASIC"
+
+
+# Check the doc to find if lang attribute is set on guide label
+exec_module () {
+
+	# Look for Header label
+	TMP_HEADER=$(grep '<!-- $Header:' ${DOC})
+
+	if [ "${TMP_HEADER}" = "" ]; then
+		OUTPUT_RESULT="warning"
+		OUTPUT_TEXT="You should add \"<!-- \$Header: -->\" a line after xml version tag."
+	else
+		OUTPUT_RESULT="ok"
+	fi
+}

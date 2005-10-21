@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# Repodoc Tool written by José Luis Rivero (yoswink@gentoo.org)
+# Version 0.0.1_alpha
+# Distributed under the terms of the GNU General Public License v2
+
+MODULE_NAME="Length of lines"
+KEYWORDS="-metadoc ALL"
+
+LEVEL="BASIC"
+
+exec_module () {
+	# Making exceptions using sed: 
+	# 1. <Header 
+	# 2. <comment> labels
+	# 3. link= attributes 
+	# 4. Code lines using # <i>
+	# 5. Code lines using $ <i>
+	# 6. <pre caption= headers
+
+	sed -n -e '
+		/^.\{81,\}$/ {
+		/<!-- \$Header:/d
+		/<comment>/d
+		/link=/d
+		/#.<i>/d
+		/$.<i>/d
+		/<pre caption=/d
+		p
+	}' ${DOC} > ${REPO_TMP_DIR}/long_lines.txt 
+
+	LONG_LINES=$(cat ${REPO_TMP_DIR}/long_lines.txt)
+
+	if [ "${LONG_LINES}" = "" ]; then
+		OUTPUT_RESULT="ok"
+	else
+		OUTPUT_RESULT="warning"
+		OUTPUT_TEXT="::cat ${REPO_TMP_DIR}/long_lines.txt >> ${REPODOC_LOG}"
+	fi
+}
+
+

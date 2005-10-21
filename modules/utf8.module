@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Repodoc Tool written by José Luis Rivero (yoswink@gentoo.org)
+# Version 0.0.1_alpha
+# Distributed under the terms of the GNU General Public License v2
+
+MODULE_NAME="Length of lines"
+KEYWORDS="ALL"
+
+LEVEL="BASIC"
+
+exec_module () {
+	UTFCHECKER="check-utf8"
+
+	UTF=$(${EXTRA_DIR}/${UTFCHECKER} ${DOC} 2>&1)
+
+	if [ "${UTF}" = "" ]; then
+		OUTPUT_RESULT="ok"
+	else
+		OUTPUT_RESULT="critical"
+		OUTPUT_TEXT="${UTF}"
+	fi
+}
+

@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Repodoc Tool written by José Luis Rivero (yoswink@gentoo.org)
+# Version 0.0.1_alpha
+# Distributed under the terms of the GNU General Public License v2
+
+MODULE_NAME="Check xml health"
+KEYWORDS="ALL"
+
+LEVEL="BASIC"
+
+exec_module () {
+	VALIDATOR_COMMAND="xmllint --valid --noout"
+
+	TMP_VALID=$(${VALIDATOR_COMMAND} ${DOC} 2>&1)
+
+	if [ "${TMP_VALID}" = "" ]; then
+		OUTPUT_RESULT="ok"
+	else
+		OUTPUT_RESULT="critical"
+		OUTPUT_TEXT=$TMP_VALID
+	fi
+}
