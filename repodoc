@@ -146,16 +146,13 @@ DIR_FILTER=${PARAM1%/*}
 
 # Ferdy echale un ojo a esto a ver si podemos quitarlo
 
-if [[ ${DIR_FILTER} = ${PARAM1} ]]; then
-	# Param is a file
+if [[ -f ${PARAM1##*/} ]];
 	DOC_NAME=${PARAM1}
 	DIR=${CWD}
 else
 	# Param is a dir
 	DOC_NAME=${PARAM1##*/}
-	cd ${PARAM1%/*}
-	DIR=${CWD}
-	cd - > /dev/null
+	DIR=${PARAM%/*}
 fi
 
 DOC=${DIR}/${DOC_NAME}
