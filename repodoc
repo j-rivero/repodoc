@@ -3,9 +3,9 @@
 # Repodoc Tool written by José Luis Rivero (yoswink@gentoo.org)
 # Version 0.0.1_alpha
 #
-# Repodoc try to make Gentoo Documentation Proyect Developer's 
+# Repodoc try to make Gentoo Documentation Proyect Developer's
 # work easier (yeah! we are slackers).
-# Thanks a lot to Fernando J. Pereda (ferdy@gentoo.org) who  
+# Thanks a lot to Fernando J. Pereda (ferdy@gentoo.org) who
 # is my bash-ninja-sensei.
 #
 # Distributed under the terms of the GNU General Public License v2
@@ -21,22 +21,22 @@ search_dir_root () {
 # ----------------- SEARCH LANGUAGE --------------------------------
 search_language () {
 	# First, check if it's under /doc/ or under /proj/ using WWW_DIR
-	[[ ${DIR_ROOT} == "proj" ]] &&  TMP1=${DIR##*/proj/} || TMP1=${DIR##*/doc/}
+	[[ ${DIR_ROOT} = "proj" ]] &&  TMP1=${DIR##*/proj/} || TMP1=${DIR##*/doc/}
 
 	# Next "/item/" after /proj/ or /doc/ should be the language
 	LANGUAGE=${TMP1%/*}
 
 	# Set translation variable
-	[[ ${LANGUAGE} == "en" ]] && TRANSLATION="no" || TRANSLATION="yes"
+	[[ ${LANGUAGE} = "en" ]] && TRANSLATION="no" || TRANSLATION="yes"
 }
 
 # ----------------- SEARCH ORIGINAL_DOC ---------------------------
 
 # Search for path of original version only in case of doc is a translation
 search_original_doc (){
-	if [[ ${DIR_ROOT} == "doc" ]]; then
+	if [[ ${DIR_ROOT} = "doc" ]]; then
 		# Doc is under /doc/
-		ORIGINAL_DOC=`sed -e "s:doc/${LANGUAGE}:doc/en:g" <<< ${DOC}`
+		ORIGINAL_DOC=$(sed -e "s:doc/${LANGUAGE}:doc/en:g" <<< ${DOC})
 	else
 		# Doc is under /proj/
 		ORIGINAL_DOC=$(sed -e "s:proj/${LANGUAGE}:proj/en:g" <<< ${DOC})
@@ -46,7 +46,7 @@ search_original_doc (){
 
 # ----------------- SEARCH WWW_DIR --------------------------------
 search_www_dir () {
-	if [[ ${DIR_ROOT} == "proj" ]]; then
+	if [[ ${DIR_ROOT} = "proj" ]]; then
 		WWW_DIR=${DIR/*proj/\/proj}
 	else
 		WWW_DIR=${DIR/*doc/\/doc}
@@ -59,7 +59,7 @@ search_www_dir () {
 
 create_environment () {
 	# Create dirs. -p will create REPO_DIR if needed.
-	[[ ! -d ${REPO_TMP_DIR} ]] && mkdir -p "${REPO_TMP_DIR}"
+	[[ -d ${REPO_TMP_DIR} ]] || mkdir -p "${REPO_TMP_DIR}"
 
 	# Remove old log
 	[[ -f ${REPODOC_LOG} ]] && rm ${REPODOC_LOG}
@@ -88,7 +88,7 @@ generate_output () {
 	EOF
 
 	# Checking if output is not empty
-	if [[ ! -z ${OUTPUT_TEXT} ]]; then
+	if [[ -n ${OUTPUT_TEXT} ]]; then
 		# Checking if output is a command
 		if [[ -z ${OUTPUT_TEXT##*::*} ]]; then
 			# Executing the command
@@ -111,7 +111,7 @@ show_log() {
 	# Set up the log viewer app
 	LOG_VIEWER="less ${REPODOC_LOG}"
 
-	echo ""
+	echo
 	echo -n "Do you want to see the error log? [y/n] "
 	read TMP_OPT
 	[[ ${TMP_OPT} = "y" ]] && ${LOG_VIEWER}
@@ -146,7 +146,7 @@ DIR_FILTER=${PARAM1%/*}
 
 # Ferdy echale un ojo a esto a ver si podemos quitarlo
 
-if [[ ${DIR_FILTER} == ${PARAM1} ]]; then
+if [[ ${DIR_FILTER} = ${PARAM1} ]]; then
 	# Param is a file
 	DOC_NAME=${PARAM1}
 	DIR=`pwd`
@@ -161,11 +161,11 @@ fi
 DOC=${DIR}/${DOC_NAME}
 
 # Starting environment and variables
-create_environment 
+create_environment
 search_dir_root
 search_language
 search_original_doc
-search_www_dir 
+search_www_dir
 search_doctype
 
 
@@ -186,7 +186,7 @@ echo
 VIEW_LOG="no"
 
 # Handling modules
-for MOD in $(ls ${MOD_DIR}); do
+for MOD in ${MOD_DIR}/* ; do
 	if [[ -f ${MOD_DIR}/${MOD} ]]; then
 		# Initializing variables
 		TRANSLATION_MODULE=""
