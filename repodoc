@@ -149,12 +149,12 @@ DIR_FILTER=${PARAM1%/*}
 if [[ ${DIR_FILTER} = ${PARAM1} ]]; then
 	# Param is a file
 	DOC_NAME=${PARAM1}
-	DIR=`pwd`
+	DIR=${CWD}
 else
 	# Param is a dir
 	DOC_NAME=${PARAM1##*/}
 	cd ${PARAM1%/*}
-	DIR=`pwd`
+	DIR=${CWD}
 	cd - > /dev/null
 fi
 
@@ -171,11 +171,11 @@ search_doctype
 
 
 echo " ---------- Info ------------------------------"
-echo "Doc: " $DOC_NAME
-echo "Dir: " $DIR
-echo "Lang: " $LANGUAGE
-echo "Trans: " $TRANSLATION
-echo "Doc-type: " $DOC_TYPE
+echo "Doc: " ${DOC_NAME}
+echo "Dir: " ${DIR}
+echo "Lang: " ${LANGUAGE}
+echo "Trans: " ${TRANSLATION}
+echo "Doc-type: " ${DOC_TYPE}
 #echo "www-dir: " $WWW_DIR
 #echo "original_doc: " $ORIGINAL_DOC
 #echo "Level: " $SCRIPT_LEVEL
