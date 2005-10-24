@@ -148,7 +148,7 @@ DIR_FILTER=${PARAM1%/*}
 
 if [[ -f ${PARAM1##*/} ]]; then
 	DOC_NAME=${PARAM1}
-	DIR=${CWD}
+	DIR=${PWD}
 else
 	# Param is a dir
 	DOC_NAME=${PARAM1##*/}
