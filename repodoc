@@ -146,7 +146,7 @@ DIR_FILTER=${PARAM1%/*}
 
 # Ferdy echale un ojo a esto a ver si podemos quitarlo
 
-if [[ -f ${PARAM1##*/} ]];
+if [[ -f ${PARAM1##*/} ]]; then
 	DOC_NAME=${PARAM1}
 	DIR=${CWD}
 else
