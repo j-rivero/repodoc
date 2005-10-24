@@ -75,7 +75,7 @@ check_opened_file(FILE *f, const char *display_name, int verbose, int snippet)
         if (err_c > ((verbose || snippet) ? 10 : 1))
         {
             if (verbose || snippet)
-                fprintf("Too many errors, bailing out\n");
+                printf("Too many errors, bailing out\n");
             break;
         }
 
@@ -104,8 +104,8 @@ check_opened_file(FILE *f, const char *display_name, int verbose, int snippet)
                 if (verbose || snippet)
                 {
                     if (0 == done_file_header++)
-                        fprintf("In file %s:\n", display_name);
-                    fprintf("    Bad character 0x%2.2x at line %d offset %d\n",
+                        printf("In file %s:\n", display_name);
+                    printf("    Bad character 0x%2.2x at line %d offset %d\n",
                             c, line, offset);
                 }
 
@@ -113,7 +113,7 @@ check_opened_file(FILE *f, const char *display_name, int verbose, int snippet)
                 if (snippet && (buf_idx > 1))
                 {
                     buf[buf_idx - 1] = '\0';
-                    fprintf("    Leading text: %s\n", buf);
+                    printf("    Leading text: %s\n", buf);
                 }
                 buf_idx = 0;
 
@@ -135,15 +135,15 @@ check_opened_file(FILE *f, const char *display_name, int verbose, int snippet)
                     if (verbose || snippet)
                     {
                         if (0 == done_file_header++)
-                            fprintf("In file %s:\n", display_name);
-                        fprintf("    Unexpected EOF inside UTF-8 sequence\n");
+                            printf("In file %s:\n", display_name);
+                        printf("    Unexpected EOF inside UTF-8 sequence\n");
                     }
 
                     /* show a snippet? */
                     if (snippet && (buf_idx > (i + 2)))
                     {
                         buf[buf_idx - i - 2] = '\0';
-                        fprintf("    Leading text: %s\n", buf);
+                        printf("    Leading text: %s\n", buf);
                     }
                     buf_idx = 0;
 
@@ -156,10 +156,10 @@ check_opened_file(FILE *f, const char *display_name, int verbose, int snippet)
                     if (verbose || snippet)
                     {
                         if (0 == done_file_header++)
-                            fprintf("In file %s:\n", display_name);
-                        fprintf("    Bad character 0x%2.2x inside UTF-8 sequence",
+                            printf("In file %s:\n", display_name);
+                        printf("    Bad character 0x%2.2x inside UTF-8 sequence",
                                 c);
-                        fprintf(" (%d/%d) at line %d offset %d\n",
+                        printf(" (%d/%d) at line %d offset %d\n",
                                 i + 2, extras + 1, line, offset - i - 1);
                     }
 
@@ -167,7 +167,7 @@ check_opened_file(FILE *f, const char *display_name, int verbose, int snippet)
                     if (snippet && (buf_idx > (i + 2)))
                     {
                         buf[buf_idx - i - 2] = '\0';
-                        fprintf("    Leading text: %s\n", buf);
+                        printf("    Leading text: %s\n", buf);
                     }
                     buf_idx = 0;
 
