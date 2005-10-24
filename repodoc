@@ -152,7 +152,7 @@ if [[ -f ${PARAM1##*/} ]]; then
 else
 	# Param is a dir
 	DOC_NAME=${PARAM1##*/}
-	DIR=${PARAM%/*}
+	DIR=${PARAM1%/*}
 fi
 
 DOC=${DIR}/${DOC_NAME}
