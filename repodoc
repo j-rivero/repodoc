@@ -143,16 +143,15 @@ DIR_FILTER=${PARAM1%/*}
 
 # Ugly hack to know the doc_name and dir taking care of
 # param as a dir or as file.
-
-# Ferdy echale un ojo a esto a ver si podemos quitarlo
-
 if [[ -f ${PARAM1##*/} ]]; then
-	DOC_NAME=${PARAM1}
+	DOC_NAME=${PARAM1##*/}
 	DIR=${PWD}
 else
 	# Param is a dir
 	DOC_NAME=${PARAM1##*/}
 	DIR=${PARAM1%/*}
+	DIR=${DIR#${PWD}/}
+	DIR=${PWD}/${DIR}
 fi
 
 DOC=${DIR}/${DOC_NAME}
