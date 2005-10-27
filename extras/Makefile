@@ -5,6 +5,6 @@
 CC = gcc
 CFLAGS = -O2 
 
-main:
+all: check-utf8
 	$(CC) $(CFLAGS) check-utf8.c -o check-utf8
 
