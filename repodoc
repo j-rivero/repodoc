@@ -141,8 +141,12 @@ PARAM1=$1
 DIR_FILTER=${PARAM1%/*}
 
 
-# Ugly hack to know the doc_name and dir taking care of
-# param as a dir or as file.
+# Getting the doc_name and dir taking care of
+# param as a dir (absolute or relative path) 
+# or as file.
+
+PARAM1=$1
+
 if [[ -f ${PARAM1##*/} ]]; then
 	DOC_NAME=${PARAM1##*/}
 	DIR=${PWD}
@@ -183,7 +187,7 @@ VIEW_LOG="no"
 
 # Handling modules
 for MOD in ${MOD_DIR}/* ; do
-	if [[ -f ${MOD_DIR}/${MOD} ]]; then
+		
 		# Initializing variables
 		TRANSLATION_MODULE=""
 		OUTPUT_RESULT=""
@@ -191,7 +195,7 @@ for MOD in ${MOD_DIR}/* ; do
 		LEVEL=""
 
 		# Read the module
-		source "${MOD_DIR}/${MOD}"
+		source "${MOD}"
 
 		# Checking module level
 		#if [ "${SCRIPT_LEVEL}" = "${LEVEL}" ]
@@ -205,7 +209,7 @@ for MOD in ${MOD_DIR}/* ; do
 						# Checking keyword 
 						if [[ ${TMP_DOC_TYPE} = ${DOC_TYPE} ]] \
 							|| [[ ${TMP_DOC_TYPE} = "ALL" ]]; then
-								echo -n " * Processing module " ${MOD} " ...  "
+								echo -n " * Processing module " ${MOD##*\/} " ...  "
 							# Call exec_module (function from module)
 							exec_module
 							# Generating output for the log
@@ -220,7 +224,7 @@ for MOD in ${MOD_DIR}/* ; do
 				done
 			fi
 		#fi end of LEVEL
-	fi
+	#fi
 done
 
 # Show the log if needed
