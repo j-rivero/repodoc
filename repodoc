@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Repodoc Tool written by José Luis Rivero (yoswink@gentoo.org)
-# Version 0.0.1_alpha
+# Version 0.1_alpha
 #
 # Repodoc try to make Gentoo Documentation Project Developer's
 # work easier (yeah! we are slackers).
