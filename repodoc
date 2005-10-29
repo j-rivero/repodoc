@@ -11,14 +11,39 @@
 # Distributed under the terms of the GNU General Public License v2
 
 
-# -------------------- SEARCH DIR_ROOT ----------------------------
+# ------
+# CHECK_PARAMS Function. Private 
+# Check params to be sure the program was called properly.
+check_params () {
+	# Check if the program recieves only one param and if 
+	# the param is a file
+	if [[ ${NUM_PARAMS} != 1 ]] || [[ ! -f ${PARAM1} ]]; then
+		show_version_usage	
+		exit
+	fi
+}
+
+# -----
+# SHOW_VERSION_USAGE Function. Private
+# Show quick help about how to run repodoc
+show_version_usage () {
+	echo "Repodoc 0.1_alpha"
+	echo
+	echo "Usage: repodoc doc"
+}
+
+# -----
+# SEARCH DIR_ROOT Function. Private
+#
 search_dir_root () {
 	DIR_PROJ_TMP=${DIR##*/proj/*}
 
 	[[ -z ${DIR_PROJ_TMP} ]] && DIR_ROOT="proj" || DIR_ROOT="doc"
 }
 
-# ----------------- SEARCH LANGUAGE --------------------------------
+# ------
+# SEARCH LANGUAGE Function. Private
+#
 search_language () {
 	# First, check if it's under /doc/ or under /proj/ using WWW_DIR
 	[[ ${DIR_ROOT} = "proj" ]] &&  TMP1=${DIR##*/proj/} || TMP1=${DIR##*/doc/}
@@ -30,8 +55,8 @@ search_language () {
 	[[ ${LANGUAGE} = "en" ]] && TRANSLATION="no" || TRANSLATION="yes"
 }
 
-# ----------------- SEARCH ORIGINAL_DOC ---------------------------
-
+# ------
+# SEARCH ORIGINAL_DOC Function. Private
 # Search for path of original version only in case of doc is a translation
 search_original_doc (){
 	if [[ ${DIR_ROOT} = "doc" ]]; then
@@ -44,7 +69,9 @@ search_original_doc (){
 }
 
 
-# ----------------- SEARCH WWW_DIR --------------------------------
+# ----- 
+# SEARCH WWW_DIR Function. Private
+# 
 search_www_dir () {
 	if [[ ${DIR_ROOT} = "proj" ]]; then
 		WWW_DIR=${DIR/*proj/\/proj}
@@ -54,9 +81,9 @@ search_www_dir () {
 }
 
 
-# ----------------- CREATE ENVIRONMENT -----------------------------
+# ------
+# CREATE ENVIRONMENT Function. Private
 # Create REPO_DIR and REPO_TMP_DIR if needed and clean log
-
 create_environment () {
 	# Create dirs. -p will create REPO_DIR if needed.
 	[[ -d ${REPO_TMP_DIR} ]] || mkdir -p "${REPO_TMP_DIR}"
@@ -66,14 +93,18 @@ create_environment () {
 }
 
 
-#  ---------------- SEARCH DOCTYPE -----------------------------
+# ------
+# SEARCH DOCTYPE Function. Private
+#
 search_doctype () {
 	TMP_DOC_TYPE=$(grep -m 1 DOCTYPE ${DOC})
 	TMP_DOC_TYPE2=${TMP_DOC_TYPE##<!DOCTYPE }
 	DOC_TYPE=${TMP_DOC_TYPE2%% SYSTEM*}
 }
 
-#  ---------------- GENERATE OUTPUT ----------------------------
+# ------
+# GENERATE OUTPUT Function. Private
+#
 generate_output () {
 	# Screen output 
 	echo "[ ${OUTPUT_RESULT} ]"
@@ -105,8 +136,9 @@ generate_output () {
 	fi
 }
 
-
-#  ---------------- SHOW LOG  ----------------------------
+# ------
+# SHOW LOG Function. Private
+# 
 show_log() {
 	# Set up the log viewer app
 	LOG_VIEWER="less ${REPODOC_LOG}"
@@ -118,14 +150,22 @@ show_log() {
 }
 
 
+# MAIN CODE
+# Program starts here
 
 # -- VARIABLES --
-# PATH DIRS
+
+NUM_PARAMS="$#"
+PARAM1=$1
+
+# Checks if the params given to the app were correct
+check_params
 
 # Knowing Script dir beware of symlink 
 [[ -L ${0} ]] && TMP_SCRIPT_DIR=$(readlink ${0}) || TMP_SCRIPT_DIR=${0}
 SCRIPT_DIR="${TMP_SCRIPT_DIR%/*}"
 
+# Paths
 MOD_DIR="${SCRIPT_DIR}/modules"
 EXTRA_DIR="${SCRIPT_DIR}/extras"
 MOD_COMM="${MOD_DIR}/commons"
@@ -135,17 +175,13 @@ REPO_DIR="${HOME}/.repodoc"
 REPO_TMP_DIR="${REPO_DIR}/tmp"
 REPODOC_LOG="${REPO_DIR}/repodoc.log"
 
-SCRIPT_LEVEL="BASIC"
-
-PARAM1=$1
-DIR_FILTER=${PARAM1%/*}
-
+#SCRIPT_LEVEL="BASIC"
 
 # Getting the doc_name and dir taking care of
 # param as a dir (absolute or relative path) 
 # or as file.
 
-PARAM1=$1
+DIR_FILTER=${PARAM1%/*}
 
 if [[ -f ${PARAM1##*/} ]]; then
 	DOC_NAME=${PARAM1##*/}
