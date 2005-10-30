@@ -150,8 +150,10 @@ show_log() {
 }
 
 
+#
 # MAIN CODE
 # Program starts here
+#
 
 # -- VARIABLES --
 
@@ -182,16 +184,17 @@ REPODOC_LOG="${REPO_DIR}/repodoc.log"
 # or as file.
 
 DIR_FILTER=${PARAM1%/*}
+DOC_NAME=${PARAM1##*/}
 
-if [[ -f ${PARAM1##*/} ]]; then
-	DOC_NAME=${PARAM1##*/}
+if [[ -f ${PARAM1#*/} ]]; then
 	DIR=${PWD}
 else
 	# Param is a dir
-	DOC_NAME=${PARAM1##*/}
 	DIR=${PARAM1%/*}
-	DIR=${DIR#${PWD}/}
-	DIR=${PWD}/${DIR}
+	# Using push and pop to get the absolute path
+	pushd ${DIR} > /dev/null
+	DIR=${PWD}
+	popd > /dev/null
 fi
 
 DOC=${DIR}/${DOC_NAME}
@@ -203,7 +206,6 @@ search_language
 search_original_doc
 search_www_dir
 search_doctype
-
 
 
 echo " ---------- Info ------------------------------"
