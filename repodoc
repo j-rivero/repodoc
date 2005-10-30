@@ -15,7 +15,7 @@
 # CHECK_PARAMS Function. Private 
 # Check params to be sure the program was called properly.
 check_params () {
-	# Check if the program recieves only one param and if 
+	# Check if the program receives only one param and if 
 	# the param is a file
 	if [[ ${NUM_PARAMS} != 1 ]] || [[ ! -f ${PARAM1} ]]; then
 		show_version_usage	
