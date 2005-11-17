@@ -102,6 +102,16 @@ search_doctype () {
 	DOC_TYPE=${TMP_DOC_TYPE2%% SYSTEM*}
 }
 
+
+# ------
+# SEARCH CVS_ROOT Function. Private
+#
+search_cvs_root () {
+	CVS_ROOT=${DIR%%$WWW_DIR}
+}
+
+
+
 # ------
 # GENERATE OUTPUT Function. Private
 #
@@ -206,7 +216,7 @@ search_language
 search_original_doc
 search_www_dir
 search_doctype
-
+search_cvs_root
 
 echo " ---------- Info ------------------------------"
 echo "Doc: " ${DOC_NAME}
@@ -215,6 +225,8 @@ echo "Lang: " ${LANGUAGE}
 echo "Trans: " ${TRANSLATION}
 echo "Doc-type: " ${DOC_TYPE}
 #echo "www-dir: " $WWW_DIR
+#echo "cvs_root: " $CVS_ROOT
+
 #echo "original_doc: " $ORIGINAL_DOC
 #echo "Level: " $SCRIPT_LEVEL
 echo " ----------------------------------------------"
