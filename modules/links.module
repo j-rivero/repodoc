@@ -1,0 +1,74 @@
+#!/bin/bash
+
+# Repodoc Tool written by José Luis Rivero (yoswink@gentoo.org)
+# Version 0.1_alpha
+# Distributed under the terms of the GNU General Public License v2
+
+MODULE_NAME="Checks links sanity"
+KEYWORDS="ALL"
+
+LEVEL="BASIC"
+
+exec_module () {
+	
+	# We have three types of links
+	# 1. gentoo own links: /doc or /proj
+	# 2. anchors: #links
+	# 3. outside links : www and http
+	
+	DOC_LINKS=$(sed -n '/^.*<uri link=.*>/p' $DOC > oo.txt)
+
+	OUTPUT_TEXT=''
+	
+	while read TMP_LINK; do 
+	#for TMP_LINK in $(sed -n '/^.*<uri link=.*>/p' $DOC); do
+		TIPO=""
+		NOT_FOUND=""
+	
+		# Cleaning link
+		TMP1_LINK=${TMP_LINK#*<uri link=\"}
+		LINK=${TMP1_LINK%\">*}
+		# Cleaning arguments ?blah
+		LINK=${LINK%\?*}
+
+		# Looking for the type of link
+		if [[ -z ${LINK%http\:\/\/*} ]] || [[ -z ${LINK%www.*} ]] || [[ -z ${LINK%https\:\/\/*} ]]; then
+			TIPO="www"
+		elif	[[ -z ${LINK%#*} ]]; then
+			
+			# 2. Anchor Link
+			TMP_ANCHOR_LINK="id=\""${LINK/\#}"\"" 
+			# Check if anchor is defined on doc
+			[[ -z $(grep ${TMP_ANCHOR_LINK} ${DOC}) ]] && NOT_FOUND=" - Anchor ${LINK} not found."
+		else
+			# 3. Gentoo link
+			
+			# TODO: Añadir las auto etiquetas de cada doc: #doc_chap_blabla
+			
+			TMP_CVS_LINK=$CVS_ROOT$LINK
+			# Check if link is an existing file or directory
+			if [[ ! -f ${TMP_CVS_LINK} ]] && [[ ! -d ${TMP_CVS_LINK} ]]; then
+			# Check if the link point to an anchor inside other doc
+				if [[ ! -z $(grep '#' <<< "${TMP_CVS_LINK}") ]]; then
+					# Separate the anchor and the file
+					TMP_ANCHOR_LINK="id=\""${TMP_CVS_LINK#*\#}"\""
+					TMP_CVS_LINK=${TMP_CVS_LINK%\#*}
+					# Check if the doc exists and if the anchor is defined inside
+					[[ ! -f ${TMP_CVS_LINK} ]] || [[ -z $(grep ${TMP_ANCHOR_LINK} ${TMP_CVS_LINK}) ]] && NOT_FOUND=" - Link to ${LINK} not found."
+				else
+					NOT_FOUND=" - Link to ${LINK} not found."
+				fi
+			fi
+		fi
+		
+		# Check if the link was found 
+		[[ ! -z ${NOT_FOUND} ]] && OUTPUT_TEXT=${OUTPUT_TEXT}${NOT_FOUND}
+	#done
+	done < oo.txt
+
+	if [[ -z ${OUTPUT_TEXT} ]]; then
+		OUTPUT_RESULT="ok"
+	else
+		OUTPUT_RESULT="critical"
+	fi
+}
