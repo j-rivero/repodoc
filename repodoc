@@ -49,7 +49,7 @@ search_language () {
 	[[ ${DIR_ROOT} = "proj" ]] &&  TMP1=${DIR##*/proj/} || TMP1=${DIR##*/doc/}
 
 	# Next "/item/" after /proj/ or /doc/ should be the language
-	LANGUAGE=${TMP1%/*}
+	LANGUAGE=${TMP1%%/*}
 
 	# Set translation variable
 	[[ ${LANGUAGE} = "en" ]] && TRANSLATION="no" || TRANSLATION="yes"
