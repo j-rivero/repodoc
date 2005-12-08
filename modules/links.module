@@ -16,6 +16,7 @@ exec_module () {
 	# 2. anchors: #links
 	# 3. outside links : www and http
 	
+	# TODO: Fix this to read links on several lines
 	DOC_LINKS=$(sed -n '/^.*<uri link=.*>/p' $DOC > oo.txt)
 
 	OUTPUT_TEXT=''
@@ -51,10 +52,10 @@ exec_module () {
 			# Check if the link point to an anchor inside other doc
 				if [[ ! -z $(grep '#' <<< "${TMP_CVS_LINK}") ]]; then
 					# Separate the anchor and the file
-					TMP_ANCHOR_LINK="id=\""${TMP_CVS_LINK#*\#}"\""
+					TMP_ANCHOR_LINK="id=\\\""${TMP_CVS_LINK#*\#}"\\\""
 					TMP_CVS_LINK=${TMP_CVS_LINK%\#*}
 					# Check if the doc exists and if the anchor is defined inside
-					[[ ! -f ${TMP_CVS_LINK} ]] || [[ -z $(grep ${TMP_ANCHOR_LINK} ${TMP_CVS_LINK}) ]] && NOT_FOUND=" - Link to ${LINK} not found."
+					[[ -f ${TMP_CVS_LINK} ]] && [[ -n $(grep ${TMP_ANCHOR_LINK} ${TMP_CVS_LINK}) ]] || NOT_FOUND=" - Link to ${LINK} not found."
 				else
 					NOT_FOUND=" - Link to ${LINK} not found."
 				fi
