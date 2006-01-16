@@ -66,6 +66,11 @@ search_original_doc (){
 		# Doc is under /proj/
 		ORIGINAL_DOC=$(sed -e "s:proj/${LANGUAGE}:proj/en:g" <<< ${DOC})
 	fi
+
+	# Checking if english version of the doc doesn't exists
+        if [[ ! -f ${ORIGINAL_DOC} ]]; then
+        	TRANSLATION="obsolete (not found english doc!)"
+	fi
 }
 
 
@@ -117,7 +122,24 @@ search_cvs_root () {
 #
 generate_output () {
 	# Screen output 
-	echo "[ ${OUTPUT_RESULT} ]"
+	if [[ ${OUTPUT_RESULT} = "ok" ]]; then
+		echo -n "[ "
+		echo -en '\E[32;1m' ${OUTPUT_RESULT}
+		tput sgr0
+		echo "  ]"
+	fi
+	if [[ ${OUTPUT_RESULT} = "warning" ]]; then
+		echo -n "[ "
+		echo -en '\E[33;1m' ${OUTPUT_RESULT}
+		tput sgr0
+		echo "  ]"
+	fi
+	if [[ ${OUTPUT_RESULT} = "critical" ]]; then
+		echo -n "[ "
+		echo -en '\E[31;1m' ${OUTPUT_RESULT}
+		tput sgr0
+		echo "  ]"
+	fi
 
 	# Log message
 
