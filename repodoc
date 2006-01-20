@@ -77,11 +77,8 @@ search_original_doc (){
 # SEARCH WWW_DIR Function. Private
 # 
 search_www_dir () {
-	if [[ ${DIR_ROOT} = "proj" ]]; then
-		WWW_DIR=${DIR/*proj/\/proj}
-	else
-		WWW_DIR=${DIR/*doc/\/doc}
-	fi
+	# Obtaining the www dir where the doc is placed
+	WWW_DIR=${DIR/*${DIR_ROOT}/\/${DIR_ROOT}}
 }
 
 
@@ -245,7 +242,9 @@ echo "Dir: " ${DIR}
 echo "Lang: " ${LANGUAGE}
 echo "Trans: " ${TRANSLATION}
 echo "Doc-type: " ${DOC_TYPE}
+
 #echo "www-dir: " $WWW_DIR
+#echo "dir-root: " $DIR_ROOT
 #echo "cvs_root: " $CVS_ROOT
 
 #echo "original_doc: " $ORIGINAL_DOC
