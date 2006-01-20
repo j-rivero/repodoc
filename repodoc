@@ -45,10 +45,13 @@ search_dir_root () {
 # SEARCH LANGUAGE Function. Private
 #
 search_language () {
-	# First, check if it's under /doc/ or under /proj/ using WWW_DIR
-	[[ ${DIR_ROOT} = "proj" ]] &&  TMP1=${DIR##*/proj/} || TMP1=${DIR##*/doc/}
+	
+	# Taking DIR as base, the language will appear after DIR_ROOT
+	
+	# First, cutting all before DIR_ROOT
+	TMP1=${DIR##*/$DIR_ROOT/}
 
-	# Next "/item/" after /proj/ or /doc/ should be the language
+	# Next "/item/" after DIR_ROOT should be the language
 	LANGUAGE=${TMP1%%/*}
 
 	# Set translation variable
@@ -59,13 +62,9 @@ search_language () {
 # SEARCH ORIGINAL_DOC Function. Private
 # Search for path of original version only in case of doc is a translation
 search_original_doc (){
-	if [[ ${DIR_ROOT} = "doc" ]]; then
-		# Doc is under /doc/
-		ORIGINAL_DOC=$(sed -e "s:doc/${LANGUAGE}:doc/en:g" <<< ${DOC})
-	else
-		# Doc is under /proj/
-		ORIGINAL_DOC=$(sed -e "s:proj/${LANGUAGE}:proj/en:g" <<< ${DOC})
-	fi
+	
+	# Just need to change /$language/ by /en/ in doc path to obtain the original version
+	ORIGINAL_DOC=$(sed -e "s:${DIR_ROOT}/${LANGUAGE}:${DIR_ROOT}/en:g" <<< ${DOC})
 
 	# Checking if english version of the doc doesn't exists
         if [[ ! -f ${ORIGINAL_DOC} ]]; then
