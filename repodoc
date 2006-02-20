@@ -36,9 +36,9 @@ show_version_usage () {
 # SEARCH DIR_ROOT Function. Private
 #
 search_dir_root () {
-	DIR_PROJ_TMP=${DIR##*/proj/*}
-
-	[[ -z ${DIR_PROJ_TMP} ]] && DIR_ROOT="proj" || DIR_ROOT="doc"
+	# The dir root is the first cvs tree subdir after htdocs  
+	DIR_ROOT_TMP=${DIR##*htdocs\/}
+	DIR_ROOT=${DIR_ROOT_TMP%%\/*}
 }
 
 # ------
