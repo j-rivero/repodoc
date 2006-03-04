@@ -28,16 +28,13 @@ exec_module () {
 	#
 	#   - awk add counter to <p> and </p> tags
 
-	# Locate the original doc 
-	ENG_DOC=$(sed -e "s:doc/${LANGUAGE}:doc/en:g" <<< ${DOC})
-
 	TMP_OUTPUT1="${REPO_TMP_DIR}/original.xml"
 	TMP_OUTPUT2="${REPO_TMP_DIR}/translation.xml"
 
 	# First output
 	TMP_OUTPUT=${TMP_OUTPUT1}
 
-	for TMP_DOC in "$ENG_DOC" "$DOC"; do
+	for TMP_DOC in "$ORIGINAL_DOC" "$DOC"; do
 
 		# First time saves the result on TMP_OUTPUT = 1
 		# Second time saves the result on TMP_OUTPUT = 2
