@@ -5,7 +5,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 MODULE_NAME="Path to doc"
-KEYWORDS="-metadoc -sections -inserts -mainpage ALL"
+KEYWORDS="* -metadoc -sections -inserts -mainpage"
 
 LEVEL="BASIC"
 
