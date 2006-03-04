@@ -10,26 +10,27 @@
 #
 # Distributed under the terms of the GNU General Public License v2
 
+VERSION="0.1_alpha"
 
 # ------
 # CHECK_PARAMS Function. Private 
 # Check params to be sure the program was called properly.
-check_params () {
+#check_params () {
 	# Check if the program receives only one param and if 
 	# the param is a file
-	if [[ ${NUM_PARAMS} != 1 ]] || [[ ! -f ${PARAM1} ]]; then
-		show_version_usage	
-		exit
-	fi
-}
+#	if [[ ${NUM_PARAMS} != 1 ]] || [[ ! -f ${PARAM1} ]]; then
+#		show_version_usage
+#		exit
+#	fi
+#}
 
 # -----
 # SHOW_VERSION_USAGE Function. Private
 # Show quick help about how to run repodoc
 show_version_usage () {
-	echo "Repodoc 0.1_alpha"
+	echo "Repodoc ${VERSION}"
 	echo
-	echo "Usage: repodoc doc"
+	echo "Usage: repodoc [doc]"
 }
 
 # -----
@@ -67,9 +68,7 @@ search_original_doc (){
 	ORIGINAL_DOC=$(sed -e "s:${DIR_ROOT}/${LANGUAGE}:${DIR_ROOT}/en:g" <<< ${DOC})
 
 	# Checking if english version of the doc doesn't exists
-        if [[ ! -f ${ORIGINAL_DOC} ]]; then
-        	TRANSLATION="obsolete (not found english doc!)"
-	fi
+        [[ ! -f ${ORIGINAL_DOC} ]] && TRANSLATION="obsolete (not found english doc!)"
 }
 
 
@@ -98,6 +97,7 @@ create_environment () {
 # SEARCH DOCTYPE Function. Private
 #
 search_doctype () {
+	# sed -n -e '/<!DOCTYPE \([^ ]*\) .*/{s--\1-p;q}' blah.xml
 	TMP_DOC_TYPE=$(grep -m 1 DOCTYPE ${DOC})
 	TMP_DOC_TYPE2=${TMP_DOC_TYPE##<!DOCTYPE }
 	DOC_TYPE=${TMP_DOC_TYPE2%% SYSTEM*}
@@ -118,49 +118,31 @@ search_cvs_root () {
 #
 generate_output () {
 	# Screen output 
-	if [[ ${OUTPUT_RESULT} = "ok" ]]; then
-		echo -n "[ "
-		echo -en '\E[32;1m' ${OUTPUT_RESULT}
-		tput sgr0
-		echo "  ]"
-	fi
-	if [[ ${OUTPUT_RESULT} = "warning" ]]; then
-		echo -n "[ "
-		echo -en '\E[33;1m' ${OUTPUT_RESULT}
-		tput sgr0
-		echo "  ]"
-	fi
-	if [[ ${OUTPUT_RESULT} = "critical" ]]; then
-		echo -n "[ "
-		echo -en '\E[31;1m' ${OUTPUT_RESULT}
-		tput sgr0
-		echo "  ]"
-	fi
+
+	case ${OUTPUT_RESULT} in
+		ok) res='\033[01;32mok' ;;
+		warning) res='\033[01;33m??' ;;
+		critical) res='\033[01;31m!!' ;;
+		esac
+
+	echo -e "[ ${res}\033[00m ]"
 
 	# Log message
 
 	# Module header
 	cat <<- EOF >> ${REPODOC_LOG}
-	------- Module ${MOD} -------
+	------- Module ${MODULE_NAME} -------
 	Result: ${OUTPUT_RESULT}
 
 	EOF
 
 	# Checking if output is not empty
 	if [[ -n ${OUTPUT_TEXT} ]]; then
-		# Checking if output is a command
-		if [[ -z ${OUTPUT_TEXT##*::*} ]]; then
-			# Executing the command
-			# need to use eval since otherwise
-			# parameters doesn't work as expected
-			eval ${OUTPUT_TEXT##*::}
-		else
-			# Output is just plain text
-			cat <<- EOF >> ${REPODOC_LOG}
-			Reason:
-			${OUTPUT_TEXT}
-			EOF
-		fi
+		# Output is just plain text
+		cat <<- EOF >> ${REPODOC_LOG}
+		Reason:
+		${OUTPUT_TEXT}
+		EOF
 	fi
 }
 
@@ -172,7 +154,7 @@ show_log() {
 	LOG_VIEWER="less ${REPODOC_LOG}"
 
 	echo
-	echo -n "Do you want to see the error log? [y/n] "
+	echo -n "Do you want to see the error log? [y/N] "
 	read TMP_OPT
 	[[ ${TMP_OPT} = "y" ]] && ${LOG_VIEWER}
 }
@@ -189,7 +171,7 @@ NUM_PARAMS="$#"
 PARAM1=$1
 
 # Checks if the params given to the app were correct
-check_params
+#check_params
 
 # Knowing Script dir beware of symlink 
 [[ -L ${0} ]] && TMP_SCRIPT_DIR=$(readlink ${0}) || TMP_SCRIPT_DIR=${0}
@@ -205,58 +187,69 @@ REPO_DIR="${HOME}/.repodoc"
 REPO_TMP_DIR="${REPO_DIR}/tmp"
 REPODOC_LOG="${REPO_DIR}/repodoc.log"
 
-#SCRIPT_LEVEL="BASIC"
+## nuevo algoritmo
 
-# Getting the doc_name and dir taking care of
-# param as a dir (absolute or relative path) 
-# or as file.
+while [[ -n $1 ]] ; do
 
-DIR_FILTER=${PARAM1%/*}
-DOC_NAME=${PARAM1##*/}
+	# Getting the doc_name and dir taking care of
+	# param as a dir (absolute or relative path)
+	# or as file.
 
-if [[ -f ${PARAM1#*/} ]]; then
-	DIR=${PWD}
-else
-	# Param is a dir
-	DIR=${PARAM1%/*}
-	# Using push and pop to get the absolute path
-	pushd ${DIR} > /dev/null
-	DIR=${PWD}
+	tmpdir=${1%/*}
+	[[ ${tmpdir} = $1 ]] && tmpdir=.
+
+	pushd ${tmpdir} > /dev/null
+	dir=${PWD}
 	popd > /dev/null
-fi
 
-DOC=${DIR}/${DOC_NAME}
+	name=${1##*/}
 
-# Starting environment and variables
-create_environment
-search_dir_root
-search_language
-search_original_doc
-search_www_dir
-search_doctype
-search_cvs_root
+	shift
 
-echo " ---------- Info ------------------------------"
-echo "Doc: " ${DOC_NAME}
-echo "Dir: " ${DIR}
-echo "Lang: " ${LANGUAGE}
-echo "Trans: " ${TRANSLATION}
-echo "Doc-type: " ${DOC_TYPE}
+	# Adjusting the main variables
+	DOC_NAME=${name}
+	DIR=${dir}
+	DOC=${DIR}/${DOC_NAME}
 
-#echo "www-dir: " $WWW_DIR
-#echo "dir-root: " $DIR_ROOT
-#echo "cvs_root: " $CVS_ROOT
+	# Check if doc exists
+	[[ -f ${DOC} ]] || {
+		echo "Doc Not Found!"
+		echo "${DOC_NAME} does not exist in ${DIR}"
+		continue
+	}
 
-#echo "original_doc: " $ORIGINAL_DOC
-#echo "Level: " $SCRIPT_LEVEL
-echo " ----------------------------------------------"
-echo
+	#SCRIPT_LEVEL="BASIC"
 
-# Set up VIEW_LOG to "no" until an error appears
-VIEW_LOG="no"
+	# Starting environment and variables
+	create_environment
+	search_dir_root
+	search_language
+	search_original_doc
+	search_www_dir
+	search_doctype
+	search_cvs_root
 
-# Handling modules
-for MOD in ${MOD_DIR}/* ; do
+	echo " ---------- Info ------------------------------"
+	echo "Doc: " ${DOC_NAME}
+	echo "Dir: " ${DIR}
+	echo "Lang: " ${LANGUAGE}
+	echo "Trans: " ${TRANSLATION}
+	echo "Doc-type: " ${DOC_TYPE}
+
+	#echo "www-dir: " $WWW_DIR
+	#echo "dir-root: " $DIR_ROOT
+	#echo "cvs_root: " $CVS_ROOT
+
+	#echo "original_doc: " $ORIGINAL_DOC
+	#echo "Level: " $SCRIPT_LEVEL
+	echo " ----------------------------------------------"
+	echo
+
+	# Set up VIEW_LOG to "no" until an error appears
+	VIEW_LOG="no"
+
+	# Handling modules
+	for MOD in ${MOD_DIR}/* ; do
 		
 		# Initializing variables
 		TRANSLATION_MODULE=""
@@ -279,7 +272,8 @@ for MOD in ${MOD_DIR}/* ; do
 						# Checking keyword 
 						if [[ ${TMP_DOC_TYPE} = ${DOC_TYPE} ]] \
 							|| [[ ${TMP_DOC_TYPE} = "ALL" ]]; then
-								echo -n " * Processing module " ${MOD##*\/} " ...  "
+								tmpmod=${MOD##*/}
+								printf " * Processing module %-10s " ${tmpmod%.module}
 							# Call exec_module (function from module)
 							exec_module
 							# Generating output for the log
@@ -295,7 +289,10 @@ for MOD in ${MOD_DIR}/* ; do
 			fi
 		#fi end of LEVEL
 	#fi
-done
+	done
 
-# Show the log if needed
-[[ ${VIEW_LOG} = "yes" ]] && show_log
+	# Show the log if needed
+	[[ ${VIEW_LOG} = "yes" ]] && show_log
+
+# Will check next doc if exists
+done
