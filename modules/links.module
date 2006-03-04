@@ -48,7 +48,8 @@ exec_module () {
 		else
 			# 3. Gentoo link
 			
-			# TODO: Añadir las auto etiquetas de cada doc: #doc_chap_blabla
+			# TODO: Add support to auto doc tags: #doc_chap_blabla
+			# TODO: Add support for mailto links (nx-guide)
 			
 			TMP_CVS_LINK=$CVS_ROOT$LINK
 			# TODO: Comprobar si este link es una ruta completa. Si es un simple
