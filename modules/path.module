@@ -9,7 +9,7 @@ KEYWORDS="-metadoc -sections -inserts -mainpage ALL"
 
 LEVEL="BASIC"
 
-exec_module () {
+exec_module() {
 	# Select the line to extract link attribute
 	LINK_TYPE="<${DOC_TYPE}"
 	# Get link_type line

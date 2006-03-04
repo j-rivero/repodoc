@@ -9,7 +9,7 @@ KEYWORDS="-metadoc ALL"
 
 LEVEL="BASIC"
 
-exec_module () {
+exec_module() {
 	# Making exceptions using sed:
 	# 1. <Header
 	# 2. <comment> labels

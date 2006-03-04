@@ -9,7 +9,7 @@ KEYWORDS="ALL"
 
 LEVEL="BASIC"
 
-exec_module () {
+exec_module() {
 	UTFCHECKER="check-utf8"
 
 	UTF=$(${EXTRA_DIR}/${UTFCHECKER} ${DOC} 2>&1)

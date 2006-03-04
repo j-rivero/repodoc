@@ -11,7 +11,7 @@ LEVEL="BASIC"
 
 TRANSLATION_MODULE="yes"
 
-exec_module () {
+exec_module() {
 	# Check the doc to find if lang attribute is set on guide label
 
 	TMP_LANG=$(grep '<guide' /${DOC} | grep lang=\"${LANGUAGE}\")

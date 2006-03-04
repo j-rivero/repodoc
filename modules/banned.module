@@ -12,7 +12,7 @@ KEYWORDS="ALL"
 BANNED_PATTERNS=( '/\t/s//####/gp'
                   '/bandera/s//BANDERA/p'
                   '/links2/s//LINKS2/p'
-		  '/\([^[:alpha:]]\)correr/s//\1CORRER/p' )
+                  '/\([^[:alpha:]]\)correr/s//\1CORRER/p' )
 
 exec_module() {
 	OUTPUT_RESULT="ok"

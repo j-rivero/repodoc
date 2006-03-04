@@ -27,7 +27,7 @@ VERSION="0.1_alpha"
 # -----
 # SHOW_VERSION_USAGE Function. Private
 # Show quick help about how to run repodoc
-show_version_usage () {
+show_version_usage() {
 	echo "Repodoc ${VERSION}"
 	echo
 	echo "Usage: repodoc [doc]"
@@ -36,7 +36,7 @@ show_version_usage () {
 # -----
 # SEARCH DIR_ROOT Function. Private
 #
-search_dir_root () {
+search_dir_root() {
 	# The dir root is the first cvs tree subdir after htdocs
 	DIR_ROOT_TMP=${DIR##*htdocs\/}
 	DIR_ROOT=${DIR_ROOT_TMP%%\/*}
@@ -45,10 +45,8 @@ search_dir_root () {
 # ------
 # SEARCH LANGUAGE Function. Private
 #
-search_language () {
-
+search_language() {
 	# Taking DIR as base, the language will appear after DIR_ROOT
-
 	# First, cutting all before DIR_ROOT
 	TMP1=${DIR##*/$DIR_ROOT/}
 
@@ -62,20 +60,19 @@ search_language () {
 # ------
 # SEARCH ORIGINAL_DOC Function. Private
 # Search for path of original version only in case of doc is a translation
-search_original_doc (){
-
+search_original_doc() {
 	# Just need to change /$language/ by /en/ in doc path to obtain the original version
 	ORIGINAL_DOC=$(sed -e "s:${DIR_ROOT}/${LANGUAGE}:${DIR_ROOT}/en:g" <<< ${DOC})
 
-	# Checking if english version of the doc doesn't exists
-        [[ ! -f ${ORIGINAL_DOC} ]] && TRANSLATION="obsolete (not found english doc!)"
+	# Checking if english version of the doc doesn't exist
+	[[ ! -f ${ORIGINAL_DOC} ]] && TRANSLATION="obsolete (not found english doc!)"
 }
 
 
 # -----
 # SEARCH WWW_DIR Function. Private
 #
-search_www_dir () {
+search_www_dir() {
 	# Obtaining the www dir where the doc is placed
 	WWW_DIR=${DIR/*${DIR_ROOT}/\/${DIR_ROOT}}
 }
@@ -84,7 +81,7 @@ search_www_dir () {
 # ------
 # CREATE ENVIRONMENT Function. Private
 # Create REPO_DIR and REPO_TMP_DIR if needed and clean log
-create_environment () {
+create_environment() {
 	# Create dirs. -p will create REPO_DIR if needed.
 	[[ -d ${REPO_TMP_DIR} ]] || mkdir -p "${REPO_TMP_DIR}"
 
@@ -96,7 +93,7 @@ create_environment () {
 # ------
 # SEARCH DOCTYPE Function. Private
 #
-search_doctype () {
+search_doctype() {
 	# sed -n -e '/<!DOCTYPE \([^ ]*\) .*/{s--\1-p;q}' blah.xml
 	TMP_DOC_TYPE=$(grep -m 1 DOCTYPE ${DOC})
 	TMP_DOC_TYPE2=${TMP_DOC_TYPE##<!DOCTYPE }
@@ -107,7 +104,7 @@ search_doctype () {
 # ------
 # SEARCH CVS_ROOT Function. Private
 #
-search_cvs_root () {
+search_cvs_root() {
 	CVS_ROOT=${DIR%%$WWW_DIR}
 }
 
@@ -116,25 +113,25 @@ search_cvs_root () {
 # ------
 # GENERATE OUTPUT Function. Private
 #
-generate_output () {
+generate_output() {
 	# Screen output
 
 	case ${OUTPUT_RESULT} in
 		ok) res='\033[01;32mok' ;;
 		warning) res='\033[01;33m??' ;;
 		critical) res='\033[01;31m!!' ;;
-		esac
+	esac
 
 	echo -e "[ ${res}\033[00m ]"
 
 	# Log message
 
 	# Module header
-	cat <<- EOF >> ${REPODOC_LOG}
-	------- Module ${MODULE_NAME} -------
-	Result: ${OUTPUT_RESULT}
+	cat << EOF >> ${REPODOC_LOG}
+------- Module ${MODULE_NAME} -------
+Result: ${OUTPUT_RESULT}
 
-	EOF
+EOF
 
 	# Checking if output is not empty
 	if [[ -n ${OUTPUT_TEXT} ]]; then
@@ -187,10 +184,8 @@ REPO_DIR="${HOME}/.repodoc"
 REPO_TMP_DIR="${REPO_DIR}/tmp"
 REPODOC_LOG="${REPO_DIR}/repodoc.log"
 
-## nuevo algoritmo
-
+## Check every argument
 while [[ -n $1 ]] ; do
-
 	# Getting the doc_name and dir taking care of
 	# param as a dir (absolute or relative path)
 	# or as file.
@@ -250,7 +245,6 @@ while [[ -n $1 ]] ; do
 
 	# Handling modules
 	for MOD in ${MOD_DIR}/* ; do
-
 		# Initializing variables
 		TRANSLATION_MODULE=""
 		OUTPUT_RESULT=""

@@ -14,7 +14,7 @@ LEVEL="BASIC"
 
 TRANSLATION_MODULE="yes"
 
-exec_module () {
+exec_module() {
 	# The evil-sed (tm) line-by-line:
 	#
 	#   - 1. Remove lines beggining with <?

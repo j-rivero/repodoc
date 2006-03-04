@@ -9,7 +9,7 @@ KEYWORDS="ALL"
 
 LEVEL="BASIC"
 
-exec_module () {
+exec_module() {
 
 	# We have three types of links
 	# 1. gentoo own links: /doc or /proj
