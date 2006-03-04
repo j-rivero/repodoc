@@ -14,7 +14,7 @@ exec_module () {
 	LINK_TYPE="<${DOC_TYPE}"
 	# Get link_type line
 	LINE_LINK_TYPE=$(grep ${LINK_TYPE} ${DOC})
-	# Delete all before link=" 
+	# Delete all before link="
 	TMP_LINK_ATTRIBUTE=${LINE_LINK_TYPE##*link=\"}
 	# Delete all after first "
 	LINK_ATTRIBUTE=${TMP_LINK_ATTRIBUTE%%\"*}

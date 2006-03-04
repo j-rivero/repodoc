@@ -1,4 +1,4 @@
-# 
+#
 # Makefile for check-utf8
 #
 # ... easy eh! ;p

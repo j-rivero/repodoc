@@ -10,25 +10,25 @@ KEYWORDS="ALL"
 LEVEL="BASIC"
 
 exec_module () {
-	
+
 	# We have three types of links
 	# 1. gentoo own links: /doc or /proj
 	# 2. anchors: #links
 	# 3. outside links : www and http
-	
+
 	# TODO: Fix this to read links on several lines
 	TMP_LINKS="${REPO_TMP_DIR}/links.txt"
-	
+
 	#DOC_LINKS=$(sed -n '/^.*<uri link=.*>/p' $DOC > oo.txt)
 	(sed -n '/^.*<uri link=.*>/p' ${DOC} > ${TMP_LINKS})
-	
+
 	OUTPUT_TEXT=''
-	
-	while read TMP_LINK; do 
+
+	while read TMP_LINK; do
 	#for TMP_LINK in $(sed -n '/^.*<uri link=.*>/p' $DOC); do
 		TIPO=""
 		NOT_FOUND=""
-	
+
 		# Cleaning link
 		TMP1_LINK=${TMP_LINK#*<uri link=\"}
 		LINK=${TMP1_LINK%%\"*>*}
@@ -40,22 +40,22 @@ exec_module () {
 		if [[ -z ${LINK%http\:\/\/*} ]] || [[ -z ${LINK%www.*} ]] || [[ -z ${LINK%https\:\/\/*} ]]; then
 			TIPO="www"
 		elif	[[ -z ${LINK%#*} ]]; then
-			
+
 			# 2. Anchor Link
-			TMP_ANCHOR_LINK="id=\""${LINK/\#}"\"" 
+			TMP_ANCHOR_LINK="id=\""${LINK/\#}"\""
 			# Check if anchor is defined on doc
 			[[ -z $(grep ${TMP_ANCHOR_LINK} ${DOC}) ]] && NOT_FOUND=" - Anchor ${LINK} not found."
 		else
 			# 3. Gentoo link
-			
+
 			# TODO: Add support to auto doc tags: #doc_chap_blabla
 			# TODO: Add support for mailto links (nx-guide)
-			
+
 			TMP_CVS_LINK=$CVS_ROOT$LINK
 			# TODO: Comprobar si este link es una ruta completa. Si es un simple
 			# file.xml repodoc peta :)
 			#echo $TMP_CVS_LINK
-			
+
 			# Check if link is an existing file or directory
 			if [[ ! -f ${TMP_CVS_LINK} ]] && [[ ! -d ${TMP_CVS_LINK} ]]; then
 			# Check if the link point to an anchor inside other doc
@@ -70,8 +70,8 @@ exec_module () {
 				fi
 			fi
 		fi
-		
-		# Check if the link was found 
+
+		# Check if the link was found
 		[[ ! -z ${NOT_FOUND} ]] && OUTPUT_TEXT=${OUTPUT_TEXT}${NOT_FOUND}
 	#done
 	done < ${TMP_LINKS}

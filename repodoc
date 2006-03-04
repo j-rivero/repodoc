@@ -13,10 +13,10 @@
 VERSION="0.1_alpha"
 
 # ------
-# CHECK_PARAMS Function. Private 
+# CHECK_PARAMS Function. Private
 # Check params to be sure the program was called properly.
 #check_params () {
-	# Check if the program receives only one param and if 
+	# Check if the program receives only one param and if
 	# the param is a file
 #	if [[ ${NUM_PARAMS} != 1 ]] || [[ ! -f ${PARAM1} ]]; then
 #		show_version_usage
@@ -37,7 +37,7 @@ show_version_usage () {
 # SEARCH DIR_ROOT Function. Private
 #
 search_dir_root () {
-	# The dir root is the first cvs tree subdir after htdocs  
+	# The dir root is the first cvs tree subdir after htdocs
 	DIR_ROOT_TMP=${DIR##*htdocs\/}
 	DIR_ROOT=${DIR_ROOT_TMP%%\/*}
 }
@@ -46,9 +46,9 @@ search_dir_root () {
 # SEARCH LANGUAGE Function. Private
 #
 search_language () {
-	
+
 	# Taking DIR as base, the language will appear after DIR_ROOT
-	
+
 	# First, cutting all before DIR_ROOT
 	TMP1=${DIR##*/$DIR_ROOT/}
 
@@ -63,7 +63,7 @@ search_language () {
 # SEARCH ORIGINAL_DOC Function. Private
 # Search for path of original version only in case of doc is a translation
 search_original_doc (){
-	
+
 	# Just need to change /$language/ by /en/ in doc path to obtain the original version
 	ORIGINAL_DOC=$(sed -e "s:${DIR_ROOT}/${LANGUAGE}:${DIR_ROOT}/en:g" <<< ${DOC})
 
@@ -72,9 +72,9 @@ search_original_doc (){
 }
 
 
-# ----- 
+# -----
 # SEARCH WWW_DIR Function. Private
-# 
+#
 search_www_dir () {
 	# Obtaining the www dir where the doc is placed
 	WWW_DIR=${DIR/*${DIR_ROOT}/\/${DIR_ROOT}}
@@ -117,7 +117,7 @@ search_cvs_root () {
 # GENERATE OUTPUT Function. Private
 #
 generate_output () {
-	# Screen output 
+	# Screen output
 
 	case ${OUTPUT_RESULT} in
 		ok) res='\033[01;32mok' ;;
@@ -148,7 +148,7 @@ generate_output () {
 
 # ------
 # SHOW LOG Function. Private
-# 
+#
 show_log() {
 	# Set up the log viewer app
 	LOG_VIEWER="less ${REPODOC_LOG}"
@@ -173,7 +173,7 @@ PARAM1=$1
 # Checks if the params given to the app were correct
 #check_params
 
-# Knowing Script dir beware of symlink 
+# Knowing Script dir beware of symlink
 [[ -L ${0} ]] && TMP_SCRIPT_DIR=$(readlink ${0}) || TMP_SCRIPT_DIR=${0}
 SCRIPT_DIR="${TMP_SCRIPT_DIR%/*}"
 
@@ -250,7 +250,7 @@ while [[ -n $1 ]] ; do
 
 	# Handling modules
 	for MOD in ${MOD_DIR}/* ; do
-		
+
 		# Initializing variables
 		TRANSLATION_MODULE=""
 		OUTPUT_RESULT=""
@@ -269,7 +269,7 @@ while [[ -n $1 ]] ; do
 				for TMP_DOC_TYPE in ${KEYWORDS}; do
 					# Checking "-KEYWORD" to jump the module
 					if [[ ${TMP_DOC_TYPE} != "-${DOC_TYPE}" ]]; then
-						# Checking keyword 
+						# Checking keyword
 						if [[ ${TMP_DOC_TYPE} = ${DOC_TYPE} ]] \
 							|| [[ ${TMP_DOC_TYPE} = "ALL" ]]; then
 								tmpmod=${MOD##*/}

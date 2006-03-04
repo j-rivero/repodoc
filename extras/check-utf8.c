@@ -16,8 +16,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-/* 
- * Addapted for repodoc use by Fernando J. Pereda <ferdy@gentoo.org> 
+/*
+ * Addapted for repodoc use by Fernando J. Pereda <ferdy@gentoo.org>
  */
 
 #include <stdlib.h>
