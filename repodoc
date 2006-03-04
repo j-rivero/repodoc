@@ -240,8 +240,8 @@ while [[ -n $1 ]] ; do
 	echo " ----------------------------------------------"
 	echo
 
-	# Set up VIEW_LOG to "no" until an error appears
-	VIEW_LOG="no"
+	# Set up VIEW_LOG to "false" until an error appears
+	VIEW_LOG=false
 
 	# Handling modules
 	for MOD in ${MOD_DIR}/* ; do
@@ -254,39 +254,33 @@ while [[ -n $1 ]] ; do
 		# Read the module
 		source "${MOD}"
 
-		# Checking module level
-		#if [ "${SCRIPT_LEVEL}" = "${LEVEL}" ]
-		#then
-			if [[ ${TRANSLATION_MODULE} != "yes" ]] \
-				|| [[ ${TRANSLATION} = "yes" ]]; then
-				# Checking module's keywords
-				for TMP_DOC_TYPE in ${KEYWORDS}; do
-					# Checking "-KEYWORD" to jump the module
-					if [[ ${TMP_DOC_TYPE} != "-${DOC_TYPE}" ]]; then
-						# Checking keyword
-						if [[ ${TMP_DOC_TYPE} = ${DOC_TYPE} ]] \
-							|| [[ ${TMP_DOC_TYPE} = "ALL" ]]; then
-								tmpmod=${MOD##*/}
-								printf " * Processing module %-10s " ${tmpmod%.module}
-							# Call exec_module (function from module)
-							exec_module
-							# Generating output for the log
-							generate_output
-							# Checking if there was any error
-							[[ ${OUTPUT_RESULT} != "ok" ]] && VIEW_LOG="yes"
-						fi
-					else
-						# If found "-keyword", exit the loop
-						break
-					fi
-				done
-			fi
-		#fi end of LEVEL
-	#fi
+		# Parse KEYWORDS properly
+		GLOBIGNORE=*
+		execmodule=false
+
+		for k in ${KEYWORDS} ; do
+			case ${k} in
+				'ALL'|'*'|"${DOC_TYPE}")    execmodule=true  ;;
+				'-ALL'|'-*'|"-${DOC_TYPE}") execmodule=false ;;
+			esac
+		done
+
+		# Restore GLOBIGNORE
+		unset GLOBIGNORE
+
+		tmpmod=${MOD##*/}
+
+		if ${execmodule} ; then
+			printf " * Processing module %-10s " ${tmpmod%.module}
+			# Call exec_module (function from module)
+			exec_module
+			# Generating output for the log
+			generate_output
+			# Checking if there was any error
+			[[ ${OUTPUT_RESULT} != "ok" ]] && VIEW_LOG=true
+		fi
 	done
 
 	# Show the log if needed
-	[[ ${VIEW_LOG} = "yes" ]] && show_log
-
-# Will check next doc if exists
+	${VIEW_LOG} && show_log
 done
