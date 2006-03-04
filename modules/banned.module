@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Repodoc Tool written by José Luis Rivero (yoswink@gentoo.org)
+# and some random bash minions
+# Version 0.1_alpha
+# Distributed under the terms of the GNU General Public License v2
+
+MODULE_NAME="Tabú"
+
+KEYWORDS="ALL"
+
+BANNED_PATTERNS=( '/\t/s//####/gp'
+                  '/bandera/s//BANDERA/p'
+                  '/links2/s//LINKS2/p'
+		  '/\([^[:alpha:]]\)correr/s//\1CORRER/p' )
+
+exec_module() {
+	OUTPUT_RESULT="ok"
+	OUTPUT_TEXT="Banned patterns found:"
+
+	for p in ${BANNED_PATTERNS[@]} ; do
+		res=$(sed -n -e ${p} ${DOC})
+		if [[ -n ${res} ]] ; then
+			OUTPUT_RESULT="critical"
+			OUTPUT_TEXT="${OUTPUT_TEXT}
+
+ - Using banned pattern '${p}' I spotted shait at:
+--- 8< ---
+${res}
+--- 8< ---"
+		fi
+	done
+}
