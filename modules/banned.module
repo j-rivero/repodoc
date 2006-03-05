@@ -7,7 +7,7 @@
 
 MODULE_NAME="Tabú"
 
-KEYWORDS="ALL"
+KEYWORDS="*"
 
 BANNED_PATTERNS=( '/\t/s//####/gp'
                   '/bandera/s//BANDERA/p'

@@ -5,7 +5,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 MODULE_NAME="Length of lines"
-KEYWORDS="ALL"
+KEYWORDS="*"
 
 LEVEL="BASIC"
 
