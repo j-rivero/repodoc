@@ -12,9 +12,10 @@ KEYWORDS="* -metadoc -inserts"
 
 LEVEL="BASIC"
 
-TRANSLATION_MODULE="yes"
-
 exec_module() {
+	# If we are not a translation, exit
+	[[ ${TRANSLATION} = "yes" ]] || return
+
 	# The evil-sed (tm) line-by-line:
 	#
 	#   - 1. Remove lines beggining with <?
