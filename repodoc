@@ -65,7 +65,7 @@ search_original_doc() {
 	ORIGINAL_DOC=$(sed -e "s:${DIR_ROOT}/${LANGUAGE}:${DIR_ROOT}/en:g" <<< ${DOC})
 
 	# Checking if english version of the doc doesn't exist
-	[[ ! -f ${ORIGINAL_DOC} ]] && TRANSLATION="obsolete (not found english doc!)"
+	[[ ! -f ${ORIGINAL_DOC} ]] && TRANSLATION="obsolete (english version not found!)"
 }
 
 
