@@ -15,9 +15,9 @@ exec_module() {
 	UTF=$(${EXTRA_DIR}/${UTFCHECKER} ${DOC} 2>&1)
 
 	if [[ -z ${UTF} ]]; then
-		OUTPUT_RESULT="ok"
+		return 0
 	else
-		OUTPUT_RESULT="critical"
 		OUTPUT_TEXT="${UTF}"
+		return 2
 	fi
 }

@@ -15,9 +15,9 @@ exec_module() {
 	TMP_VALID=$(${VALIDATOR_COMMAND} ${DOC} 2>&1)
 
 	if [[ -z ${TMP_VALID} ]]; then
-		OUTPUT_RESULT="ok"
+		return 0
 	else
-		OUTPUT_RESULT="critical"
 		OUTPUT_TEXT=${TMP_VALID}
+		return 2
 	fi
 }

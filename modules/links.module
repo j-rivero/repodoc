@@ -77,8 +77,8 @@ exec_module() {
 	done < ${TMP_LINKS}
 
 	if [[ -z ${OUTPUT_TEXT} ]]; then
-		OUTPUT_RESULT="ok"
+		return 0
 	else
-		OUTPUT_RESULT="critical"
+		return 2
 	fi
 }

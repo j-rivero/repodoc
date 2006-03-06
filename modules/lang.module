@@ -15,9 +15,9 @@ exec_module() {
 
 	TMP_LANG=$(grep '<guide' /${DOC} | grep lang=\"${LANGUAGE}\")
 	if [[ -z ${TMP_LANG} ]]; then
-		OUTPUT_RESULT="critical"
 		OUTPUT_TEXT="Your guide link should use the attribute lang=\"${LANGUAGE}\""
+		return 2
 	else
-		OUTPUT_RESULT="ok"
+		return 0
 	fi
 }

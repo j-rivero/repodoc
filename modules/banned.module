@@ -15,13 +15,14 @@ BANNED_PATTERNS=( '/\t/s//####/gp'
                   '/\([^[:alpha:]]\)correr/s//\1CORRER/p' )
 
 exec_module() {
-	OUTPUT_RESULT="ok"
+	local retVal=0
+
 	OUTPUT_TEXT="Banned patterns found:"
 
 	for p in ${BANNED_PATTERNS[@]} ; do
 		res=$(sed -n -e ${p} ${DOC})
 		if [[ -n ${res} ]] ; then
-			OUTPUT_RESULT="critical"
+			retVal=2
 			OUTPUT_TEXT="${OUTPUT_TEXT}
 
  - Using banned pattern '${p}' I spotted shait at:
@@ -30,4 +31,6 @@ ${res}
 --- 8< ---"
 		fi
 	done
+
+	return ${retVal}
 }

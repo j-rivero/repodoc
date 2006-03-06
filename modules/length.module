@@ -27,9 +27,9 @@ exec_module() {
 	' ${DOC})
 
 	if [[ -z ${LONG_LINES} ]]; then
-		OUTPUT_RESULT="ok"
+		return 0
 	else
-		OUTPUT_RESULT="warning"
 		OUTPUT_TEXT="${LONG_LINES}"
+		return 1
 	fi
 }
