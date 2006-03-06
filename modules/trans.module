@@ -14,7 +14,7 @@ LEVEL="BASIC"
 
 exec_module() {
 	# If we are not a translation, exit
-	[[ ${TRANSLATION} = "yes" ]] || return
+	${TRANSLATION} || return
 
 	# The evil-sed (tm) line-by-line:
 	#
