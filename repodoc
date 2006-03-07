@@ -64,8 +64,8 @@ search_original_doc() {
 	# Just need to change /$language/ by /en/ in doc path to obtain the original version
 	ORIGINAL_DOC=$(sed -e "s:${DIR_ROOT}/${LANGUAGE}:${DIR_ROOT}/en:g" <<< ${DOC})
 
-	# Checking if english version of the doc doesn't exist
-	[[ ! -f ${ORIGINAL_DOC} ]] && TRANSLATION="obsolete (english version not found!)"
+	# If this document is obsolete, it is NOT a translation
+	[[ -f ${ORIGINAL_DOC} ]] || TRANSLATION=false
 }
 
 
@@ -228,9 +228,10 @@ while [[ -n $1 ]] ; do
 	echo "Doc: " ${DOC_NAME}
 	echo "Dir: " ${DIR}
 	echo "Lang: " ${LANGUAGE}
-	echo "Trans: " $(${TRANSLATION} && echo yes || echo no)
+	echo -n "Trans: " $(${TRANSLATION} && echo yes || echo no)
+	[[ -f ${ORIGINAL_DOC} ]] || echo -n " (OBSOLETE DOCUMENT)"
+	echo
 	echo "Doc-type: " ${DOC_TYPE}
-
 	#echo "www-dir: " $WWW_DIR
 	#echo "dir-root: " $DIR_ROOT
 	#echo "cvs_root: " $CVS_ROOT
