@@ -10,75 +10,90 @@ KEYWORDS="*"
 LEVEL="BASIC"
 
 exec_module() {
+	local external anchor_rex anchor \
+		found anchor_found linked LINKS \
+		out offending_links retVal=0
 
 	# We have three types of links
-	# 1. gentoo own links: /doc or /proj
-	# 2. anchors: #links
-	# 3. outside links : www and http
+	# 1. gentoo own links : /doc or /proj   ( internal - check          )
+	# 2. anchors : #links                   ( internal - check          )
+	# 3. outside links : www and http...    ( external - cannot check   )
+	# 4. Odd uris : irc mailto nx ssh ...   ( external - will not check )
 
-	# TODO: Fix this to read links on several lines
-	TMP_LINKS="${REPO_TMP_DIR}/links.txt"
+	LINKS=$(sed -n -e '
+		/<uri[[:blank:]]*$/ {
+			n
+			s-link="\([^"]*\)".*$-\1-
+			H
+		}
+		/.*<uri>\([^<]*\)<\/uri>.*/ {
+			s--\1-g
+			H
+		}
+		/.*<uri[[:blank:]]*link="\(.*\)">[^<]*<\/uri>.*/ {
+			s--\1-g
+			H
+		}
+		$ {
+			x
+			s-\n- -gp
+		}' ${DOC})
 
-	#DOC_LINKS=$(sed -n '/^.*<uri link=.*>/p' $DOC > oo.txt)
-	(sed -n '/^.*<uri link=.*>/p' ${DOC} > ${TMP_LINKS})
+	for link in ${LINKS} ; do
+		anchor=${link##*#}
+		anchor_rex='<[^ ]*[[:blank:]]*id="'${anchor}'"'
+		anchor_found=true
+		found=false
 
-	OUTPUT_TEXT=''
+		case ${link} in
+			http?://*|ftp?://*|www.*)
+				# Cannot check this links right now
+				external=true
+			;;
+			'#*')
+				# Anchor, internal, check it
+				external=false
+				grep "${anchor_rex}" ${DOC} > /dev/null && found=true || found=false
+			;;
+			/doc/*|/proj/*)
+				# Gentoo link, internal, check it
+				external=false
+				found=false
+				linked=${CVS_ROOT}/${link%%#*}
 
-	while read TMP_LINK; do
-	#for TMP_LINK in $(sed -n '/^.*<uri link=.*>/p' $DOC); do
-		TIPO=""
-		NOT_FOUND=""
+				# Does the file/directory exist ?
+				[[ -e ${linked%%\?*} ]] && found=true
 
-		# Cleaning link
-		TMP1_LINK=${TMP_LINK#*<uri link=\"}
-		LINK=${TMP1_LINK%%\"*>*}
-		#echo "esto es: " $LINK
-		# Cleaning arguments ?blah
-		LINK=${LINK%\?*}
+				# If we were given an anchor, check it unless it is a doc_ anchor
+				case ${found},${anchor} in
+					true,doc_*)   ;; # Skip doc_ anchors
+					true,${link}) ;; # Skip if no anchor given
+					true,*)
+						grep "${anchor_rex}" ${linked%%\?*} > /dev/null \
+							&& anchor_found=true || anchor_found=false
+					;;
+				esac
 
-		# Looking for the type of link
-		if [[ -z ${LINK%http\:\/\/*} ]] || [[ -z ${LINK%www.*} ]] || [[ -z ${LINK%https\:\/\/*} ]]; then
-			TIPO="www"
-		elif	[[ -z ${LINK%#*} ]]; then
+				${found} && ${anchor_found} || { [[ ${retVal} < 2 ]] && retVal=1 ;}
+			;;
+			*)
+				# What on earth are you linking to?
+				external=true
+			;;
+		esac
 
-			# 2. Anchor Link
-			TMP_ANCHOR_LINK="id=\""${LINK/\#}"\""
-			# Check if anchor is defined on doc
-			[[ -z $(grep ${TMP_ANCHOR_LINK} ${DOC}) ]] && NOT_FOUND=" - Anchor ${LINK} not found."
-		else
-			# 3. Gentoo link
+		${found} || ${external} || retVal=2
 
-			# TODO: Add support to auto doc tags: #doc_chap_blabla
-			# TODO: Add support for mailto links (nx-guide)
+		case ${external},${found},${anchor_found} in
+			true,*,*) ;;   # Skip external links
+			false,false,*) out="${out},,,Link not found - ${link}" ;;
+			false,true,false) out="${out},,,Anchor '${anchor}' not found in '${linked}'" ;;
+		esac
+	done
 
-			TMP_CVS_LINK=$CVS_ROOT$LINK
-			# TODO: Comprobar si este link es una ruta completa. Si es un simple
-			# file.xml repodoc peta :)
-			#echo $TMP_CVS_LINK
+	# A bit hacky, but works fine
+	offending_links=$(sed -e 's-,,,-\n-g' <<< ${out})
+	OUTPUT_TEXT="${offending_links}"
 
-			# Check if link is an existing file or directory
-			if [[ ! -f ${TMP_CVS_LINK} ]] && [[ ! -d ${TMP_CVS_LINK} ]]; then
-			# Check if the link point to an anchor inside other doc
-				if [[ ! -z $(grep '#' <<< "${TMP_CVS_LINK}") ]]; then
-					# Separate the anchor and the file
-					TMP_ANCHOR_LINK="id=\\\""${TMP_CVS_LINK#*\#}"\\\""
-					TMP_CVS_LINK=${TMP_CVS_LINK%\#*}
-					# Check if the doc exists and if the anchor is defined inside
-					[[ -f ${TMP_CVS_LINK} ]] && [[ -n $(grep ${TMP_ANCHOR_LINK} ${TMP_CVS_LINK}) ]] || NOT_FOUND=" - Link to ${LINK} not found."
-				else
-					NOT_FOUND=" - Link to ${LINK} not found."
-				fi
-			fi
-		fi
-
-		# Check if the link was found
-		[[ ! -z ${NOT_FOUND} ]] && OUTPUT_TEXT=${OUTPUT_TEXT}${NOT_FOUND}
-	#done
-	done < ${TMP_LINKS}
-
-	if [[ -z ${OUTPUT_TEXT} ]]; then
-		return 0
-	else
-		return 2
-	fi
+	return ${retVal}
 }
