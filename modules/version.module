@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Repodoc Tool written by José Luis Rivero (yoswink@gentoo.org)
+# Version 0.1_alpha
+# Distributed under the terms of the GNU General Public License v2
+
+MODULE_NAME="Check version sync"
+KEYWORDS="metadoc"
+
+LEVEL="BASIC"
+
+TRANSLATION_MODULE="yes"
+
+exec_module () {
+	# Extract version info about original doc
+	ORIGINAL_VERSION=$(sed -n -e '/<version>.*<\/version>/p' ${ORIGINAL_DOC})
+	# Extract version info about doc analysed
+	DOC_VERSION=$(sed -n -e '/<version>.*<\/version>/p' ${DOC})
+	if [[ ${ORIGINAL_VERSION} == ${DOC_VERSION} ]]; then
+		# Versions are synced
+		OUTPUT_RESULT="ok"
+	else
+		OUTPUT_RESULT="critical"
+		OUTPUT_TEXT="
+Original english doc and the translation have different \
+versions. The doc could be out of date or you forgot to make cvs up \
+on english dir."
+	fi
+}

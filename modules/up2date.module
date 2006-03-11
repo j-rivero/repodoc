@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# Repodoc Tool written by José Luis Rivero (yoswink@gentoo.org)
+# Version 0.1_alpha
+# Distributed under the terms of the GNU General Public License v2
+
+MODULE_NAME="Check version and date sync"
+KEYWORDS="-metadoc ALL"
+
+LEVEL="BASIC"
+
+TRANSLATION_MODULE="yes"
+
+exec_module () {
+	# Extract version info about original doc
+	ORIGINAL_VERSION=$(sed -n -e '/<version>.*<\/version>/p' ${ORIGINAL_DOC})
+	
+	# Extract version info about doc analysed
+	DOC_VERSION=$(sed -n -e '/<version>.*<\/version>/p' ${DOC})
+
+	#Extract date from original doc
+	ORIGINAL_DATE=$(sed -n -e '/<date>.*<\/date>/p' ${ORIGINAL_DOC})
+	
+	#Extract date from doc analysed
+	DOC_DATE=$(sed -n -e '/<date>.*<\/date>/p' ${DOC})
+
+	if [[ ${ORIGINAL_VERSION} == ${DOC_VERSION} ]]; then
+		# Dates are synced, still to check dates
+		if [[ ${ORIGINAL_DATE} == ${DOC_DATE} ]]; then
+			# Version and date are synced
+			OUTPUT_RESULT="ok"
+			OUTPUT_TEXT=""
+		else
+			# Date is not synced
+			OUTPUT_RESULT="critical"
+			OUTPUT_TEXT="
+Original english doc and the translation have different \
+date tags. Since version is the same, probably you should \
+update the date too."
+		fi
+	else
+		# Version is not synced
+		OUTPUT_RESULT="critical"
+		OUTPUT_TEXT="
+Original english doc and the translation have different \
+version tags. The doc could be out of date or you forgot to make cvs up \
+on english dir."
+	fi
+}
