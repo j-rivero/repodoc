@@ -5,7 +5,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 MODULE_NAME="Check version sync"
-KEYWORDS="metadoc"
+KEYWORDS="metadoc inserts"
 
 LEVEL="BASIC"
 
@@ -18,12 +18,12 @@ exec_module () {
 	DOC_VERSION=$(sed -n -e '/<version>.*<\/version>/p' ${DOC})
 	if [[ ${ORIGINAL_VERSION} == ${DOC_VERSION} ]]; then
 		# Versions are synced
-		OUTPUT_RESULT="ok"
+		return 0
 	else
-		OUTPUT_RESULT="critical"
 		OUTPUT_TEXT="
 Original english doc and the translation have different \
 versions. The doc could be out of date or you forgot to make cvs up \
 on english dir."
+		return 2
 	fi
 }

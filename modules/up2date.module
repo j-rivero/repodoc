@@ -5,7 +5,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 MODULE_NAME="Check version and date sync"
-KEYWORDS="-metadoc ALL"
+KEYWORDS="* -metadoc -inserts"
 
 LEVEL="BASIC"
 
@@ -28,22 +28,22 @@ exec_module () {
 		# Dates are synced, still to check dates
 		if [[ ${ORIGINAL_DATE} == ${DOC_DATE} ]]; then
 			# Version and date are synced
-			OUTPUT_RESULT="ok"
 			OUTPUT_TEXT=""
+			return 0
 		else
 			# Date is not synced
-			OUTPUT_RESULT="critical"
 			OUTPUT_TEXT="
 Original english doc and the translation have different \
 date tags. Since version is the same, probably you should \
 update the date too."
+			return 2
 		fi
 	else
 		# Version is not synced
-		OUTPUT_RESULT="critical"
 		OUTPUT_TEXT="
 Original english doc and the translation have different \
 version tags. The doc could be out of date or you forgot to make cvs up \
-on english dir."
+on english cvs dir."
+		return 2
 	fi
 }
