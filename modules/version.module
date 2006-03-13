@@ -5,25 +5,25 @@
 # Distributed under the terms of the GNU General Public License v2
 
 MODULE_NAME="Check version sync"
-KEYWORDS="metadoc inserts"
+KEYWORDS="-* metadoc inserts"
 
 LEVEL="BASIC"
 
-TRANSLATION_MODULE="yes"
+exec_module() {
+	# Only procces translations
+	${TRANSLATION} || return
 
-exec_module () {
 	# Extract version info about original doc
 	ORIGINAL_VERSION=$(sed -n -e '/<version>.*<\/version>/p' ${ORIGINAL_DOC})
 	# Extract version info about doc analysed
 	DOC_VERSION=$(sed -n -e '/<version>.*<\/version>/p' ${DOC})
-	if [[ ${ORIGINAL_VERSION} == ${DOC_VERSION} ]]; then
-		# Versions are synced
-		return 0
-	else
-		OUTPUT_TEXT="
-Original english doc and the translation have different \
-versions. The doc could be out of date or you forgot to make cvs up \
+
+	[[ ${ORIGINAL_VERSION} = ${DOC_VERSION} ]] && return 0
+
+	OUTPUT_TEXT="
+Original english doc and the translation have different
+versions. The doc could be out of date or you forgot to make cvs up
 on english dir."
-		return 2
-	fi
+
+	return 2
 }

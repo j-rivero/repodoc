@@ -9,9 +9,10 @@ KEYWORDS="* -metadoc -inserts"
 
 LEVEL="BASIC"
 
-TRANSLATION_MODULE="yes"
+exec_module() {
+	# Only check translations
+	${TRANSLATION} || return
 
-exec_module () {
 	# Extract version info about original doc
 	ORIGINAL_VERSION=$(sed -n -e '/<version>.*<\/version>/p' ${ORIGINAL_DOC})
 	
@@ -33,16 +34,16 @@ exec_module () {
 		else
 			# Date is not synced
 			OUTPUT_TEXT="
-Original english doc and the translation have different \
-date tags. Since version is the same, probably you should \
+Original english doc and the translation have different
+date tags. Since version is the same, probably you should
 update the date too."
 			return 2
 		fi
 	else
 		# Version is not synced
 		OUTPUT_TEXT="
-Original english doc and the translation have different \
-version tags. The doc could be out of date or you forgot to make cvs up \
+Original english doc and the translation have different
+version tags. The doc could be out of date or you forgot to make cvs up
 on english cvs dir."
 		return 2
 	fi
