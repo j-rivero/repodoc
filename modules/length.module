@@ -24,7 +24,7 @@ exec_module() {
 		/link=/d
 		/^<title>/d
 		/^.\{81,\}$/{=;p}
-	' ${DOC})
+	' ${DOC} | sed -e '/^[0-9]\+$/{=;s-\n-\t-g')
 
 	if [[ -z ${LONG_LINES} ]]; then
 		return 0
