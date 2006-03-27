@@ -9,23 +9,23 @@ MODULE_NAME="Tabú"
 
 KEYWORDS="*"
 
-BANNED_PATTERNS=( '/\t/s//####/gp'
-                  '/bandera/s//BANDERA/p'
-                  '/links2/s//LINKS2/p'
-                  '/\([^[:alpha:]]\)correr/s//\1CORRER/p' )
+banpattern_tabs='/\t/{=;s//####/gp}'
+banpattern_bandera='/\(bandera\)/{=;s//\U\1\E/gp}'
+banpattern_links2='/\(links2\)/{=;s//\U\1\E/gp}'
+banpattern_correr='/\([^[:alpha:]]\)\(correr\)/{=;s//\1\U\2\E/gp}'
 
 exec_module() {
 	local retVal=0
 
 	OUTPUT_TEXT="Banned patterns found:"
 
-	for p in ${BANNED_PATTERNS[@]} ; do
-		res=$(sed -n -e ${p} ${DOC})
+	for p in ${!banpattern_*} ; do
+		res=$(sed -n -e ${!p} ${DOC} | sed -e '/^[0-9]\+$/{N;s-\n-\t-g}')
 		if [[ -n ${res} ]] ; then
 			retVal=2
 			OUTPUT_TEXT="${OUTPUT_TEXT}
 
- - Using banned pattern '${p}' I spotted shait at:
+ - Using banned pattern '${p#banpattern_}' I spotted shait at:
 --- 8< ---
 ${res}
 --- 8< ---"
