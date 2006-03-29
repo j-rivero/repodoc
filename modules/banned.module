@@ -20,7 +20,7 @@ exec_module() {
 	OUTPUT_TEXT="Banned patterns found:"
 
 	for p in ${!banpattern_*} ; do
-		res=$(sed -n -e ${!p} ${DOC} | sed -e '/^[0-9]\+$/{N;s-\n-\t-g}')
+		res=$(sed -n -e ${!p} ${DOC} | sed -e '/^[0-9]\+$/{N;s-\n[[:blank:]]*-\t-g}')
 		if [[ -n ${res} ]] ; then
 			retVal=2
 			OUTPUT_TEXT="${OUTPUT_TEXT}
