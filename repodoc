@@ -162,7 +162,7 @@ show_log() {
 	local LOG_VIEWER TMP_OPT
 
 	# Set up the log viewer app
-	LOG_VIEWER="less ${REPODOC_LOG}"
+	LOG_VIEWER="${PAGER:-less} ${REPODOC_LOG}"
 
 	echo
 	echo -n "Do you want to see the error log? [y/N] "
