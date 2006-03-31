@@ -23,7 +23,7 @@ exec_module() {
 		/link=/d
 		/^<title>/d
 		/^.\{81,\}$/{=;p}
-	' ${DOC} | sed -e '/^[0-9]\+$/{N;s-\n[[:blank:]]*-\t-g}')
+	' ${DOC} | sed -f "${LIB_DIR}/massagelinenumbers.sed")
 
 	if [[ -z ${LONG_LINES} ]]; then
 		return 0
