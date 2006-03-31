@@ -12,18 +12,6 @@
 
 VERSION="0.1_alpha"
 
-# ------
-# CHECK_PARAMS Function. Private
-# Check params to be sure the program was called properly.
-#check_params () {
-	# Check if the program receives only one param and if
-	# the param is a file
-#	if [[ ${NUM_PARAMS} != 1 ]] || [[ ! -f ${PARAM1} ]]; then
-#		show_version_usage
-#		exit
-#	fi
-#}
-
 # -----
 # SHOW_VERSION_USAGE Function. Private
 # Show quick help about how to run repodoc
@@ -177,14 +165,6 @@ show_log() {
 # Program starts here
 #
 
-# -- VARIABLES --
-
-NUM_PARAMS="$#"
-PARAM1=$1
-
-# Checks if the params given to the app were correct
-#check_params
-
 # Knowing Script dir beware of symlink
 [[ -L ${0} ]] && TMP_SCRIPT_DIR=$(readlink ${0}) || TMP_SCRIPT_DIR=${0}
 SCRIPT_DIR="${TMP_SCRIPT_DIR%/*}"
@@ -222,13 +202,11 @@ while [[ -n $1 ]] ; do
 	DOC=${DIR}/${DOC_NAME}
 
 	# Check if doc exists
-	[[ -f ${DOC} ]] || {
-		echo "Doc Not Found!"
+	if [[ ! -f ${DOC} ]] ; then
+		echo "Document Not Found!"
 		echo "${DOC_NAME} does not exist in ${DIR}"
 		continue
-	}
-
-	#SCRIPT_LEVEL="BASIC"
+	fi
 
 	# Starting environment and variables
 	create_environment
@@ -261,10 +239,11 @@ while [[ -n $1 ]] ; do
 
 	# Handling modules
 	for MOD in ${MOD_DIR}/* ; do
-		# Initializing variables
-		TRANSLATION_MODULE=""
-		OUTPUT_TEXT=""
-		LEVEL=""
+		# This vars are set by the modules. This is a pedantic thing
+		#  meant to help me keeping my sanity.
+		# TODO: Remove this once we figure out how to cleanly do the
+		#  whole module processing in a subshell.
+		unset OUTPUT_TEXT LEVEL MODULE_NAME KEYWORDS exec_module
 
 		# Read the module
 		source "${MOD}"
@@ -280,14 +259,15 @@ while [[ -n $1 ]] ; do
 			esac
 		done
 
-		# Restore GLOBIGNORE
+		# Restore GLOBIGNORE to avoid difficult to debug problems.
 		unset GLOBIGNORE
 
 		tmpmod=${MOD##*/}
 
 		if ${execmodule} ; then
 			printf " * Processing module %-10s " ${tmpmod%.module}
-			# Call exec_module (function from module)
+			# Call exec_module (function from module). generate_output is
+			# a bit special since it propagates its argument as its exit status.
 			exec_module
 			generate_output $? || VIEW_LOG=true
 		fi
