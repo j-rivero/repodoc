@@ -160,6 +160,7 @@ SCRIPT_DIR="${TMP_SCRIPT_DIR%/*}"
 # Paths
 MOD_DIR="${SCRIPT_DIR}/modules"
 EXTRA_DIR="${SCRIPT_DIR}/extras"
+LIB_DIR="${SCRIPT_DIR}/lib"
 MOD_COMM="${MOD_DIR}/commons"
 MOD_TRANS="${MOD_DIR}/trans"
 MOD_HAND="${MOD_DIR}/handbook"
