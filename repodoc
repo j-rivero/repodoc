@@ -59,7 +59,6 @@ search_www_dir() {
 	WWW_DIR=${DIR/*${DIR_ROOT}/\/${DIR_ROOT}}
 }
 
-
 # ------
 # CREATE ENVIRONMENT Function. Private
 # Create REPO_DIR and REPO_TMP_DIR if needed and clean log
@@ -70,7 +69,6 @@ create_environment() {
 	# Remove old log
 	[[ -f ${REPODOC_LOG} ]] && rm ${REPODOC_LOG}
 }
-
 
 # ------
 # SEARCH DOCTYPE Function. Private
@@ -84,15 +82,12 @@ search_doctype() {
 	DOC_TYPE=${TMP_DOC_TYPE%% SYSTEM*}
 }
 
-
 # ------
 # SEARCH CVS_ROOT Function. Private
 #
 search_cvs_root() {
 	CVS_ROOT=${DIR%%$WWW_DIR}
 }
-
-
 
 # ------
 # GENERATE OUTPUT Function. Private
@@ -150,7 +145,6 @@ show_log() {
 	[[ ${TMP_OPT} = "y" ]] && ${LOG_VIEWER}
 	echo
 }
-
 
 #
 # MAIN CODE
