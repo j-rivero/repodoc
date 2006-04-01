@@ -8,9 +8,11 @@ VERSION="0.1_alpha"
 # SHOW_VERSION_USAGE Function. Private
 # Show quick help about how to run repodoc
 show_version_usage() {
-	echo "Repodoc ${VERSION}"
+	echo "The RepoDoc Tool version ${VERSION}"
+	echo "Distributed under the terms of the GPLv2"
+	echo "Copyright 2005-2006 The RepoDoc Team"
 	echo
-	echo "Usage: repodoc [doc]"
+	echo "Usage: repodoc [documents]"
 }
 
 # -----
@@ -164,6 +166,18 @@ MOD_HAND="${MOD_DIR}/handbook"
 REPO_DIR="${HOME}/.repodoc"
 REPO_TMP_DIR="${REPO_DIR}/tmp"
 REPODOC_LOG="${REPO_DIR}/repodoc.log"
+
+# Check version/help request
+case $1 in
+	-v|--version)
+		echo "RepoDoc ${VERSION}"
+		exit 0
+	;;
+	-h|--help)
+		show_version_usage
+		exit 0
+	;;
+esac
 
 ## Check every argument
 while [[ -n $1 ]] ; do
