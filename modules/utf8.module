@@ -7,7 +7,7 @@ KEYWORDS="*"
 LEVEL="BASIC"
 
 exec_module() {
-	UTFCHECKER="check-utf8"
+	local UTFCHECKER="check-utf8" UTF
 
 	UTF=$(${EXTRA_DIR}/${UTFCHECKER} ${DOC} 2>&1)
 

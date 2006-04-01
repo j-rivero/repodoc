@@ -11,7 +11,7 @@ banpattern_links2='/\(links2\)/{=;s//\U\1\E/gp}'
 banpattern_correr='/\([^[:alpha:]]\)\(correr\)/{=;s//\1\U\2\E/gp}'
 
 exec_module() {
-	local retVal=0
+	local retVal=0 p
 
 	OUTPUT_TEXT="Banned patterns found:"
 

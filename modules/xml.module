@@ -7,7 +7,7 @@ KEYWORDS="*"
 LEVEL="BASIC"
 
 exec_module() {
-	VALIDATOR_COMMAND="xmllint --valid --noout"
+	local TMP_VALID VALIDATOR_COMMAND="xmllint --valid --noout"
 
 	TMP_VALID=$(${VALIDATOR_COMMAND} ${DOC} 2>&1)
 

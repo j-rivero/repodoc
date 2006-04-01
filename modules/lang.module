@@ -7,6 +7,8 @@ KEYWORDS="guide"
 LEVEL="BASIC"
 
 exec_module() {
+	local TMP_LANG
+
 	${TRANSLATION} || return
 	# Check the doc to find if lang attribute is set on guide label
 

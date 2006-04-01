@@ -7,6 +7,9 @@ KEYWORDS="* -metadoc -sections -inserts -mainpage"
 LEVEL="BASIC"
 
 exec_module() {
+	local LINK_TYPE LINE_LINK_TYPE TMP_LINK_ATTRIBUTE \
+		LINK_ATTRIBUTE CORRECT_LINK LINK_TAG
+
 	# Select the line to extract link attribute
 	LINK_TYPE="<${DOC_TYPE}"
 	# Get link_type line

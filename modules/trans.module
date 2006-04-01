@@ -7,6 +7,7 @@ KEYWORDS="* -metadoc -inserts"
 LEVEL="BASIC"
 
 exec_module() {
+	local TMP_OUTPUT TMP_OUTPUT1 TMP_OUTPUT2 TMP_DOC
 	# If we are not a translation, exit
 	${TRANSLATION} || return
 
@@ -29,7 +30,7 @@ exec_module() {
 	# First output
 	TMP_OUTPUT=${TMP_OUTPUT1}
 
-	for TMP_DOC in "$ORIGINAL_DOC" "$DOC"; do
+	for TMP_DOC in "${ORIGINAL_DOC}" "${DOC}"; do
 
 		# First time saves the result on TMP_OUTPUT = 1
 		# Second time saves the result on TMP_OUTPUT = 2
@@ -50,7 +51,7 @@ exec_module() {
 				printf("</p %d>\n",p_number++);
 			else
 				printf("%s\n",$0);
-			}' > $TMP_OUTPUT
+			}' > ${TMP_OUTPUT}
 
 		# Change the file for output
 		TMP_OUTPUT=${TMP_OUTPUT2}

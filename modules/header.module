@@ -9,8 +9,7 @@ LEVEL="BASIC"
 
 # Check the doc to find if lang attribute is set on guide label
 exec_module() {
-	# Look for Header label
-	TMP_HEADER=$(grep '<!-- $Header:' ${DOC})
+	local TMP_HEADER=$(grep '<!-- $Header:' ${DOC})
 
 	if [[ -z ${TMP_HEADER} ]]; then
 		OUTPUT_TEXT="You should add \"<!-- \$Header: -->\" a line after xml version tag."
