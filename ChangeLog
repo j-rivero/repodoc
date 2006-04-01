@@ -1,0 +1,54 @@
+# Repodoc ChangeLog
+#
+# [NEW] - New feature
+# [MOD] - Modified feature
+# [FIX] - Fixed a bug
+
+* 0.1_beta ( date )
+	
+	- [NEW] Added support for colors and alignment on the output. Thanks to
+	  vanquirius@gentoo.org and ferdy. FOSDEM hacking product(tm).
+
+	- [NEW] Added support for multiples file scanning on the same command.
+	  FOSDEM hacking product(tm).
+
+	- [NEW] Added support to work with the whole cvs (including /proj/,
+	  /main/, etc.). FOSDEM hacking product(tm).
+
+	- [NEW] Added new module "Banned". It takes care of all dangerous
+	  words someone want to be under control. FOSDEM hacking product(tm).
+
+	- [NEW] Added new module "Links". It takes care of check if
+	  doc links point to existent files or are broken. FOSDEM hacking
+	  product (tm).
+	
+	- [NEW] Added new module "up2date". It takes care of check if date
+	  and version tags are the same on the original and translation.
+
+	- [NEW] Added new module "version". It takes care of check if
+	  version tag is the same on the original and the translation.
+
+	- [MOD] New keyword system for the modules. Now support the '*' char
+	  and is able to import keywords like happens in ebuilds, which is
+	  pretty cool. A big thanks to ferdy here.
+	
+	- [MOD] Improved return code in modules. Now support to return command
+	  with the following codes:
+		0  - ok
+		1  - warning
+		2  - critical
+
+	- [MOD] Improved the code which checks if the file provided as
+	  argument exists or not.
+	
+	- [MOD] Length module. Improved output by showing the line number
+	  which should be fixed.
+	
+	- [FIX] Length module. Now is able to parse an ignore whole <pre>
+	  blocks. 
+
+	
+* 0.1_alpha ( 2005-10-30 )
+	
+	- [NEw] Initial import. Under heavy testing.
+
