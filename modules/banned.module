@@ -1,8 +1,5 @@
-#!/bin/bash
-
-# Repodoc Tool written by José Luis Rivero (yoswink@gentoo.org)
-# and some random bash minions
 # Distributed under the terms of the GNU General Public License v2
+# Copyright 2005-2006 The RepoDoc Team
 
 MODULE_NAME="Tabú"
 
