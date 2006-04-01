@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # Repodoc Tool written by José Luis Rivero (yoswink@gentoo.org)
-# Version 0.1_alpha
 # Distributed under the terms of the GNU General Public License v2
 
 MODULE_NAME="Checks links sanity"
