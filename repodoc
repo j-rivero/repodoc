@@ -98,18 +98,21 @@ generate_output() {
 	local res OUTPUT_RESULT
 
 	case $1 in
-		0) OUTPUT_RESULT=ok ;;
-		1) OUTPUT_RESULT=warning ;;
-		2) OUTPUT_RESULT=critical ;;
+		0)
+			OUTPUT_RESULT=ok
+			res=$(green 'ok')
+		;;
+		1)
+			OUTPUT_RESULT=warning
+			res=$(yellow '??')
+		;;
+		2)
+			OUTPUT_RESULT=critical
+			res=$(red '!!')
+		;;
 	esac
 
-	case ${OUTPUT_RESULT} in
-		ok) res='\033[01;32mok' ;;
-		warning) res='\033[01;33m??' ;;
-		critical) res='\033[01;31m!!' ;;
-	esac
-
-	echo -e "[ ${res}\033[00m ]"
+	echo -e "[ ${res} ]"
 
 	# Log message
 
@@ -167,6 +170,8 @@ MOD_HAND="${MOD_DIR}/handbook"
 REPO_DIR="${HOME}/.repodoc"
 REPO_TMP_DIR="${REPO_DIR}/tmp"
 REPODOC_LOG="${REPO_DIR}/repodoc.log"
+
+source "${LIB_DIR}/colors.sh"
 
 # Check version/help request
 case $1 in
