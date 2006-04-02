@@ -1,14 +1,36 @@
 # Distributed under the terms of the GNU General Public License v2
 # Copyright 2005-2006 The RepoDoc Team
 
-MODULE_NAME="Tabú"
+MODULE_NAME="Banned"
 
 KEYWORDS="*"
 
-banpattern_tabs='/\t/{=;s//####/gp}'
-banpattern_bandera='/\(bandera\)/{=;s//\U\1\E/gp}'
+# Patterns.
+# In this section we define the patterns we want to use with the module.
+# You can define your own patterns following the syntax:
+#
+# banpattern_${pattern_name}='sed-pattern-to-use'
+#
+
+# Examples:
+
+# 1. Basic pattern
+# Find an specific word and marks it (in the log) with uppercase letters.
+# You can just copy it and replace "links2" by the word you like to
+# be warned about.
+#
+# This pattern finds links2 (which is deprecated in favor of justl links)
+# and marks it with uppercase letters in user log if it was found.
+# Please, remember to use the sed command '=' in order to get the line numbers
+# appear in the log.
 banpattern_links2='/\(links2\)/{=;s//\U\1\E/gp}'
-banpattern_correr='/\([^[:alpha:]]\)\(correr\)/{=;s//\1\U\2\E/gp}'
+
+# 2. Other patterns.
+# If you know a little bit about sed, you can just define whatever action
+# you like to apply to the pattern found.
+
+# This pattern finds tabs and marks them with a '#' mark
+banpattern_tabs='/\t/{=;s//####/gp}'
 
 exec_module() {
 	local retVal=0 p
