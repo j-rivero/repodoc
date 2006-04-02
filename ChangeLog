@@ -4,7 +4,7 @@
 # [MOD] - Modified feature
 # [FIX] - Fixed a bug
 
-* 0.1_beta ( date )
+* 0.1_beta ( 2006-04-02 )
 
 	- [NEW] Added support for colors and alignment on the output. Thanks to
 	  vanquirius@gentoo.org and ferdy. FOSDEM hacking product(tm).
