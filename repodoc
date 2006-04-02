@@ -243,10 +243,15 @@ while [[ -n $1 ]] ; do
 		#  meant to help me keeping my sanity.
 		# TODO: Remove this once we figure out how to cleanly do the
 		#  whole module processing in a subshell.
-		unset OUTPUT_TEXT LEVEL MODULE_NAME KEYWORDS exec_module
+		unset OUTPUT_TEXT LEVEL MODULE_NAME KEYWORDS exec_module ${!NEED_*} n needtest
 
 		# Read the module
 		source "${MOD}"
+
+		for n in ${!NEED_*} ; do
+			needtest=$(eval echo $\{${n##NEED_}\})
+			${needtest} || continue 2
+		done
 
 		# Parse KEYWORDS properly
 		GLOBIGNORE=*

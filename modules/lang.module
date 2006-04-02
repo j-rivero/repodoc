@@ -5,11 +5,11 @@ MODULE_NAME="Lang"
 
 KEYWORDS="guide"
 LEVEL="BASIC"
+NEED_TRANSLATION=true
 
 exec_module() {
 	local TMP_LANG
 
-	${TRANSLATION} || return
 	# Check the doc to find if lang attribute is set on guide label
 
 	TMP_LANG=$(grep '<guide' /${DOC} | grep lang=\"${LANGUAGE}\")

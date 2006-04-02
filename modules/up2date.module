@@ -3,14 +3,12 @@
 
 MODULE_NAME="Up2date"
 KEYWORDS="* -metadoc -inserts"
+NEED_TRANSLATION=true
 
 LEVEL="BASIC"
 
 exec_module() {
 	local ORIGINAL_VERSION DOC_VERSION ORIGINAL_DATE DOC_DATE
-
-	# Only check translations
-	${TRANSLATION} || return
 
 	# Extract version info about original doc
 	ORIGINAL_VERSION=$(sed -n -e '/<version>.*<\/version>/p' ${ORIGINAL_DOC})

@@ -3,14 +3,12 @@
 
 MODULE_NAME="Version"
 KEYWORDS="-* metadoc inserts"
+NEED_TRANSLATION=true
 
 LEVEL="BASIC"
 
 exec_module() {
 	local ORIGINAL_VERSION DOC_VERSION
-
-	# Only procces translations
-	${TRANSLATION} || return
 
 	# Extract version info about original doc
 	ORIGINAL_VERSION=$(sed -n -e '/<version>.*<\/version>/p' ${ORIGINAL_DOC})

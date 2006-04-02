@@ -3,13 +3,12 @@
 
 MODULE_NAME="Trans"
 KEYWORDS="* -metadoc -inserts"
+NEED_TRANSLATION=true
 
 LEVEL="BASIC"
 
 exec_module() {
 	local TMP_OUTPUT TMP_OUTPUT1 TMP_OUTPUT2 TMP_DOC
-	# If we are not a translation, exit
-	${TRANSLATION} || return
 
 	# The evil-sed (tm) line-by-line:
 	#
