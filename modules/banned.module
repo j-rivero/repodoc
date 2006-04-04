@@ -32,6 +32,9 @@ banpattern_links2='/\(links2\)/{=;s//\U\1\E/gp}'
 # This pattern finds tabs and marks them with a '#' mark
 banpattern_tabs='/\t/{=;s//####/gp}'
 
+# Find trailing whitespaces
+banpattern_trailingwhitespaces='/[[:blank:]]\+$/{=;s//####/p}'
+
 exec_module() {
 	local retVal=0 p
 
