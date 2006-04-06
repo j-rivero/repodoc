@@ -169,6 +169,7 @@ MOD_TRANS="${MOD_DIR}/trans"
 MOD_HAND="${MOD_DIR}/handbook"
 REPO_DIR="${HOME}/.repodoc"
 REPO_TMP_DIR="${REPO_DIR}/tmp"
+REPO_CONF_DIR="${REPO_DIR}/config"
 REPODOC_LOG="${REPO_DIR}/repodoc.log"
 
 source "${LIB_DIR}/colors.sh"
