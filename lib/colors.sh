@@ -25,5 +25,5 @@ blue() {
 }
 
 white() {
-	echo -e ${BLUE}$*${OFF}
+	echo -e ${WHITE}$*${OFF}
 }
