@@ -172,6 +172,9 @@ REPO_TMP_DIR="${REPO_DIR}/tmp"
 REPO_CONF_DIR="${REPO_DIR}/config"
 REPODOC_LOG="${REPO_DIR}/repodoc.log"
 
+# Options by default
+SHOW_INFO=true
+
 source "${LIB_DIR}/colors.sh"
 
 # Check version/help request
@@ -224,22 +227,24 @@ while [[ -n $1 ]] ; do
 	search_doctype
 	search_cvs_root
 
-	echo " ---------- Info ------------------------------"
-	echo "Doc: " ${DOC_NAME}
-	echo "Dir: " ${DIR}
-	echo "Lang: " ${LANGUAGE}
-	echo -n "Trans: " $(${TRANSLATION} && echo yes || echo no)
-	[[ -f ${ORIGINAL_DOC} ]] || echo -n " (OBSOLETE DOCUMENT)"
-	echo
-	echo "Doc-type: " ${DOC_TYPE}
-	#echo "www-dir: " $WWW_DIR
-	#echo "dir-root: " $DIR_ROOT
-	#echo "cvs_root: " $CVS_ROOT
+	if ${SHOW_INFO} ; then
+		echo " ---------- Info ------------------------------"
+		echo "Doc: " ${DOC_NAME}
+		echo "Dir: " ${DIR}
+		echo "Lang: " ${LANGUAGE}
+		echo -n "Trans: " $(${TRANSLATION} && echo yes || echo no)
+		[[ -f ${ORIGINAL_DOC} ]] || echo -n " (OBSOLETE DOCUMENT)"
+		echo
+		echo "Doc-type: " ${DOC_TYPE}
+		#echo "www-dir: " $WWW_DIR
+		#echo "dir-root: " $DIR_ROOT
+		#echo "cvs_root: " $CVS_ROOT
 
-	#echo "original_doc: " $ORIGINAL_DOC
-	#echo "Level: " $SCRIPT_LEVEL
-	echo " ----------------------------------------------"
-	echo
+		#echo "original_doc: " $ORIGINAL_DOC
+		#echo "Level: " $SCRIPT_LEVEL
+		echo " ----------------------------------------------"
+		echo
+	fi
 
 	# Set up VIEW_LOG to "false" until an error appears
 	VIEW_LOG=false
