@@ -115,24 +115,27 @@ generate_output() {
 	echo -e "[ ${res} ]"
 
 	# Log message
-
-	# Module header
-	cat << EOF >> ${REPODOC_LOG}
+	if ${GENERATE_LOG} ; then
+		# Module header
+		cat << EOF >> ${REPODOC_LOG}
 ------- Module ${MODULE_NAME} -------
 Result: ${OUTPUT_RESULT}
 
 EOF
 
-	# Checking if output is not empty
-	if [[ -n ${OUTPUT_TEXT} ]]; then
-		# Output is just plain text
-		cat <<- EOF >> ${REPODOC_LOG}
+		# Checking if output is not empty
+		if [[ -n ${OUTPUT_TEXT} ]]; then
+			# Output is just plain text
+			cat <<- EOF >> ${REPODOC_LOG}
 		Reason:
 		${OUTPUT_TEXT}
 		EOF
-	fi
+		fi
 
-	return $1
+		return $1
+	else
+		return 0
+	fi
 }
 
 # ------
@@ -175,6 +178,7 @@ REPODOC_LOG="${REPO_DIR}/repodoc.log"
 # Options by default
 SHOW_INFO=true
 SHOW_ALL_RESULTS=true
+GENERATE_LOG=true
 
 source "${LIB_DIR}/colors.sh"
 
