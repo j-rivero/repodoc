@@ -175,6 +175,10 @@ REPO_TMP_DIR="${REPO_DIR}/tmp"
 REPO_CONF_DIR="${REPO_DIR}/config"
 REPODOC_LOG="${REPO_DIR}/repodoc.log"
 
+# Misc vars
+COLS=$(stty size)
+COLS=${COLS##* }
+
 # Options by default
 SHOW_INFO=true
 SHOW_ALL_RESULTS=true
@@ -259,7 +263,7 @@ while [[ -n $1 ]] ; do
 		echo
 	fi
 
-	${SHOW_ALL_RESULTS} || printf " * %-60s " "${WWW_DIR}/${DOC_NAME}"
+	${SHOW_ALL_RESULTS} || printf " * %-*s " $((COLS-10)) "${WWW_DIR}/${DOC_NAME}"
 
 	# Set up VIEW_LOG to "false" until an error appears
 	VIEW_LOG=false
