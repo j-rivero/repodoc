@@ -182,7 +182,7 @@ GENERATE_LOG=true
 
 source "${LIB_DIR}/colors.sh"
 
-# Check version/help request
+# Check version/help and specific options request
 case $1 in
 	-v|--version)
 		echo "RepoDoc ${VERSION}"
@@ -191,6 +191,12 @@ case $1 in
 	-h|--help)
 		show_version_usage
 		exit 0
+	;;
+	-l|--list-mode)
+		SHOW_INFO=false
+		SHOW_ALL_RESULTS=false
+		GENERATE_LOG=false
+		shift
 	;;
 esac
 
