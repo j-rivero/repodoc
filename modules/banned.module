@@ -55,7 +55,7 @@ exec_module() {
 	# language: "all" for applying independently of the language
 
 	if [[ -r ${fileconf} ]] ; then
-		while read read_type read_lang read_pattern read_id ; do
+		while read -r read_type read_lang read_pattern read_id ; do
 			case ${read_type},${read_lang} in
 				basic,all|basic,${LANGUAGE})
 					pattern_id[${i}]=${read_pattern}
