@@ -45,7 +45,7 @@ exec_module() {
 	# standard pattern for banned-word:
 	preb='\([^[:alpha:]]\|^\)'
 	posb='\([^[:alpha:]]\|$\)'
-	resb='{=;s//\1*\2*\3/gp}'
+	resb='{=;s//\1\U\2\E\3/gp}'
 
 	# configuration file format:
 	# <special|basic> <language|all> <banned-word|sed-pattern <id>>
