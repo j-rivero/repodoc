@@ -19,21 +19,21 @@ else
 fi
 
 red() {
-	echo -e ${RED}$*${OFF}
+	echo -e "${RED}$*${OFF}"
 }
 
 green() {
-	echo -e ${GREEN}$*${OFF}
+	echo -e "${GREEN}$*${OFF}"
 }
 
 yellow() {
-	echo -e ${YELLOW}$*${OFF}
+	echo -e "${YELLOW}$*${OFF}"
 }
 
 blue() {
-	echo -e ${BLUE}$*${OFF}
+	echo -e "${BLUE}$*${OFF}"
 }
 
 white() {
-	echo -e ${WHITE}$*${OFF}
+	echo -e "${WHITE}$*${OFF}"
 }
