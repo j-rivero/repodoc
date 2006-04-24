@@ -2,7 +2,7 @@
 # Copyright 2005-2006 The RepoDoc Team
 
 MODULE_NAME="Path"
-KEYWORDS="* -metadoc -sections -inserts -mainpage"
+KEYWORDS="* -metadoc -sections -inserts -mainpage -dynamic"
 
 LEVEL="BASIC"
 
