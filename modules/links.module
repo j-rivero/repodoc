@@ -17,7 +17,7 @@ exec_module() {
 	# 3. outside links : www and http...    ( external - cannot check   )
 	# 4. Odd uris : irc mailto nx ssh ...   ( external - will not check )
 
-	LINKS=$(sed -n -e '
+	LINKS=$(sed -n -f "${LIB_DIR}/stripxmlcomments.sed" -e '
 		/<uri[[:blank:]]*$/ {
 			n
 			s-link="\([^"]*\)".*$-\1-

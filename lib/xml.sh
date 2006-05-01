@@ -23,7 +23,8 @@ function get-xmltag () {
 	&& echo "${FUNCNAME} one of the params is empty" && return -1
 
 	# Sed to extract the tag <$title from xmldoc avoiding spaces
-	XMLTAG=$(sed -n -e "/[[:blank:]]*<${TITLE}.*>[[:blank:]]*/p" ${XMLDOC})
+	XMLTAG=$(sed -n -f "${LIB_DIR}/stripxmlcomments.sed" \
+		-e "/[[:blank:]]*<${TITLE}.*>[[:blank:]]*/p" ${XMLDOC})
 
 	# Check if the xmltag was found.
 	[[ -z ${XMLTAG} ]] && echo "" && return -1
