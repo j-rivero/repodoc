@@ -2,7 +2,7 @@
 # Copyright 2005-2006 The RepoDoc Team
 
 MODULE_NAME="Up2date"
-KEYWORDS="* -metadoc -inserts"
+KEYWORDS="* -metadoc -inserts -dynamic"
 NEED_TRANSLATION=true
 
 LEVEL="BASIC"
