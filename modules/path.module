@@ -6,18 +6,12 @@ KEYWORDS="* -metadoc -sections -inserts -mainpage -dynamic"
 
 LEVEL="BASIC"
 
-exec_module() {
-	local LINK_TYPE LINE_LINK_TYPE TMP_LINK_ATTRIBUTE \
-		LINK_ATTRIBUTE CORRECT_LINK LINK_TAG
 
-	# Select the line to extract link attribute
-	LINK_TYPE="<${DOC_TYPE}"
-	# Get link_type line
-	LINE_LINK_TYPE=$(grep ${LINK_TYPE} ${DOC})
-	# Delete all before link="
-	TMP_LINK_ATTRIBUTE=${LINE_LINK_TYPE##*link=\"}
-	# Delete all after first "
-	LINK_ATTRIBUTE=${TMP_LINK_ATTRIBUTE%%\"*}
+exec_module() {
+	local LINK_ATTRIBUTE CORRECT_LINK DOCTYPE_TAG
+
+	# Extract link attribute from $doc_type xml tag
+	LINK_ATTRIBUTE=$(get-xmlattribute "${DOC_TYPE}" "link" "${DOC}")
 
 	# The correct tag should be
 	CORRECT_LINK=${WWW_DIR}"/"${DOC_NAME}
@@ -25,7 +19,7 @@ exec_module() {
 	if [[ ${CORRECT_LINK} != ${LINK_ATTRIBUTE} ]]; then
 		# Path is not right
 		# Building log message
-		LINK_TAG=$(grep "${LINK_TYPE}" ${DOC})
+		DOCTYPE_TAG=$(get-xmltag "${DOC_TYPE}" "${DOC}")
 		OUTPUT_TEXT="The attribute link on ${LINK_TAG} is wrong. Should point to the absolute path (link=\"${CORRECT_LINK}\")"
 		return 2
 	else

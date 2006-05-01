@@ -7,15 +7,10 @@ KEYWORDS="-* dynamic"
 LEVEL="BASIC"
 
 exec_module() {
-	local LINE_LINK_TYPE TMP_LINK_ATTRIBUTE \
-		LINK_ATTRIBUTE CORRECT_LINK
+	local LINK_ATTRIBUTE CORRECT_LINK
 
-	# Get link_type line beggining with <dynamic
-	LINE_LINK_TYPE=$(grep \<dynamic ${DOC})
-	# Delete all before metadoc="
-	TMP_LINK_ATTRIBUTE=${LINE_LINK_TYPE##*metadoc=\"}
-	# Delete all after first "
-	LINK_ATTRIBUTE=${TMP_LINK_ATTRIBUTE%%\"*}
+	# Extract attribute metadoc from <dynamic tag
+	LINK_ATTRIBUTE=$(get-xmlattribute "dynamic" "metadoc" "${DOC}")
 
 	# The correct tag should be
 	CORRECT_LINK=${WWW_DIR}"/metadoc.xml"

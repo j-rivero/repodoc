@@ -184,7 +184,9 @@ SHOW_INFO=true
 SHOW_ALL_RESULTS=true
 GENERATE_LOG=true
 
+# Importing libs
 source "${LIB_DIR}/colors.sh"
+source "${LIB_DIR}/xml.sh"
 
 # Check version/help and specific options request
 case $1 in
