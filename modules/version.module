@@ -11,9 +11,9 @@ exec_module() {
 	local ORIGINAL_VERSION DOC_VERSION
 
 	# Extract version info about original doc
-	ORIGINAL_VERSION=$(sed -n -e '/<version>.*<\/version>/p' ${ORIGINAL_DOC})
+	ORIGINAL_VERSION=$(sed -f ${LIB_DIR}/get-version.sed ${ORIGINAL_DOC})
 	# Extract version info about doc analysed
-	DOC_VERSION=$(sed -n -e '/<version>.*<\/version>/p' ${DOC})
+	DOC_VERSION=$(sed -f ${LIB_DIR}/get-version.sed ${DOC})
 
 	[[ ${ORIGINAL_VERSION} = ${DOC_VERSION} ]] && return 0
 
