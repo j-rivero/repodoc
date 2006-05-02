@@ -12,7 +12,7 @@ exec_module() {
 	local TMP_HEADER=$(grep '<!-- $Header:' ${DOC})
 
 	if [[ -z ${TMP_HEADER} ]]; then
-		OUTPUT_TEXT="You should add \"<!-- \$Header\$ -->\" a line after the xml version tag."
+		OUTPUT_TEXT="You should add \"<!-- \$Header:\$ -->\" a line after the xml version tag."
 		return 1
 	else
 		return 0
