@@ -1,7 +1,7 @@
 #
-# Makefile for check-utf8
+# Makefile for helper utilities
 #
-# ... easy eh! ;p
+
+CFLAGS += -Wall
 
 all: check-utf8
-
