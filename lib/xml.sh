@@ -80,18 +80,11 @@ function get-tagattribute () {
 # - GET-TAGATTRIBUTE
 #
 function get-xmlattribute () {
-	local TITLE=${1} ATTR=${2} XMLDOC=${3} XMLTAG ATTR_RESULT
+	local TITLE=${1} ATTR=${2} XMLDOC=${3}
 
 	# Sanity Check. ¿do params exists?
 	[[ -z "${TITLE}" ]] || [[ -z "${ATTR}" ]] || [[ -z "${XMLDOC}" ]] \
 	&& echo "${FUNCNAME} one of the params is empty" && return -1
 
-	# Call get-xmltag to obtain xml label to found attr
-	XMLTAG=$(get-xmltag "${TITLE}" "${XMLDOC}");
-
-	# Call get-tagattribute to obtain the attribute form the xml label
-	ATTR_RESULT=$(get-tagattribute "${XMLTAG}" "${ATTR}")
-
-	# Return value
-	echo "${ATTR_RESULT}"
+	${EXTRA_DIR}/xpatheval ${XMLDOC} "//${TITLE}/@${ATTR}" 2>/dev/null
 }

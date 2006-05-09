@@ -18,12 +18,10 @@ exec_module() {
 
 	if [[ ${CORRECT_LINK} != ${LINK_ATTRIBUTE} ]]; then
 		# Path is not right
-		# Building log message
-		DOCTYPE_TAG=$(get-xmltag "${DOC_TYPE}" "${DOC}")
-		OUTPUT_TEXT="The attribute link on ${LINK_TAG} is wrong. Should point to the absolute path (link=\"${CORRECT_LINK}\")"
+		OUTPUT_TEXT="The attribute link on <${DOC_TYPE} link=\"${LINK_ATTRIBUTE}\" ...> is wrong.
+It should point to the absolute path (link=\"${CORRECT_LINK}\")"
 		return 2
 	else
-		# Path is ok
 		return 0
 	fi
 }
