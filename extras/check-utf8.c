@@ -201,6 +201,6 @@ int main(int argc, char *argv[])
     /* read either file or stdin */
     file = (argc==1 ? stdin : fopen(argv[1],"r"));
 
-    return "%d\n",check_opened_file(file,(argc==1 ? "stdin" : argv[1]),1,1);
+    return check_opened_file(file,(argc==1 ? "stdin" : argv[1]),1,1);
 }
 /* vim: set ft=c fileencoding=utf-8 tw=80 sw=4 et : */
