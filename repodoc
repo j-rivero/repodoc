@@ -187,6 +187,7 @@ GENERATE_LOG=true
 # Importing libs
 source "${LIB_DIR}/colors.sh"
 source "${LIB_DIR}/xml.sh"
+source "${LIB_DIR}/xpath.sh"
 
 # Check version/help and specific options request
 case $1 in
