@@ -13,7 +13,7 @@ exec_module() {
 
 	# We have three types of links
 	# 1. gentoo own links : /doc or /proj   ( internal - check          )
-	# 2. GuideXml thingies : #doc_*         ( external - cannot check )
+	# 2. GuideXml thingies : #doc_*         ( internal - check          )
 	# 3. anchors : #links                   ( internal - check          )
 	# 4. outside links : www and http...    ( external - cannot check   )
 	# 5. Odd uris : irc mailto nx ssh ...   ( external - will not check )
@@ -32,8 +32,11 @@ exec_module() {
 				external=true
 			;;
 			\#doc_*)
-				# This is a GuideXML internal link, cannot check yet
-				external=true
+				# This is a GuideXML internal link
+				external=false
+
+				[[ -z $(doxpath ${DOC} $(anchor2xpath ${link})) ]] \
+					&& found=false || found=true
 			;;
 			\#*)
 				# Anchor, internal, check it
@@ -49,10 +52,13 @@ exec_module() {
 				# Does the file/directory exist ?
 				[[ -e ${linked%%\?*} ]] && found=true
 
-				# If we were given an anchor, check it unless it is a doc_ anchor
+				# If we were given an anchor, check it
 				case ${found},${anchor} in
-					true,doc_*)   ;; # Skip doc_ anchors
 					true,${link}) ;; # Skip if no anchor given
+					true,doc_*)
+						[[ -z $(doxpath ${linked%%\?*} $(anchor2xpath \#${anchor})) ]] \
+							&& anchor_found=false || anchor_found=true
+					;;
 					true,*)
 						[[ $(doxpath ${linked%%\?*} ${anchor_expr}) = 1 ]] \
 							&& anchor_found=true || anchor_found=false
@@ -72,7 +78,7 @@ exec_module() {
 		case ${external},${found},${anchor_found} in
 			true,*,*) ;;   # Skip external links
 			false,false,*) out="${out},,,Link not found - ${link}" ;;
-			false,true,false) out="${out},,,Anchor '${anchor}' not found in '${linked}'" ;;
+			false,true,false) out="${out},,,Anchor '${anchor}' not found in '${linked%%\?*}'" ;;
 		esac
 	done
 
