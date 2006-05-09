@@ -7,38 +7,22 @@ KEYWORDS="*"
 LEVEL="BASIC"
 
 exec_module() {
-	local external anchor_rex anchor \
+	local external anchor_expr anchor \
 		found anchor_found linked LINKS \
 		out offending_links retVal=0
 
 	# We have three types of links
 	# 1. gentoo own links : /doc or /proj   ( internal - check          )
-	# 2. anchors : #links                   ( internal - check          )
-	# 3. outside links : www and http...    ( external - cannot check   )
-	# 4. Odd uris : irc mailto nx ssh ...   ( external - will not check )
+	# 2. GuideXml thingies : #doc_*         ( external - cannot check )
+	# 3. anchors : #links                   ( internal - check          )
+	# 4. outside links : www and http...    ( external - cannot check   )
+	# 5. Odd uris : irc mailto nx ssh ...   ( external - will not check )
 
-	LINKS=$(sed -n -f "${LIB_DIR}/stripxmlcomments.sed" -e '
-		/<uri[[:blank:]]*$/ {
-			n
-			s-link="\([^"]*\)".*$-\1-
-			H
-		}
-		/.*<uri>\([^<]*\)<\/uri>.*/ {
-			s--\1-g
-			H
-		}
-		/.*<uri[[:blank:]]*link="\(.*\)">[^<]*<\/uri>.*/ {
-			s--\1-g
-			H
-		}
-		$ {
-			x
-			s-\n- -gp
-		}' ${DOC})
+	LINKS=$(doxpath ${DOC} '//uri/@link' '//uri[not(@link)]/text()')
 
 	for link in ${LINKS} ; do
 		anchor=${link##*#}
-		anchor_rex='<[^ ]*[[:blank:]]*id="'${anchor}'"'
+		anchor_expr='count(//*[@id="'${anchor}'"])'
 		anchor_found=true
 		found=false
 
@@ -47,10 +31,14 @@ exec_module() {
 				# Cannot check this links right now
 				external=true
 			;;
-			'#*')
+			\#doc_*)
+				# This is a GuideXML internal link, cannot check yet
+				external=true
+			;;
+			\#*)
 				# Anchor, internal, check it
 				external=false
-				grep "${anchor_rex}" ${DOC} > /dev/null && found=true || found=false
+				[[ $(doxpath ${DOC} ${anchor_expr}) = 1 ]] && found=true || found=false
 			;;
 			/doc/*|/proj/*)
 				# Gentoo link, internal, check it
@@ -66,7 +54,7 @@ exec_module() {
 					true,doc_*)   ;; # Skip doc_ anchors
 					true,${link}) ;; # Skip if no anchor given
 					true,*)
-						grep "${anchor_rex}" ${linked%%\?*} > /dev/null \
+						[[ $(doxpath ${linked%%\?*} ${anchor_expr}) = 1 ]] \
 							&& anchor_found=true || anchor_found=false
 					;;
 				esac
