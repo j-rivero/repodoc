@@ -8,61 +8,17 @@ NEED_TRANSLATION=true
 LEVEL="BASIC"
 
 exec_module() {
-	local TMP_OUTPUT TMP_OUTPUT1 TMP_OUTPUT2 TMP_DOC
+	local orig="${REPO_TMP_DIR}/original.xml" \
+		trans="${REPO_TMP_DIR}/translation.xml"
 
-	# The evil-sed (tm) line-by-line:
-	#
-	#   - 1. Remove lines beggining with <?
-	#   - 2. Remove lineas beggining with <!
-	#   - 3. Remove all except whatever inside < > (tags)
-	#   - 4. Remove tags attributes
-	#   - 5. Close un-closed tags
-	#   - 6. Set one-tag-per-line
-	#   - 7. Remove author and mail tags
-	#   - 8. Remove spaces only lines
-	#
-	#   - awk add counter to <p> and </p> tags
+	get-xmltree "${ORIGINAL_DOC}" > "${orig}"
+	get-xmltree "${DOC}" > "${trans}"
 
-	TMP_OUTPUT1="${REPO_TMP_DIR}/original.xml"
-	TMP_OUTPUT2="${REPO_TMP_DIR}/translation.xml"
+	OUTPUT_TEXT=$(diff -Nut ${orig} ${trans})
 
-	# First output
-	TMP_OUTPUT=${TMP_OUTPUT1}
-
-	for TMP_DOC in "${ORIGINAL_DOC}" "${DOC}"; do
-
-		# First time saves the result on TMP_OUTPUT = 1
-		# Second time saves the result on TMP_OUTPUT = 2
-		sed -e '
-			/^.*<?.*$/d
-			/^.*<!.*$/d
-			s-\(>\|^\)[^<]*\(<\)\{0,1\}-\1\2-g
-			/<\([^ ]*\)[^>]*\(\/\)\{0,1\}\(>\|$\)/s--<\1\2>-g
-			s-<\([^ >]*\) *$-<\1>-
-			s-><->\n<-g
-			/<\/\{0,1\}\(author\|mail\)>/d
-			/^ *$/d
-			' ${TMP_DOC} | awk '
-			BEGIN { p_number=1 } {
-			if ($0 == "<p>")
-				printf("<p %d>\n",p_number);
-			else if ($0 == "</p>")
-				printf("</p %d>\n",p_number++);
-			else
-				printf("%s\n",$0);
-			}' > ${TMP_OUTPUT}
-
-		# Change the file for output
-		TMP_OUTPUT=${TMP_OUTPUT2}
-	done
-
-	# Diff between tags files. Original vs Translation
-	OUTPUT_TEXT=$(diff -Nut ${TMP_OUTPUT1} ${TMP_OUTPUT2})
-
-	if [[ -z ${OUTPUT_TEXT} ]]; then
+	if [[ -z ${OUTPUT_TEXT} ]] ; then
 		return 0
 	else
 		return 1
 	fi
 }
-
