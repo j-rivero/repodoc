@@ -15,11 +15,11 @@
 # - valid: all <$title xmltag line until >
 # - error: "" if no <$title tag was found on $xmldoc
 #
-function get-xmltag () {
+get-xmltag() {
 	local TITLE=${1} XMLDOC=${2} XMLTAG
 
 	# Sanity Check. ¿do params exists?
-	[[ -z "${XMLDOC}" ]] || [[ -z "${TITLE}" ]] \
+	[[ -z ${XMLDOC} ]] || [[ -z ${TITLE} ]] \
 	&& echo "${FUNCNAME} one of the params is empty" && return -1
 
 	# Sed to extract the tag <$title from xmldoc avoiding spaces
@@ -43,18 +43,18 @@ function get-xmltag () {
 # - valid: $attr content (without "") from $xmltag
 # - error: "" if no $attr attribute was found on $xmltag
 #
-function get-tagattribute () {
+get-tagattribute() {
 	local XMLTAG=${1} ATTR=${2} TMP_ATTR
 
 	# Sanity Check. ¿do params exists?
-	[[ -z "${XMLTAG}" ]] || [[ -z "${ATTR}" ]] \
+	[[ -z ${XMLTAG} ]] || [[ -z ${ATTR} ]] \
 	&& echo "${FUNCNAME} one of the params is empty" && return -1
 
 	# Delete all before $attr="
 	TMP_ATTR=${XMLTAG##*${ATTR}=\"}
 
 	# Check if the attribute was found. TMP_ATTR != XMLTAG -> found
-	[[ ${TMP_ATTR} == ${XMLTAG} ]] && echo "" && return -1
+	[[ ${TMP_ATTR} = ${XMLTAG} ]] && echo "" && return -1
 
 	# Delete all after first "
 	TMP_ATTR=${TMP_ATTR%%\"*}
@@ -79,12 +79,28 @@ function get-tagattribute () {
 # - GET_XMLTAG
 # - GET-TAGATTRIBUTE
 #
-function get-xmlattribute () {
+get-xmlattribute() {
 	local TITLE=${1} ATTR=${2} XMLDOC=${3}
 
 	# Sanity Check. ¿do params exists?
-	[[ -z "${TITLE}" ]] || [[ -z "${ATTR}" ]] || [[ -z "${XMLDOC}" ]] \
+	[[ -z ${TITLE} ]] || [[ -z ${ATTR} ]] || [[ -z ${XMLDOC} ]] \
 	&& echo "${FUNCNAME} one of the params is empty" && return -1
 
 	${EXTRA_DIR}/xpatheval ${XMLDOC} "//${TITLE}/@${ATTR}" 2>/dev/null
+}
+
+# GET-XMLTREE. Public
+# Extract a raw tree from a given XML tree removing things
+# we are not interested in such as author, mail and subtress which
+# have a 'p' ancestry.
+#
+# Params:
+# - $1. Document
+#
+# Return:
+# - Said tree.
+get-xmltree() {
+	xmllint --shell $1 <<< 'du' 2>/dev/null | \
+		awk -f "${LIB_DIR}/trimtree.awk" | \
+		grep -v "/ >\|author\|mail"
 }
