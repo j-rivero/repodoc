@@ -11,16 +11,16 @@ exec_module() {
 	local ORIGINAL_VERSION DOC_VERSION ORIGINAL_DATE DOC_DATE
 
 	# Extract version info about original doc
-	ORIGINAL_VERSION=$(doxpath ${ORIGINAL_DOC} '/guide/version/text()')
+	ORIGINAL_VERSION=$(doxpath ${ORIGINAL_DOC} "/${DOC_TYPE}/version/text()")
 	
 	# Extract version info about doc analysed
-	DOC_VERSION=$(doxpath ${DOC} '/guide/version/text()')
+	DOC_VERSION=$(doxpath ${DOC} "/${DOC_TYPE}/version/text()")
 
 	#Extract date from original doc
-	ORIGINAL_DATE=$(doxpath ${ORIGINAL_DOC} '/guide/date/text()')
+	ORIGINAL_DATE=$(doxpath ${ORIGINAL_DOC} "/${DOC_TYPE}/date/text()")
 	
 	#Extract date from doc analysed
-	DOC_DATE=$(doxpath ${DOC} '/guide/date/text()')
+	DOC_DATE=$(doxpath ${DOC} "/${DOC_TYPE}/date/text()")
 
 	if [[ ${ORIGINAL_VERSION} == ${DOC_VERSION} ]]; then
 		# Dates are synced, still to check dates

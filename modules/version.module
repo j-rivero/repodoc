@@ -11,9 +11,9 @@ exec_module() {
 	local ORIGINAL_VERSION DOC_VERSION
 
 	# Extract version info about original doc
-	ORIGINAL_VERSION=$(doxpath ${ORIGINAL_DOC} '/guide/version/text()')
+	ORIGINAL_VERSION=$(doxpath ${ORIGINAL_DOC} "/${DOC_TYPE}/version/text()")
 	# Extract version info about doc analysed
-	DOC_VERSION=$(doxpath ${DOC} '/guide/version/text()')
+	DOC_VERSION=$(doxpath ${DOC} "/${DOC_TYPE}/version/text()")
 
 	[[ ${ORIGINAL_VERSION} = ${DOC_VERSION} ]] && return 0
 
