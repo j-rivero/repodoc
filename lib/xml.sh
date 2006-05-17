@@ -1,12 +1,12 @@
 #
 # XML Repodoc Lib
 #
-# Designed to provide some basic functions to handly xml tags and attributes
-# on docs designed using guidexml.
+# Provides some basic functionality to handle xml tags and attributes
+# on GuideXML documents.
 #
 
 # GET-XMLTAG Function. Public.
-# Extract the xml tag identify by param1
+# Extract the xml tag identified by its first argument
 # Params:
 # - $1. Label title to found (<title )
 # - $2. Doc to parse
@@ -37,8 +37,8 @@ get-xmltag() {
 # GET-TAGATTRIBUTE. Public
 # Extract the attribute from an xml tag
 # Params:
-#  - $1. Xml tag where look for the attr
-#  - $2. Attribute to found
+#  - $1. Xml tag where to look for the attr
+#  - $2. Attribute to find
 # Return:
 # - valid: $attr content (without "") from $xmltag
 # - error: "" if no $attr attribute was found on $xmltag
@@ -67,7 +67,7 @@ get-tagattribute() {
 # GET-XMLATTRIBUTE. Public
 # Extract the attribute from an xml file
 # Params:
-# - $1. Lable title to found (<title )
+# - $1. Lable title to find (<title )
 # - $2. Attribute inside the label
 # - $3. Doc to parse
 #
