@@ -59,6 +59,8 @@ int main(int argc, char *argv[])
 		struct stat ftmp;
 		if (stat(argv[i], &ftmp) < 0)
 			break;
+		else if (!S_ISREG(ftmp.st_mode) && !S_ISLNK(ftmp.st_mode))
+			break;
 		startexprs++;
 	}
 
