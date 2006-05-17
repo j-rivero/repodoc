@@ -30,6 +30,8 @@ search_dir_root() {
 # SEARCH LANGUAGE Function. Private
 #
 search_language() {
+	local TMP1
+
 	# Taking DIR as base, the language will appear after DIR_ROOT
 	# First, cutting all before DIR_ROOT
 	TMP1=${DIR##*/$DIR_ROOT/}
@@ -76,7 +78,7 @@ create_environment() {
 # SEARCH DOCTYPE Function. Private
 #
 search_doctype() {
-	local TMP_DOC_TYPE TMP
+	local TMP_DOC_TYPE
 
 	# sed -n -e '/<!DOCTYPE \([^ ]*\) .*/{s--\1-p;q}' blah.xml
 	TMP_DOC_TYPE=$(grep -m 1 DOCTYPE ${DOC})
