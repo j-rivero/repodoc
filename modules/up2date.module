@@ -11,16 +11,16 @@ exec_module() {
 	local ORIGINAL_VERSION DOC_VERSION ORIGINAL_DATE DOC_DATE
 
 	# Extract version info about original doc
-	ORIGINAL_VERSION=$(sed -f ${LIB_DIR}/get-version.sed ${ORIGINAL_DOC})
+	ORIGINAL_VERSION=$(doxpath ${ORIGINAL_DOC} '/guide/version/text()')
 	
 	# Extract version info about doc analysed
-	DOC_VERSION=$(sed -f ${LIB_DIR}/get-version.sed ${DOC})
+	DOC_VERSION=$(doxpath ${DOC} '/guide/version/text()')
 
 	#Extract date from original doc
-	ORIGINAL_DATE=$(sed -f ${LIB_DIR}/get-date.sed ${ORIGINAL_DOC})
+	ORIGINAL_DATE=$(doxpath ${ORIGINAL_DOC} '/guide/date/text()')
 	
 	#Extract date from doc analysed
-	DOC_DATE=$(sed -f ${LIB_DIR}/get-date.sed ${DOC})
+	DOC_DATE=$(doxpath ${DOC} '/guide/date/text()')
 
 	if [[ ${ORIGINAL_VERSION} == ${DOC_VERSION} ]]; then
 		# Dates are synced, still to check dates
