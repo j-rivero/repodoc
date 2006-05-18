@@ -9,7 +9,7 @@ LEVEL="BASIC"
 exec_module() {
 	local external anchor_expr anchor \
 		found anchor_found linked LINKS \
-		out offending_links retVal=0
+		out retVal=0
 
 	# We have three types of links
 	# 1. gentoo own links : /doc or /proj   ( internal - check          )
@@ -83,8 +83,7 @@ exec_module() {
 	done
 
 	# A bit hacky, but works fine
-	offending_links=$(sed -e 's-,,,-\n-g' <<< ${out})
-	OUTPUT_TEXT="${offending_links}"
+	OUTPUT_TEXT=$(echo -e "${out//,,,/\n}")
 
 	return ${retVal}
 }

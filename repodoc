@@ -48,7 +48,7 @@ search_language() {
 # Search for path of original version only in case of doc is a translation
 search_original_doc() {
 	# Just need to change /$language/ by /en/ in doc path to obtain the original version
-	ORIGINAL_DOC=$(sed -e "s:${DIR_ROOT}/${LANGUAGE}:${DIR_ROOT}/en:g" <<< ${DOC})
+	ORIGINAL_DOC=${DOC//${DIR_ROOT}\/${LANGUAGE}/${DIR_ROOT}\/en}
 
 	# If this document is obsolete, it is NOT a translation
 	[[ -f ${ORIGINAL_DOC} ]] || TRANSLATION=false
