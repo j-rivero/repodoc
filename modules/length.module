@@ -20,7 +20,7 @@ exec_module() {
 	LONG_LINES=$(sed -n -e '
 		/^<pre .*>/,/^<\/pre>/d
 		/<!-- \$Header:/d
-		/link=/d
+		/^link="[^"]*"$/d
 		/^<title>/d
 		/^.\{81,\}$/{=;p}
 	' ${DOC} | sed -f "${LIB_DIR}/massagelinenumbers.sed")
