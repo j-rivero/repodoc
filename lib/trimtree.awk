@@ -12,11 +12,11 @@ BEGIN {
 	for (i in preIGNORE)
 		IGNORE[preIGNORE[i]]=1;
 
-	split("p pre note warn impo chapter section ul", preNUMBER);
+	split("p pre note warn impo chapter section subsection ul", preNUMBER);
 	for (i in preNUMBER)
 		NUMBER[preNUMBER[i]]=1;
 
-	split("body chapter title", preNOCONTEXT);
+	split("body chapter subsection title", preNOCONTEXT);
 	for (i in preNOCONTEXT)
 		NOCONTEXT[preNOCONTEXT[i]]=1;
 }
@@ -47,6 +47,10 @@ BEGIN {
 		for (i in NUMBER)
 			if (i != "chapter" && i != "section")
 				COUNT[i] = 0;
+	} else if (memb == "subsection") {
+		for (i in NUMBER)
+			if (i != "chapter" && i != "section" && i != "subsection")
+				COUNT[i] = 0;
 	}
 
 	if (memb in NUMBER)
@@ -55,11 +59,16 @@ BEGIN {
 	# This does context output 'calculation'.
 	chapctxt="chapter " COUNT["chapter"];
 	sectctxt=" , section " COUNT["section"];
+	subsectctxt=" , subsection " COUNT["subsection"];
 
 	if (memb == "section")
 		ctxt=" [ " chapctxt " ]"
-	else if (COUNT["chapter"] > 0 && COUNT["section"] > 0)
+	else if (memb == "subsection")
 		ctxt=" [ " chapctxt sectctxt " ]";
+	else if (COUNT["section"] > 0 && COUNT["subsection"] == 0)
+		ctxt=" [ " chapctxt sectctxt " ]";
+	else if (COUNT["subsection"] > 0)
+		ctxt=" [ " chapctxt sectctxt subsectctxt " ]";
 	else
 		ctxt=""
 
