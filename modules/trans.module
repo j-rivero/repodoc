@@ -8,13 +8,15 @@ NEED_TRANSLATION=true
 LEVEL="BASIC"
 
 exec_module() {
-	local orig="${REPO_TMP_DIR}/original.xml" \
-		trans="${REPO_TMP_DIR}/translation.xml"
+	local orig="${REPO_TMP_DIR}/original.xml.$$" \
+		trans="${REPO_TMP_DIR}/translation.xml.$$"
 
 	get-xmltree "${ORIGINAL_DOC}" > "${orig}"
 	get-xmltree "${DOC}" > "${trans}"
 
-	OUTPUT_TEXT=$(diff -Nut ${orig} ${trans})
+	OUTPUT_TEXT=$(diff -Nut "${orig}" "${trans}")
+
+	rm "${orig}" "${trans}"
 
 	if [[ -z ${OUTPUT_TEXT} ]] ; then
 		return 0
