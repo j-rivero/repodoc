@@ -4,6 +4,44 @@
 # [MOD] - Modified feature
 # [FIX] - Fixed a bug
 
+* 0.1_beta2 ( 2006-17-06 )
+
+	- [NEW] Dyn-meta module. Checks whether dynamic generated documents
+	  point to their metadocs.  Also made some modules skip processing
+	  dynamic documents.
+
+	- [NEW] Added trailing whitespace pattern to banned module to check
+	  for unnecessary white chars at the end of lines. Suggested by Andrés
+	  Pereira (borges).
+
+	- [NEW] Added list-mode option. Allow repodoc to summarize the status
+	  of each doc based on the worst result found on one of its modules
+	  checks. If the result is OK, it means all modules are happy with
+	  your doc, so you get a cookie. Thanks to Francesc Gordillo
+	  (frangor@gmail.com).
+
+	- [NEW] External program to evaluate an arbitrary number of XPath
+	  expressions on an arbitrary number of documents. Uses libxml2 to do
+	  the real work.  It helps getting rid of huge, horrible and buggy
+	  awk/sed chunks. (thanks to ferdy)
+
+	- [NEW] Internal rewrite. Some common code has bin split into files
+	  under the lib/ directory. This is a first step to write external
+	  applications that share functionality with repodoc.
+
+	- [MOD] Banned module now accepts users patterns defined via
+	  ~/repodoc/config/patterns in an easy way using the rule:
+	  <special|basic> <language|all> <banned-word|sed-pattern <id>>
+
+	- [MOD] Trans module has been rewritten. Context information is added
+	  to each node of the XML tree thus making diffs denser. It gets XML
+	  trees from xmllint so it should be a pretty reliable module now.
+
+	- [FIX] Links module fixed. Previous version skips some of the links
+	  which need to be checked. Now is able to parse doc internal anchors
+	  (#doc_*). Some handbook links will give a false positive, need a bit
+	  more of work to fix this.
+
 * 0.1_beta ( 2006-04-02 )
 
 	- [NEW] Added support for colors and alignment on the output. Thanks to
