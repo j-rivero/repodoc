@@ -1,0 +1,48 @@
+# Distributed under the terms of the GNU General Public License v2
+# Copyright 2005-2006 The RepoDoc Team
+
+needlib xpath.sh
+
+MODULE_NAME="Language Links"
+KEYWORDS="*"
+NEED_TRANSLATION=true
+
+LEVEL="BASIC"
+
+exec_module() {
+	local link linked LINKS langlink \
+	      out retVal=0
+
+        # Call to doxpath
+	LINKS=$(doxpath ${DOC} '//uri/@link' '//uri[not(@link)]/text()')
+
+	# Check links
+	for link in ${LINKS} ; do
+		case ${link} in
+			/doc/en/*|/proj/en/*)
+				# If link is a dir, add index.xml as page
+				[[ -n ${link%%*.xml} ]] && link=${link}index.xml
+
+				# Gentoo link, internal, check it
+				linked=${CVS_ROOT}${link%%#*}
+
+				# Clear internal anchors in links, we don't need it
+				linked=${linked%%\?*}
+
+				# Candidate language link
+				langlink=${linked/\/en\//\/${LANGUAGE}\/}
+
+				# Does the langlink file/directory exist ?
+				if [[ -e ${langlink} ]]; then
+					# Exists! give an error
+					retVal=2
+					out="${out},,,A doc translation for link: ${link} exists"'!'
+				fi
+		esac
+	done
+
+	# A bit hacky, but works fine
+	OUTPUT_TEXT=$(echo -e "${out//,,,/\n}")
+
+	return ${retVal}
+}
