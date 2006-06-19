@@ -183,9 +183,8 @@ SHOW_ALL_RESULTS=true
 GENERATE_LOG=true
 
 # Importing libs
-source "${LIB_DIR}/colors.sh"
-source "${LIB_DIR}/xml.sh"
-source "${LIB_DIR}/xpath.sh"
+source "${LIB_DIR}/libcore.sh"
+needlib colors.sh xpath.sh
 
 # If no args, show usage
 [[ $# -eq 0 ]] && { show_version_usage; exit 0; }
