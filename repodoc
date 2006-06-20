@@ -76,13 +76,6 @@ create_environment() {
 }
 
 # ------
-# SEARCH DOCTYPE Function. Private
-#
-search_doctype() {
-	DOC_TYPE=$(doxpath ${DOC} '/child::*[1]')
-}
-
-# ------
 # SEARCH CVS_ROOT Function. Private
 #
 search_cvs_root() {
@@ -184,7 +177,7 @@ GENERATE_LOG=true
 
 # Importing libs
 source "${LIB_DIR}/libcore.sh"
-needlib colors.sh xpath.sh
+needlib colors.sh xpath.sh xml.sh
 
 # If no args, show usage
 [[ $# -eq 0 ]] && { show_version_usage; exit 0; }
@@ -244,7 +237,7 @@ while [[ -n $1 ]] ; do
 	search_language
 	search_original_doc
 	search_www_dir
-	search_doctype
+	DOC_TYPE=$(get-xmldoctype ${DOC})
 	search_cvs_root
 
 	if ${SHOW_INFO} ; then

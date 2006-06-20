@@ -104,3 +104,20 @@ get-xmltree() {
 		awk -f "${LIB_DIR}/trimtree.awk" | \
 		grep -v "/ >\|author\|mail"
 }
+
+# GET-XMLDOCTYPE. Public
+# Extract the doctype defined by doctype directive.
+#
+# Params:
+# - $1. Document
+#
+# Return:
+# - XML type defined by doctype
+get-xmldoctype() {
+	local DOC=${1} DOC_TYPE
+
+	# Call to xpatheval to extract the info
+	DOC_TYPE=$(${EXTRA_DIR}/xpatheval ${DOC} '/child::*[1]' 2>/dev/null)
+
+	echo "${DOC_TYPE}"
+}
