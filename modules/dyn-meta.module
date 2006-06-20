@@ -20,7 +20,7 @@ exec_module() {
 	if [[ ${CORRECT_LINK} != ${LINK_ATTRIBUTE} ]]; then
 		# Path is not right
 		# Building log message
-		OUTPUT_TEXT="The attribute metadoc on ${LINE_LINK_TYPE} is
+		OUTPUT_TEXT="The attribute metadoc on ${LINK_ATTRIBUTE} is
  wrong. Should point to the absolute metadoc path
  (metadoc=\"${CORRECT_LINK}\")"
 
