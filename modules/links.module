@@ -49,7 +49,7 @@ exec_module() {
 				# Gentoo link, internal, check it
 				external=false
 				found=false
-				linked=${CVS_ROOT}/${link%%#*}
+				linked=${CVS_ROOT}${link%%#*}
 
 				# Does the file/directory exist ?
 				[[ -e ${linked%%\?*} ]] && found=true
