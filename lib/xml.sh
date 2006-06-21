@@ -5,6 +5,8 @@
 # on GuideXML documents.
 #
 
+needlib xpath.sh
+
 # GET-XMLTAG Function. Public.
 # Extract the xml tag identified by its first argument
 # Params:
@@ -86,7 +88,7 @@ get-xmlattribute() {
 	[[ -z ${TITLE} ]] || [[ -z ${ATTR} ]] || [[ -z ${XMLDOC} ]] \
 	&& echo "${FUNCNAME} one of the params is empty" && return -1
 
-	${EXTRA_DIR}/xpatheval ${XMLDOC} "//${TITLE}/@${ATTR}" 2>/dev/null
+	doxpath ${XMLDOC} "//${TITLE}/@${ATTR}"
 }
 
 # GET-XMLTREE. Public
@@ -117,7 +119,7 @@ get-xmldoctype() {
 	local DOC=${1} DOC_TYPE
 
 	# Call to xpatheval to extract the info
-	DOC_TYPE=$(${EXTRA_DIR}/xpatheval ${DOC} '/child::*[1]' 2>/dev/null)
+	DOC_TYPE=$(doxpath ${DOC} "/child::*[1]")
 
 	echo "${DOC_TYPE}"
 }
