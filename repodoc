@@ -178,7 +178,7 @@ while [[ -n $1 ]] ; do
 
 	# Starting environment and variables
 	create_environment
-	DIR_ROOT=$(extract-doc-domain ${DOC})
+	DOMAIN=$(extract-doc-domain ${DOC})
 	LANGUAGE=$(extract-doc-language ${DIR})
 	WWW_DIR=$(extract-web-dir ${DIR})
 	CVS_ROOT=$(extract-cvs-root ${DIR})
@@ -196,7 +196,7 @@ while [[ -n $1 ]] ; do
 		echo
 		echo "Doc-type: " ${DOC_TYPE}
 		#echo "www-dir: " $WWW_DIR
-		#echo "dir-root: " $DIR_ROOT
+		#echo "domain: " $DOMAIN
 		#echo "cvs_root: " $CVS_ROOT
 
 		#echo "original_doc: " $ORIGINAL_DOC
