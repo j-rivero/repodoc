@@ -30,7 +30,7 @@ exec_module() {
 				linked=${linked%%\?*}
 
 				# Candidate language link
-				langlink=${linked/\/en\//\/${LANGUAGE}\/}
+				langlink=$(localize-path "${linked}" "${LANGUAGE}")
 
 				# Does the langlink file/directory exist ?
 				if [[ -e ${langlink} ]]; then
