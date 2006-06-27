@@ -18,15 +18,12 @@
 # Return:
 # - domain without slashes [ doc | proj | main | ... ]
 #
-
-extract-doc-domain(){
-	local DOC_PATH=${1} DOMAIN
+extract-doc-domain() {
+	local DOMAIN
 
 	# The dir root is the first cvs tree subdir after htdocs
-	DOMAIN=${DOC_PATH##*htdocs\/}
-	DOMAIN=${DOMAIN%%\/*}
-
-	echo "${DOMAIN}"
+	DOMAIN=${1##*htdocs\/}
+	echo "${DOMAIN%%\/*}"
 }
 
 # EXTRACT-DOC-LANGUAGE Function. Public.
@@ -42,18 +39,15 @@ extract-doc-domain(){
 # Return:
 # - two letters language id [ en | es | ... ]
 #
-
 extract-doc-language() {
-	local DOC_PATH=${1} LANGUAGE
+	local LANGUAGE
 
 	# The language always appear after /htdocs/domain/LANGUAGE/ so
 	# remove all from the start to htdocs/*/
-	LANGUAGE=${DOC_PATH#*htdocs\/*\/}
+	LANGUAGE=${1#*htdocs\/*\/}
 
 	# Remove the useless rest of the path
-	LANGUAGE=${LANGUAGE%%/*}
-
-	echo "${LANGUAGE}"
+	echo "${LANGUAGE%%/*}"
 }
 
 # EXTRACT-WEB-DIR Function. Public.
@@ -69,15 +63,10 @@ extract-doc-language() {
 # Return:
 # - web dir including beggining slash
 #
-
 extract-web-dir() {
-	local DOC_PATH=${1} WEB_DIR
-
 	# Obtaining the www dir where the doc is placed
-	WEB_DIR=${DOC_PATH##*htdocs\/}
-
 	# Include starting slash "/"
-	echo "/${WEB_DIR}"
+	echo "/${1##*htdocs\/}"
 }
 
 # EXTRACT-CVS-ROOT Function. Public.
@@ -95,13 +84,8 @@ extract-web-dir() {
 # - system dir starting with a slash and finish in htdocs without
 # a slash.
 #
-
 extract-cvs-root() {
-	local DOC_PATH=${1} CVS_ROOT
-
-	CVS_ROOT=${DIR/htdocs\/*/htdocs}
-
-	echo ${CVS_ROOT}
+	echo ${1/htdocs\/*/htdocs}
 }
 
 # LOCALIZE-PATH Function. Public.
@@ -114,7 +98,7 @@ extract-cvs-root() {
 #
 # Result:
 # - full doc path with the language changed.
-
+#
 localize-path() {
 	local DOC_PATH=${1} NEW_LANGUAGE=${2} CURRENT_LANGUAGE DOC_LOCALIZED
 
