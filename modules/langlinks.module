@@ -19,7 +19,7 @@ exec_module() {
 	# Check links
 	for link in ${LINKS} ; do
 		case ${link} in
-			/doc/en/*|/proj/en/*)
+			*/en/*)
 				# If link is a dir, add index.xml as page
 				[[ -n ${link%%*.xml} ]] && link=${link}index.xml
 
