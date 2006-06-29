@@ -153,21 +153,12 @@ while [[ -n $1 ]] ; do
 
 	unset global_result
 
-	tmpdir=${1%/*}
-	[[ ${tmpdir} = $1 ]] && tmpdir=.
-
-	pushd ${tmpdir} > /dev/null
-	dir=${PWD}
-	popd > /dev/null
-
-	name=${1##*/}
+	# Adjusting the main variables
+	DOC_NAME=${1##*/}
+	DIR=$(build-full-path ${1})
+	DOC=${DIR}/${DOC_NAME}
 
 	shift
-
-	# Adjusting the main variables
-	DOC_NAME=${name}
-	DIR=${dir}
-	DOC=${DIR}/${DOC_NAME}
 
 	# Check if doc exists
 	if [[ ! -f ${DOC} ]] ; then

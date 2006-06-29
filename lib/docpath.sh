@@ -109,3 +109,26 @@ localize-path() {
 
 	echo "${DOC_LOCALIZED}"
 }
+
+# BUILD-FULL-PATH Function. Public.
+#
+# Build the full system path where the doc is.
+#
+# Params:
+# - $1: user given doc path
+#
+# Result:
+# - full doc system path
+
+build-full-path() {
+	local path=${1} tmpdir dir
+
+	tmpdir=${path%/*}
+	[[ ${tmpdir} = ${path} ]] && tmpdir=.
+
+	pushd ${tmpdir} > /dev/null
+	dir=${PWD}
+	popd > /dev/null
+
+	echo "${dir}"
+}
