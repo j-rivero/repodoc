@@ -100,7 +100,7 @@ show_log() {
 SCRIPT_DIR="${TMP_SCRIPT_DIR%/*}"
 
 # Paths
-MOD_DIR="${SCRIPT_DIR}/modules"
+MOD_DIR="${SCRIPT_DIR}/modules/repodoc"
 EXTRA_DIR="${SCRIPT_DIR}/extras"
 LIB_DIR="${SCRIPT_DIR}/lib"
 MOD_COMM="${MOD_DIR}/commons"
