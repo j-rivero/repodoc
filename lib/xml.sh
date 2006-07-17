@@ -123,3 +123,21 @@ get-xmldoctype() {
 
 	echo "${DOC_TYPE}"
 }
+
+# SET-XMLTAG. Public
+#
+#
+# Params:
+#
+# - $1. XML tag to modify
+# - $2. NEW value for the tag
+# - $3. Document to make the change
+#
+# Return:
+# - Nothing
+
+set-xmltag() {
+	local tag=${1} new_value=${2} DOC=${3}
+
+	sed -i -e "s~<${tag}>.*</${tag}>~<${tag}>${new_value}</${tag}>~g" ${DOC}
+}
