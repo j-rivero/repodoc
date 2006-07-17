@@ -1,0 +1,86 @@
+#!/bin/bash
+# Distributed under the terms of the GNU General Public License v2
+# Copyright 2005-2006 The RepoDoc Team
+
+VERSION="0.1_alpha"
+
+# -----
+# SHOW_VERSION_USAGE Function. Private
+# Show quick help about how to run repodoc
+show_version_usage() {
+	echo "The Docman Tool version ${VERSION}"
+	echo "Distributed under the terms of the GPLv2"
+	echo "Copyright 2005-2006 The RepoDoc Team"
+	echo
+	echo "Usage: docman [--help|-h] [--version|-v] \
+[--list-commands|-l] COMMAND [PARAMS] FILES"
+}
+
+#-----
+# SHOW_COMMAND_HELP Function. Private
+# Show full docman command list based on existant modules
+# Params:
+#  - $1: full path to command module
+show_command_help() {
+	source $1
+	# Show command and description
+	com=${com##*/}
+	printf " - %-*s " 10 "${com%.module}"
+	echo "${MOD_DESCRIPTION}"
+}
+
+#
+# MAIN CODE
+# Program starts here
+#
+
+# Knowing Script dir beware of symlink
+[[ -L ${0} ]] && TMP_SCRIPT_DIR=$(readlink ${0}) || TMP_SCRIPT_DIR=${0}
+SCRIPT_DIR="${TMP_SCRIPT_DIR%/*}"
+
+# Paths
+LIB_DIR="${SCRIPT_DIR}/lib"
+MOD_DIR="${SCRIPT_DIR}/modules/docman"
+EXTRA_DIR="${SCRIPT_DIR}/extras"
+
+# Importing libs
+source "${LIB_DIR}/libcore.sh"
+
+
+# If no args, show usage
+[[ $# -eq 0 ]] && { show_version_usage; exit 0; }
+
+# Check version/help and specific options request
+case $1 in
+	-v|--version)
+	echo "Docman ${VERSION}"
+	exit 0
+	;;
+	-h|--help)
+	show_version_usage
+	exit 0
+	;;
+	-l|--list-commands)
+	echo -e "Docman ${VERSION}. List of supported commands: \n"
+	# List all modules
+	for com in ${MOD_DIR}/* ; do
+		show_command_help ${com}
+	done
+	exit 0
+	;;
+esac
+
+
+if [[ -f ""${MOD_DIR}/""${1}".module" ]]; then
+	# Module exists
+	source "${MOD_DIR}/${1}.module"
+	shift
+	# Check if it's a request for help
+	[[ ${1} == "--help" || ${1} == "-h" ]] && { mod_help; exit 0; }
+	# Run module
+	exec_module ${@}
+else
+	# Module doesn't exist
+	echo "(EE) Command \"${1}\" does not exist on docman."
+	echo "(EE) If you want to see a full list of commands: docman --list-commands"
+fi
