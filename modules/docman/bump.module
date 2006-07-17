@@ -1,0 +1,154 @@
+#!/bin/bash
+
+MOD_DESCRIPTION="Bump doc version and/or date"
+MOD_NAME="bump"
+
+needlib docpath.sh xpath.sh xml.sh
+
+# Show module help
+mod_help () {
+
+	echo "${MOD_DESCRIPTION}
+
+Usage: docman bump [params] docs
+
+Run without params will bump version and date.
+
+params:
+ --version: only bump version
+ --date:    only bump date
+
+ --major:  bump major version component
+ --minor:  bump minor version component
+ --mid:    bump middle version component"
+}
+
+do_bump_date () {
+	local doc=${1} doc_type current_date bump_date
+
+	doc_type=$(get-xmldoctype ${doc})
+	current_date=$(doxpath "${doc}" "/${doc_type}/date/text()")
+
+	# Today
+	bump_date=$(date +%Y-%m-%d)
+
+	if [[ ${current_date} == ${bump_date} ]]; then
+		echo " - date: Already bumped."
+		return 0
+	fi
+
+	set-xmltag "date" "${bump_date}" "${doc}"
+
+	echo " - date: ${current_date} (old) >> ${bump_date} (new)"
+
+	return 0
+}
+
+do_bump_version () {
+	local doc=${1} major=${2} mid=${3} doc_type current_version newvv
+
+	# Get current version
+	doc_type=$(get-xmldoctype ${doc})
+	current_version=$(doxpath "${doc}" "/${doc_type}/version/text()")
+
+	# Handle possible version formats
+	case ${current_version} in
+		*.*.*)  # three points format
+			# major = first part *. ; mid = middle part .*. ; minor = last part .*
+
+			if $major; then
+				# bump major part
+				newv="$(( ${current_version%%.*} + 1 )).0.0"
+			elif $mid; then
+				# bump mid part
+				$aux=${current_version%.*}
+				newv="${aux%.*}.$(( ${aux#*.} +1 )).0"
+			else
+				# bump minor part
+				aux=${current_version%.*}
+				echo "${main}.$(( ${current_version##*.} +1 ))"
+			fi
+		;;
+		*.*) # two points format
+		     # major = first part *. ; mid = minor = last part .*
+
+		     if $major; then
+			# bump major part
+			newv="$(( ${current_version%%.*} + 1 )).0"
+		     else
+			# bump minor part
+			aux=${current_version%.*}
+			newv="${aux}.$(( ${current_version##*.} +1 ))"
+		     fi
+		;;
+		*) # one number format
+		   # major = mid = minor
+
+		   newv="$(( ${current_version} + 1 ))"
+		;;
+
+	esac
+
+	set-xmltag "version" "${newv}" "${doc}"
+
+	echo " - version: ${current_version} (old) >> ${newv} (new)"
+
+	return 0
+}
+
+exec_module () {
+	local bump_date=false bump_version=false major=false mid=false minor=true \
+	dir doc doc_name doc_lang
+
+	# If there are no params, activate both
+	[[ -n ${1%%\-*} ]] &&  { bump_date=true; bump_version=true; }
+
+	# Checking params
+	while [[ -n ${1} ]]; do
+		case ${1} in
+			-d | --date)
+				bump_date=true
+			;;
+			-v | --version)
+				bump_version=true
+			;;
+			--major)
+				major=true
+			;;
+			--mid)
+				mid=true
+			;;
+			--minor)
+				minor=true
+			;;
+			-*) # param not supported
+				echo "(EE) Param ${1} not supported."
+				exit -1
+			;;
+			*) # file to bump
+				doc_name=${1##*/}
+				dir=$(build-full-path ${1})
+				doc=${dir}/${doc_name}
+
+				# Check the language
+				doc_lang=$(extract-doc-language ${doc})
+
+				echo "${doc_name} [${doc_lang}]"
+
+				if [[ ${doc_lang} != "en" ]]; then
+					echo " - Bumping a translation? Better sync it!."
+				else
+					# Run bumps
+					if ${bump_version}; then
+						do_bump_version "${doc}" ${major} ${mid}
+					fi
+
+					if ${bump_date}; then
+						do_bump_date "${doc}"
+					fi
+				fi
+			;;
+		esac
+		shift
+	done
+}
