@@ -1,0 +1,50 @@
+#!/bin/bash
+
+MOD_DESCRIPTION="Download xml docs sources from Gentoo"
+MOD_NAME="get"
+
+mod_help () {
+
+	echo "${MOD_DESCRIPTION}
+
+Usage: docman get [params] doc
+
+Run without params will use english as default language.
+
+params:
+  --lang-xx    Download translation identified by \"xx\" lang code
+  --direct-url Allow to use an url as input"
+}
+
+exec_module () {
+	local lang="en" domain="doc" gentoo="http://www.gentoo.org" \
+	mode="basic" url
+
+	# Checking params
+	while [[ -n ${1} ]]; do
+		case ${1} in
+			--lang-*) # Change the language
+				lang=${1#--lang-}
+				mode="basic"
+			;;
+			--direct-url*) # Change the mode
+				mode="url"
+			;;
+			-*) # param not supported
+				echo "(EE) Param ${1} not supported."
+				exit -1
+			;;
+			*) # file to download
+				echo "Downloading: ${1} [${lang}]"
+				if [[ ${mode} == "basic" ]]; then
+					url="${gentoo}/${domain}/${lang}/${1}"
+				else
+					url="${1}"
+				fi
+
+				wget "${url}?passthru=1" "-O${1##*/}"
+			;;
+		esac
+		shift
+	done
+}
