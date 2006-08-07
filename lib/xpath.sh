@@ -15,7 +15,7 @@ anchor2xpath() {
 	myanch=${myanch//chap/chapter\[}
 	myanch=${myanch//sect/section\[}
 	myanch=${myanch//pre/descendant::pre\[}
-	myanch=${myanch//fig/descendant::fig\[}
+	myanch=${myanch//fig/descendant::figure\[}
 	myanch=${myanch//_/\]\/}
 	myanch="${myanch}]"
 	myanch=${myanch//\[\]/\[1\]}
