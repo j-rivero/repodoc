@@ -6,9 +6,9 @@ MOD_NAME="sync"
 needlib docpath.sh xpath.sh xml.sh
 
 # Show module help
-mod_help () {
-
-	echo "${MOD_DESCRIPTION}
+mod_help() {
+	cat << EOH
+${MOD_DESCRIPTION}
 
 Usage: docman sync [params] doc
 
@@ -17,9 +17,10 @@ Run without params will sync version and date.
 params:
   --version  only sync version
   --date     only sync date"
+EOH
 }
 
-do_sync_date () {
+do_sync_date() {
 	local doc=${1} original_doc=${2} doc_type original_date local_date
 
 	doc_type=$(get-xmldoctype ${doc})
@@ -27,27 +28,25 @@ do_sync_date () {
 	original_date=$(doxpath "${original_doc}" "/${doc_type}/date/text()")
 	local_date=$(doxpath "${doc}" "/${doc_type}/date/text()")
 
-	if [[ ${original_date} == ${local_date} ]]; then
+	if [[ ${original_date} == ${local_date} ]] ; then
 		echo " - date: Already updated."
 		return 0
 	fi
 
 	set-xmltag "date" "${original_date}" "${doc}"
-
 	echo " - date: ${local_date} (old) >> ${original_date} (new)"
 
 	return 0
 }
 
-do_sync_version () {
+do_sync_version() {
 	local doc=${1} original_doc=${2} doc_type original_version local_version
 
 	doc_type=$(get-xmldoctype ${doc})
-
 	original_version=$(doxpath "${original_doc}" "/${doc_type}/version/text()")
 	local_version=$(doxpath "${doc}" "/${doc_type}/version/text()")
 
-	if [[ ${original_version} == ${local_version} ]]; then
+	if [[ ${original_version} == ${local_version} ]] ; then
 		echo " - version: Already updated."
 		return 0
 	fi
@@ -59,27 +58,29 @@ do_sync_version () {
 	return 0
 }
 
-exec_module () {
+exec_module() {
 	local sync_date=false sync_version=false \
-	dir doc doc_name doc_lang
+		dir doc doc_name doc_lang
 
 	# If there are no params, activate both
-	[[ -n ${1%%\-*} ]] &&  { sync_date=true; sync_version=true; }
+	[[ -n ${1%%\-*} ]] && { sync_date=true; sync_version=true; }
 
 	# Checking params
-	while [[ -n ${1} ]]; do
+	while [[ -n ${1} ]] ; do
 		case ${1} in
-			-d | --date)
+			-d|--date)
 				sync_date=true
 			;;
-			-v | --version)
+			-v|--version)
 				sync_version=true
 			;;
-			-*) # param not supported
+			-*)
+				# param not supported
 				echo "(EE) Param ${1} not supported."
 				exit -1
 			;;
-			*) # file to sync
+			*)
+				# file to sync
 				doc_name=${1##*/}
 				dir=$(build-full-path ${1})
 				doc=${dir}/${doc_name}
@@ -89,17 +90,16 @@ exec_module () {
 
 				echo "${doc_name} [${doc_lang}]"
 
-				if [[ ${doc_lang} == "en" ]]; then
+				if [[ ${doc_lang} == "en" ]] ; then
 					echo " - Original docs can not be synced."
 				else
-
 					original_doc=$(localize-path "${doc}" "en")
 					# Run syncs
-					if ${sync_version}; then
+					if ${sync_version} ; then
 						do_sync_version "${doc}" "${original_doc}"
 					fi
 
-					if ${sync_date}; then
+					if ${sync_date} ; then
 						do_sync_date "${doc}" "${original_doc}"
 					fi
 				fi
