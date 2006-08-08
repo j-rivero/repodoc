@@ -33,7 +33,7 @@ exec_module() {
 				langlink=$(localize-path "${linked}" "${LANGUAGE}")
 
 				# Does the langlink file/directory exist ?
-				if [[ -e ${langlink} ]]; then
+				if [[ -e ${langlink} ]] ; then
 					# Exists! give an error
 					retVal=2
 					out="${out},,,A doc translation for link: ${link} exists"'!'

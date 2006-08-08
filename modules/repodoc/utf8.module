@@ -11,7 +11,7 @@ exec_module() {
 
 	UTF=$(${EXTRA_DIR}/${UTFCHECKER} ${DOC} 2>&1)
 
-	if [[ -z ${UTF} ]]; then
+	if [[ -z ${UTF} ]] ; then
 		return 0
 	else
 		OUTPUT_TEXT="${UTF}"

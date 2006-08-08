@@ -18,7 +18,7 @@ exec_module() {
 	# The correct tag should be
 	CORRECT_LINK=${WWW_DIR}"/"${DOC_NAME}
 
-	if [[ ${CORRECT_LINK} != ${LINK_ATTRIBUTE} ]]; then
+	if [[ ${CORRECT_LINK} != ${LINK_ATTRIBUTE} ]] ; then
 		# Path is not right
 		OUTPUT_TEXT="The attribute link on <${DOC_TYPE} link=\"${LINK_ATTRIBUTE}\" ...> is wrong.
 It should point to the absolute path (link=\"${CORRECT_LINK}\")"

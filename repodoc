@@ -61,7 +61,7 @@ Result: ${OUTPUT_RESULT}
 EOF
 
 		# Checking if output is not empty
-		if [[ -n ${OUTPUT_TEXT} ]]; then
+		if [[ -n ${OUTPUT_TEXT} ]] ; then
 			# Output is just plain text
 			cat <<- EOF >> ${REPODOC_LOG}
 		Reason:

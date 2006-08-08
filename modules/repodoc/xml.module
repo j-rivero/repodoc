@@ -11,7 +11,7 @@ exec_module() {
 
 	TMP_VALID=$(${VALIDATOR_COMMAND} ${DOC} 2>&1)
 
-	if [[ -z ${TMP_VALID} ]]; then
+	if [[ -z ${TMP_VALID} ]] ; then
 		return 0
 	else
 		OUTPUT_TEXT=${TMP_VALID}

@@ -17,7 +17,7 @@ exec_module() {
 	# The correct tag should be
 	CORRECT_LINK=${WWW_DIR}"/metadoc.xml"
 
-	if [[ ${CORRECT_LINK} != ${LINK_ATTRIBUTE} ]]; then
+	if [[ ${CORRECT_LINK} != ${LINK_ATTRIBUTE} ]] ; then
 		# Path is not right
 		# Building log message
 		OUTPUT_TEXT="The attribute metadoc on ${LINK_ATTRIBUTE} is

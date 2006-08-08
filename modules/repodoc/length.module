@@ -27,7 +27,7 @@ exec_module() {
 		/^.\{81,\}$/{=;p}
 	' ${DOC} | sed -f "${LIB_DIR}/massagelinenumbers.sed")
 
-	if [[ -z ${LONG_LINES} ]]; then
+	if [[ -z ${LONG_LINES} ]] ; then
 		return 0
 	else
 		OUTPUT_TEXT="${LONG_LINES}"

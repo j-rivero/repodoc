@@ -24,9 +24,9 @@ exec_module() {
 	#Extract date from doc analysed
 	DOC_DATE=$(doxpath ${DOC} "/${DOC_TYPE}/date/text()")
 
-	if [[ ${ORIGINAL_VERSION} == ${DOC_VERSION} ]]; then
+	if [[ ${ORIGINAL_VERSION} == ${DOC_VERSION} ]] ; then
 		# Dates are synced, still to check dates
-		if [[ ${ORIGINAL_DATE} == ${DOC_DATE} ]]; then
+		if [[ ${ORIGINAL_DATE} == ${DOC_DATE} ]] ; then
 			# Version and date are synced
 			OUTPUT_TEXT=""
 			return 0

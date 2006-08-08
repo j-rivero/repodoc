@@ -33,7 +33,7 @@ do_bump_date() {
 	# Today
 	bump_date=$(date +%Y-%m-%d)
 
-	if [[ ${current_date} == ${bump_date} ]]; then
+	if [[ ${current_date} == ${bump_date} ]] ; then
 		echo " - date: Already bumped."
 		return 0
 	fi
