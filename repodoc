@@ -96,8 +96,8 @@ show_log() {
 #
 
 # Knowing Script dir beware of symlink
-[[ -L ${0} ]] && TMP_SCRIPT_DIR=$(readlink ${0}) || TMP_SCRIPT_DIR=${0}
-SCRIPT_DIR="${TMP_SCRIPT_DIR%/*}"
+[[ -L ${0} ]] && SCRIPT_DIR=$(readlink ${0}) || SCRIPT_DIR=${0}
+SCRIPT_DIR="${SCRIPT_DIR%/*}"
 
 # Paths
 MOD_DIR="${SCRIPT_DIR}/modules/repodoc"
@@ -251,5 +251,4 @@ while [[ -n $1 ]] ; do
 
 	# Show the log if needed
 	${VIEW_LOG} && show_log
-
 done

@@ -36,8 +36,8 @@ show_command_help() {
 #
 
 # Knowing Script dir beware of symlink
-[[ -L ${0} ]] && TMP_SCRIPT_DIR=$(readlink ${0}) || TMP_SCRIPT_DIR=${0}
-SCRIPT_DIR="${TMP_SCRIPT_DIR%/*}"
+[[ -L ${0} ]] && SCRIPT_DIR=$(readlink ${0}) || SCRIPT_DIR=${0}
+SCRIPT_DIR="${SCRIPT_DIR%/*}"
 
 # Paths
 LIB_DIR="${SCRIPT_DIR}/lib"
