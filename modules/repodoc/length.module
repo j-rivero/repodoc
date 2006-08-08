@@ -22,6 +22,8 @@ exec_module() {
 		/<!-- \$Header:/d
 		/^link="[^"]*"$/d
 		/^<title>/d
+		/^<guide .*>$/d
+		/^[[:blank:]]*<uri>[^<]*<\/uri>$/d
 		/^.\{81,\}$/{=;p}
 	' ${DOC} | sed -f "${LIB_DIR}/massagelinenumbers.sed")
 
