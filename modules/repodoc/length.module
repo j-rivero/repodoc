@@ -10,12 +10,12 @@ exec_module() {
 	local LONG_LINES
 
 	# Making exceptions using sed:
-	# 1. <Header
-	# 2. <comment> labels
-	# 3. link= attributes
-	# 4. Code lines using # <i>
-	# 5. Code lines using $ <i>
-	# 6. <pre caption= headers
+	# 1. <pre> blocks are ignored
+	# 2. <!-- Header lines
+	# 3. Big link=""'s are allowed
+	# 4. <title>'s can be very long
+	# 5. <guide> lines
+	# 6. Big <uri>something</uri> lines (allowing a possible trailing dot)
 
 	LONG_LINES=$(sed -n -e '
 		/^<pre .*>/,/^<\/pre>/d
@@ -23,7 +23,7 @@ exec_module() {
 		/^link="[^"]*"$/d
 		/^<title>/d
 		/^<guide .*>$/d
-		/^[[:blank:]]*<uri>[^<]*<\/uri>$/d
+		/^[[:blank:]]*<uri>[^<]*<\/uri>\.\?$/d
 		/^.\{81,\}$/{=;p}
 	' ${DOC} | sed -f "${LIB_DIR}/massagelinenumbers.sed")
 
