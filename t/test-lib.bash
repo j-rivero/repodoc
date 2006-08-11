@@ -29,7 +29,7 @@ test_run__() {
 
 test_expect_value() {
 	local r=$(test_run__ "${2}" "${3}")
-	if [[ ${r} != ${1} ]] ; then
+	if [[ "${r}" != "${1}" ]] ; then
 		((testf++))
 		error "While running ..."
 		echo "${3}"
