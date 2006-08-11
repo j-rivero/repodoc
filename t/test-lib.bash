@@ -33,7 +33,10 @@ test_expect_value() {
 		((testf++))
 		error "While running ..."
 		echo "${3}"
-		error "... expected '${1}', got '${r}'"
+		error "... expected:"
+		echo "${1}"
+		error "... got:"
+		echo "${r}"
 	else
 		((testp++))
 	fi
