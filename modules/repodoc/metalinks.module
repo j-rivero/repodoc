@@ -3,35 +3,38 @@
 
 needlib xpath.sh docpath.sh
 
-MODULE_NAME="Language Links"
-KEYWORDS="* -metadoc"
+MODULE_NAME="Metadoc links"
+KEYWORDS="metadoc"
 NEED_TRANSLATION=true
 
 LEVEL="BASIC"
 
 exec_module() {
-	local link linked LINKS langlink \
+	local link flink LINKS langlink \
 		out retVal=0
 
-	# Call to doxpath
-	LINKS=$(doxpath ${DOC} '//uri/@link' '//uri[not(@link)]/text()')
+        # Call to doxpath
+	LINKS=$(doxpath "${DOC}" "/metadoc/files/file/text()")
 
 	# Check links
 	for link in ${LINKS} ; do
+		# Building full link needed by "-f" and localize-path
+		flink="${CVS_ROOT}${link}"
+
+		# 1. First Check. Does the link exist?
+		if [[ ! -f ${flink} ]] ; then
+			# Link doesn't exists
+			retVal=2
+			out="${out},,,The link: ${link} doesn't exists"'!'
+		fi
+
+		# 2. Second Check. Does the link point to the proper
+		# translation?
 		case ${link} in
 			*/en/*)
-				# If link is a dir, add index.xml as page
-				[[ -n ${link%%*.xml} ]] && link=${link}index.xml
-
-				# Gentoo link, internal, check it
-				linked=${CVS_ROOT}${link%%#*}
-
-				# Clear internal anchors in links, we don't need it
-				linked=${linked%%\?*}
-
 				# Candidate language link
-				langlink=$(localize-path "${linked}" "${LANGUAGE}")
-
+				langlink=$(localize-path "${flink}" "${LANGUAGE}")
+				#echo $link $langlink
 				# Does the langlink file/directory exist ?
 				if [[ -e ${langlink} ]] ; then
 					# Exists! give an error

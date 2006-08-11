@@ -4,7 +4,7 @@
 needlib xpath.sh
 
 MODULE_NAME="Links"
-KEYWORDS="*"
+KEYWORDS="* -metadoc"
 
 LEVEL="BASIC"
 
