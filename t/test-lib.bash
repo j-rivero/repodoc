@@ -7,6 +7,10 @@ say() {
 	echo "* ${*}" >&2
 }
 
+error() {
+	echo "(EE) ${*}" >&2
+}
+
 die() {
 	echo "Fatal Error: ${1:-(no message provided)}" >&2
 	exit 1
@@ -24,8 +28,12 @@ test_run__() {
 }
 
 test_expect_value() {
-	if [[ $(test_run__ "${2}" "${3}") != ${1} ]] ; then
+	local r=$(test_run__ "${2}" "${3}")
+	if [[ ${r} != ${1} ]] ; then
 		((testf++))
+		error "While running ..."
+		echo "${3}"
+		error "... expected '${1}', got '${r}'"
 	else
 		((testp++))
 	fi
@@ -37,12 +45,18 @@ test_expect_pass() {
 		((testp++))
 	else
 		((testf++))
+		error "While running ..."
+		echo "${2}"
+		error "... got FALSE, expected TRUE:"
 	fi
 }
 
 test_expect_fail() {
 	if test_run_ "${1}" "${2}" ; then
 		((testf++))
+		error "While running ..."
+		echo "${2}"
+		error "... got TRUE, expected FALSE:"
 	else
 		((testp++))
 	fi
@@ -63,9 +77,9 @@ test_expect_error() {
 test_done() {
 	local alltests=$((testp + testf))
 	if [[ ${testf} == 0 ]] ; then
-		say "all ${alltests} test(s) passed"
+		say "all ${alltests} test(s) passed" >&2
 	else
-		say "${testf} out of ${alltests} test(s) failed"
+		say "${testf} out of ${alltests} test(s) failed" >&2
 		die "All ${alltests} test(s) have to pass"
 	fi
 }
