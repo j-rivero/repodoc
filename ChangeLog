@@ -4,6 +4,49 @@
 # [MOD] - Modified feature
 # [FIX] - Fixed a bug
 
+* 0.1_beta3 ( 2006-12-08 )
+
+	- [NEW] Docman tool. The docman tool is just a wrapper, with no
+	  special functionality.  It works using modules, which are inside
+	  modules/docman. Modules have the really useful code. See each one
+	  to know what they do.
+
+	- [NEW] "sync" docman-module.  It can sync version and/or date
+	  tags from an english original doc to a translation. It works just
+	  copying and overwriting translation content tag with the original
+	  doc one's.
+
+	- [NEW] "bump" docman-module. Bumps version and date tags.
+	  The module is able to bump date and/or version xml tags. Date
+	  will be set to current date and version will be updated depends
+	  on the doc numbering schema. Can hadle "x.x.x" ,"x.x" and just
+	  "x" schemas.
+
+	- [NEW] "get" docman-module. New docman GET module. Download xml
+	  doc source from gentoo.org. The module download the doc xml code
+	  direct from gentoo.org. It  uses ?passthru=1 option. Can be used
+	  with a direct url or by  default, with a --lang attribute and
+	  /doc/ domain.
+
+	- [NEW] langlinks repodoc-module. It takes care of check if gentoo
+	  links in translations point to an english doc and warn if a
+	  translation for the linked doc is available.
+
+	- [NEW] Support for use REPODOC_HOME (if set) instead of HOME to
+	  save data. Dedicated to our Soc dev "Anant Narayanan" ;)
+
+	- [NEW] docpath lib. implements operations related with extracting
+	  info from the doc path.
+
+	- [MOD] Lots of code cleaning and fixes, thanks to ferdy, as
+	  usual.
+
+	- [FIX] figure bug in links module. Thanks to rane@gentoo.org.
+
+	- [FIX] Fix repodoc length.module. Skip checking <guide> and some
+	  <uri> lines. Thanks to rane@gentoo.org for reporting and to
+	  Jacobo G.Polavieja <jacobopolavieja@gmail.com> for fixing.
+
 * 0.1_beta2 ( 2006-17-06 )
 
 	- [NEW] Dyn-meta module. Checks whether dynamic generated documents
@@ -58,7 +101,7 @@
 
 	- [NEW] Added new module "Links". It checks that doc links point to
 	  existing files. FOSDEM hacking product (tm).
-	
+
 	- [NEW] Added new module "up2date". It takes care of check if date
 	  and version tags are the same on the original and translation.
 
