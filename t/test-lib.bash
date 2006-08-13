@@ -90,4 +90,6 @@ test_done() {
 testp=0
 testf=0
 
+FILESDIR="${0%%-*}"
+
 echo "*** ${0%.bash} ***"
