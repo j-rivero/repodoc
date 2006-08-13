@@ -1,0 +1,334 @@
+/
+guide
+  title
+  abstract
+  license
+  version
+  date
+  chapter 1
+    title
+    section 1 [ chapter 1 ]
+      title
+      body
+        p 1 [ chapter 1 , section 1 ]
+        ul 1 [ chapter 1 , section 1 ]
+          li [ chapter 1 , section 1 ]
+            uri [ chapter 1 , section 1 ]
+          li [ chapter 1 , section 1 ]
+            uri [ chapter 1 , section 1 ]
+    section 2 [ chapter 1 ]
+      title
+      body
+        ul 1 [ chapter 1 , section 2 ]
+          li [ chapter 1 , section 2 ]
+            uri [ chapter 1 , section 2 ]
+          li [ chapter 1 , section 2 ]
+            uri [ chapter 1 , section 2 ]
+          li [ chapter 1 , section 2 ]
+            uri [ chapter 1 , section 2 ]
+          li [ chapter 1 , section 2 ]
+            uri [ chapter 1 , section 2 ]
+          li [ chapter 1 , section 2 ]
+            uri [ chapter 1 , section 2 ]
+          li [ chapter 1 , section 2 ]
+            uri [ chapter 1 , section 2 ]
+          li [ chapter 1 , section 2 ]
+            uri [ chapter 1 , section 2 ]
+          li [ chapter 1 , section 2 ]
+            uri [ chapter 1 , section 2 ]
+          li [ chapter 1 , section 2 ]
+            uri [ chapter 1 , section 2 ]
+          li [ chapter 1 , section 2 ]
+            uri [ chapter 1 , section 2 ]
+          li [ chapter 1 , section 2 ]
+            uri [ chapter 1 , section 2 ]
+          li [ chapter 1 , section 2 ]
+            uri [ chapter 1 , section 2 ]
+          li [ chapter 1 , section 2 ]
+            uri [ chapter 1 , section 2 ]
+    section 3 [ chapter 1 ]
+      title
+      body
+        ul 1 [ chapter 1 , section 3 ]
+          li [ chapter 1 , section 3 ]
+            uri [ chapter 1 , section 3 ]
+          li [ chapter 1 , section 3 ]
+            uri [ chapter 1 , section 3 ]
+          li [ chapter 1 , section 3 ]
+            uri [ chapter 1 , section 3 ]
+          li [ chapter 1 , section 3 ]
+            uri [ chapter 1 , section 3 ]
+          li [ chapter 1 , section 3 ]
+            uri [ chapter 1 , section 3 ]
+          li [ chapter 1 , section 3 ]
+            uri [ chapter 1 , section 3 ]
+          li [ chapter 1 , section 3 ]
+            uri [ chapter 1 , section 3 ]
+    section 4 [ chapter 1 ]
+      title
+      body
+        ul 1 [ chapter 1 , section 4 ]
+          li [ chapter 1 , section 4 ]
+            uri [ chapter 1 , section 4 ]
+          li [ chapter 1 , section 4 ]
+            uri [ chapter 1 , section 4 ]
+          li [ chapter 1 , section 4 ]
+            uri [ chapter 1 , section 4 ]
+          li [ chapter 1 , section 4 ]
+            uri [ chapter 1 , section 4 ]
+          li [ chapter 1 , section 4 ]
+            uri [ chapter 1 , section 4 ]
+          li [ chapter 1 , section 4 ]
+            uri [ chapter 1 , section 4 ]
+    section 5 [ chapter 1 ]
+      title
+      body
+        ul 1 [ chapter 1 , section 5 ]
+          li [ chapter 1 , section 5 ]
+            uri [ chapter 1 , section 5 ]
+    section 6 [ chapter 1 ]
+      title
+      body
+        ul 1 [ chapter 1 , section 6 ]
+          li [ chapter 1 , section 6 ]
+            uri [ chapter 1 , section 6 ]
+          li [ chapter 1 , section 6 ]
+            uri [ chapter 1 , section 6 ]
+          li [ chapter 1 , section 6 ]
+            uri [ chapter 1 , section 6 ]
+    section 7 [ chapter 1 ]
+      title
+      body
+        ul 1 [ chapter 1 , section 7 ]
+          li [ chapter 1 , section 7 ]
+            uri [ chapter 1 , section 7 ]
+          li [ chapter 1 , section 7 ]
+            uri [ chapter 1 , section 7 ]
+          li [ chapter 1 , section 7 ]
+            uri [ chapter 1 , section 7 ]
+  chapter 2
+    title
+    section 1 [ chapter 2 ]
+      title
+      body
+        p 1 [ chapter 2 , section 1 ]
+    section 2 [ chapter 2 ]
+      title
+      body
+        p 1 [ chapter 2 , section 2 ]
+        p 2 [ chapter 2 , section 2 ]
+        p 3 [ chapter 2 , section 2 ]
+  chapter 3
+    title
+    section 1 [ chapter 3 ]
+      title
+      body
+        p 1 [ chapter 3 , section 1 ]
+        p 2 [ chapter 3 , section 1 ]
+    section 2 [ chapter 3 ]
+      title
+      body
+        p 1 [ chapter 3 , section 2 ]
+    section 3 [ chapter 3 ]
+      title
+      body
+        p 1 [ chapter 3 , section 3 ]
+        pre 1 [ chapter 3 , section 3 ]
+        p 2 [ chapter 3 , section 3 ]
+    section 4 [ chapter 3 ]
+      title
+      body
+        p 1 [ chapter 3 , section 4 ]
+        pre 1 [ chapter 3 , section 4 ]
+    section 5 [ chapter 3 ]
+      title
+      body
+        p 1 [ chapter 3 , section 5 ]
+        p 2 [ chapter 3 , section 5 ]
+    section 6 [ chapter 3 ]
+      title
+      body
+        p 1 [ chapter 3 , section 6 ]
+    section 7 [ chapter 3 ]
+      title
+      body
+        p 1 [ chapter 3 , section 7 ]
+        pre 1 [ chapter 3 , section 7 ]
+        p 2 [ chapter 3 , section 7 ]
+    section 8 [ chapter 3 ]
+      title
+      body
+        p 1 [ chapter 3 , section 8 ]
+        pre 1 [ chapter 3 , section 8 ]
+    section 9 [ chapter 3 ]
+      title
+      body
+        p 1 [ chapter 3 , section 9 ]
+        p 2 [ chapter 3 , section 9 ]
+        ul 1 [ chapter 3 , section 9 ]
+          li [ chapter 3 , section 9 ]
+            c [ chapter 3 , section 9 ]
+            c [ chapter 3 , section 9 ]
+            c [ chapter 3 , section 9 ]
+            c [ chapter 3 , section 9 ]
+            c [ chapter 3 , section 9 ]
+            c [ chapter 3 , section 9 ]
+          li [ chapter 3 , section 9 ]
+            c [ chapter 3 , section 9 ]
+            c [ chapter 3 , section 9 ]
+            c [ chapter 3 , section 9 ]
+            c [ chapter 3 , section 9 ]
+          li [ chapter 3 , section 9 ]
+            c [ chapter 3 , section 9 ]
+            path [ chapter 3 , section 9 ]
+          li [ chapter 3 , section 9 ]
+            c [ chapter 3 , section 9 ]
+            c [ chapter 3 , section 9 ]
+            c [ chapter 3 , section 9 ]
+            c [ chapter 3 , section 9 ]
+          li [ chapter 3 , section 9 ]
+            c [ chapter 3 , section 9 ]
+            path [ chapter 3 , section 9 ]
+            c [ chapter 3 , section 9 ]
+            c [ chapter 3 , section 9 ]
+            c [ chapter 3 , section 9 ]
+            c [ chapter 3 , section 9 ]
+          li [ chapter 3 , section 9 ]
+            c [ chapter 3 , section 9 ]
+            path [ chapter 3 , section 9 ]
+            c [ chapter 3 , section 9 ]
+            c [ chapter 3 , section 9 ]
+            c [ chapter 3 , section 9 ]
+    section 10 [ chapter 3 ]
+      title
+      body
+        p 1 [ chapter 3 , section 10 ]
+        p 2 [ chapter 3 , section 10 ]
+        p 3 [ chapter 3 , section 10 ]
+    section 11 [ chapter 3 ]
+      title
+      body
+        p 1 [ chapter 3 , section 11 ]
+        p 2 [ chapter 3 , section 11 ]
+        p 3 [ chapter 3 , section 11 ]
+        p 4 [ chapter 3 , section 11 ]
+    section 12 [ chapter 3 ]
+      title
+      body
+        p 1 [ chapter 3 , section 12 ]
+        pre 1 [ chapter 3 , section 12 ]
+        pre 2 [ chapter 3 , section 12 ]
+        p 2 [ chapter 3 , section 12 ]
+    section 13 [ chapter 3 ]
+      title
+      body
+        p 1 [ chapter 3 , section 13 ]
+        p 2 [ chapter 3 , section 13 ]
+        pre 1 [ chapter 3 , section 13 ]
+        p 3 [ chapter 3 , section 13 ]
+        pre 2 [ chapter 3 , section 13 ]
+        p 4 [ chapter 3 , section 13 ]
+  chapter 4
+    title
+    section 1 [ chapter 4 ]
+      title
+      body
+        p 1 [ chapter 4 , section 1 ]
+        p 2 [ chapter 4 , section 1 ]
+        p 3 [ chapter 4 , section 1 ]
+    section 2 [ chapter 4 ]
+      title
+      body
+        p 1 [ chapter 4 , section 2 ]
+    section 3 [ chapter 4 ]
+      title
+      body
+        p 1 [ chapter 4 , section 3 ]
+    section 4 [ chapter 4 ]
+      title
+      body
+        p 1 [ chapter 4 , section 4 ]
+    section 5 [ chapter 4 ]
+      title
+      body
+        p 1 [ chapter 4 , section 5 ]
+    section 6 [ chapter 4 ]
+      title
+      body
+        p 1 [ chapter 4 , section 6 ]
+    section 7 [ chapter 4 ]
+      title
+      body
+        p 1 [ chapter 4 , section 7 ]
+  chapter 5
+    title
+    section 1 [ chapter 5 ]
+      title
+      body
+        p 1 [ chapter 5 , section 1 ]
+        pre 1 [ chapter 5 , section 1 ]
+    section 2 [ chapter 5 ]
+      title
+      body
+        p 1 [ chapter 5 , section 2 ]
+        pre 1 [ chapter 5 , section 2 ]
+    section 3 [ chapter 5 ]
+      title
+      body
+        p 1 [ chapter 5 , section 3 ]
+    section 4 [ chapter 5 ]
+      title
+      body
+        p 1 [ chapter 5 , section 4 ]
+        p 2 [ chapter 5 , section 4 ]
+    section 5 [ chapter 5 ]
+      title
+      body
+        p 1 [ chapter 5 , section 5 ]
+        pre 1 [ chapter 5 , section 5 ]
+        p 2 [ chapter 5 , section 5 ]
+        pre 2 [ chapter 5 , section 5 ]
+    section 6 [ chapter 5 ]
+      title
+      body
+        p 1 [ chapter 5 , section 6 ]
+        pre 1 [ chapter 5 , section 6 ]
+  chapter 6
+    title
+    section 1 [ chapter 6 ]
+      title
+      body
+        p 1 [ chapter 6 , section 1 ]
+  chapter 7
+    title
+    section 1 [ chapter 7 ]
+      title
+      body
+        p 1 [ chapter 7 , section 1 ]
+    section 2 [ chapter 7 ]
+      title
+      body
+        p 1 [ chapter 7 , section 2 ]
+    section 3 [ chapter 7 ]
+      title
+      body
+        p 1 [ chapter 7 , section 3 ]
+        pre 1 [ chapter 7 , section 3 ]
+        p 2 [ chapter 7 , section 3 ]
+        pre 2 [ chapter 7 , section 3 ]
+        p 3 [ chapter 7 , section 3 ]
+  chapter 8
+    title
+    section 1 [ chapter 8 ]
+      title
+      body
+        p 1 [ chapter 8 , section 1 ]
+    section 2 [ chapter 8 ]
+      title
+      body
+        p 1 [ chapter 8 , section 2 ]
+        p 2 [ chapter 8 , section 2 ]
+    section 3 [ chapter 8 ]
+      title
+      body
+        p 1 [ chapter 8 , section 3 ]
