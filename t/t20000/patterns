@@ -1,0 +1,3 @@
+special all /\(sp[e]*ci[a-z]l\)/{=;s--\U\1\E-gp} simple
+basic es malo
+basic en bad
