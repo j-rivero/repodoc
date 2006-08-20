@@ -17,30 +17,38 @@ die() {
 }
 
 test_run_() {
-	say "${1}"
+	say "  $((testf + testp)): ${1}"
 	# FIXME: Need to use something different for debugging
 	eval "${2}" >/dev/null 2>/dev/null
 }
 
 test_run__() {
-	say "${1}"
+	say "  $((testf + testp)): ${1}"
 	eval "${2}" 2>&1
 }
 
-test_expect_value() {
-	local r=$(test_run__ "${2}" "${3}")
-	if [[ "${r}" != "${1}" ]] ; then
+test_expect__() {
+	if [[ "${1}" != "${2}" ]] ; then
 		((testf++))
 		error "While running ..."
 		echo "${3}"
 		error "... expected:"
 		echo "${1}"
 		error "... got:"
-		echo "${r}"
+		echo "${2}"
 	else
 		((testp++))
 	fi
-	return $?
+}
+
+test_expect_return() {
+	test_run_ "${2}" "${3}"
+	test_expect__ "${1}" "${?}" "${3}"
+}
+
+test_expect_value() {
+	local r=$(test_run__ "${2}" "${3}")
+	test_expect__ "${1}" "${r}" "${3}"
 }
 
 test_expect_pass() {
@@ -66,15 +74,15 @@ test_expect_fail() {
 }
 
 test_expect_ok() {
-	test_expect_value 0 "${1}" "${2}"
+	test_expect_return 0 "${1}" "${2}"
 }
 
 test_expect_warning() {
-	test_expect_value 1 "${1}" "${2}"
+	test_expect_return 1 "${1}" "${2}"
 }
 
 test_expect_error() {
-	test_expect_value 2 "${1}" "${2}"
+	test_expect_return 2 "${1}" "${2}"
 }
 
 test_done() {
