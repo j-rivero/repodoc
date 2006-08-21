@@ -1,0 +1,10 @@
+<pre caption="something">
+    This one should be skipped
+</pre>
+
+However, this line is long enough to get caught by the module. So we should get a warning
+here.
+
+<pre caption="something different">
+    And this one too.
+</pre>

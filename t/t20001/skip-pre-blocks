@@ -1,0 +1,6 @@
+<pre caption="something">
+    This lines should be ignored, it doesn't matter how long they are, GDP developers are
+    allowed to do this kind of stuff to format code / output / commands and so on.
+</pre>
+
+So this file should pass tests perfectly.
