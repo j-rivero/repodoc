@@ -17,7 +17,7 @@ die() {
 }
 
 test_run_() {
-	say "  $((testf + testp)): ${1}"
+	say "  $((testf + testp + 1)): ${1}"
 	# FIXME: Need to use something different for debugging
 	eval "${2}" >/dev/null 2>/dev/null
 }
