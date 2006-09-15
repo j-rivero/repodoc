@@ -23,7 +23,7 @@ test_run_() {
 }
 
 test_run__() {
-	say "  $((testf + testp)): ${1}"
+	say "  $((testf + testp + 1)): ${1}"
 	eval "${2}" 2>&1
 }
 
