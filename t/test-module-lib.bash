@@ -19,6 +19,8 @@ case ${0} in
 	;;
 esac
 
+EXTRA_DIR="../extras"
+
 test_module_expect_pass() {
 	[[ -n ${2} ]] && DOC="${FILESDIR}"/"${2}"
 	test_expect_pass "${1}" 'exec_module'
@@ -43,4 +45,3 @@ test_module_expect_error() {
 	[[ -n ${2} ]] && DOC="${FILESDIR}"/"${2}"
 	test_expect_return 2 "${1}" 'exec_module'
 }
-
