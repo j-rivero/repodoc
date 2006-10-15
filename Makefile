@@ -6,3 +6,8 @@ all:
 
 check:
 	$(MAKE) -C t
+
+clean:
+	$(MAKE) -C extras clean
+
+.PHONY: all check clean
