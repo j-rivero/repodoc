@@ -10,8 +10,6 @@ LEVEL="BASIC"
 NEED_TRANSLATION=true
 
 exec_module() {
-	local TMP_LANG
-
 	# Check the doc to find if lang attribute is set on guide label
 	if [[ -z $(get-xmlattribute guide lang "${DOC}") ]] ; then
 		OUTPUT_TEXT="Your guide link should use the attribute lang=\"${LANGUAGE}\""
