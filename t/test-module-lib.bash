@@ -3,6 +3,7 @@
 # Copyright 2005-2006 The RepoDoc Team
 #  - API and ideas (not actual code) taken from Git's test-suite
 
+EXTRA_DIR="../extras"
 LIB_DIR="../lib/"
 MODULE_FILE=${0%.bash}
 MODULE_FILE=${MODULE_FILE#*-}.module
@@ -18,8 +19,6 @@ case ${0} in
 		source ../modules/docman/"${MODULE_FILE}"
 	;;
 esac
-
-EXTRA_DIR="../extras"
 
 test_module_expect_pass() {
 	[[ -n ${2} ]] && DOC="${FILESDIR}"/"${2}"
