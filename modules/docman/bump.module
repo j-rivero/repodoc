@@ -99,7 +99,7 @@ exec_module() {
 			mid=false minor=true dir doc doc_name doc_lang
 
 	# If there are no params, activate both
-	[[ -n ${1%%\-*} ]] &&  { bump_date=true; bump_version=true; }
+	[[ -n ${1%%\-*} ]] && { bump_date=true; bump_version=true; }
 
 	# Checking params
 	while [[ -n ${1} ]] ; do
