@@ -11,9 +11,9 @@ LEVEL="BASIC"
 
 exec_module() {
 	local link linked LINKS langlink \
-	      out retVal=0
+		out retVal=0
 
-        # Call to doxpath
+	# Call to doxpath
 	LINKS=$(doxpath ${DOC} '//uri/@link' '//uri[not(@link)]/text()')
 
 	# Check links
