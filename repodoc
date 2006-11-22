@@ -91,67 +91,10 @@ show_log() {
 	echo
 }
 
+# ------
+# CHECK DOC Function. Private
 #
-# MAIN CODE
-# Program starts here
-#
-
-# Knowing Script dir beware of symlink
-[[ -L ${0} ]] && SCRIPT_DIR=$(readlink ${0}) || SCRIPT_DIR=${0}
-SCRIPT_DIR="${SCRIPT_DIR%/*}"
-
-# Paths
-MOD_DIR="${SCRIPT_DIR}/modules/repodoc"
-EXTRA_DIR="${SCRIPT_DIR}/extras"
-LIB_DIR="${SCRIPT_DIR}/lib"
-MOD_COMM="${MOD_DIR}/commons"
-MOD_TRANS="${MOD_DIR}/trans"
-MOD_HAND="${MOD_DIR}/handbook"
-REPO_DIR="${REPODOC_HOME:-${HOME}}/.repodoc"
-REPO_TMP_DIR="${REPO_DIR}/tmp"
-REPO_CONF_DIR="${REPO_DIR}/config"
-REPODOC_LOG="${REPO_DIR}/repodoc.log"
-
-# Misc vars
-COLS=$(stty size)
-COLS=${COLS##* }
-
-# Options by default
-SHOW_INFO=true
-SHOW_ALL_RESULTS=true
-GENERATE_LOG=true
-
-# Importing libs
-source "${LIB_DIR}/libcore.sh"
-needlib colors.sh xpath.sh xml.sh docpath.sh
-
-# If no args, show usage
-[[ $# -eq 0 ]] && { show_version_usage; exit 0; }
-
-# Check version/help and specific options request
-case $1 in
-	-v|--version)
-		echo "RepoDoc ${VERSION}"
-		exit 0
-	;;
-	-h|--help)
-		show_version_usage
-		exit 0
-	;;
-	-l|--list-mode)
-		SHOW_INFO=false
-		SHOW_ALL_RESULTS=false
-		GENERATE_LOG=false
-		shift
-	;;
-esac
-
-## Check every argument
-while [[ -n $1 ]] ; do
-	# Getting the doc_name and dir taking care of
-	# param as a dir (absolute or relative path)
-	# or as file.
-
+check() {
 	unset global_result
 
 	# Adjusting the main variables
@@ -252,4 +195,84 @@ while [[ -n $1 ]] ; do
 
 	# Show the log if needed
 	${VIEW_LOG} && show_log
+}
+
+# -----
+# CHECK LIST OF DOCS Function.
+#
+check_all() {
+	## Check every argument
+	while [[ -n ${1} ]] ; do
+		check ${1}
+		shift
+	done
+}
+
+#
+# MAIN CODE
+# Program starts here
+#
+
+# Knowing Script dir beware of symlink
+[[ -L ${0} ]] && SCRIPT_DIR=$(readlink ${0}) || SCRIPT_DIR=${0}
+SCRIPT_DIR="${SCRIPT_DIR%/*}"
+
+# Paths
+MOD_DIR="${SCRIPT_DIR}/modules/repodoc"
+EXTRA_DIR="${SCRIPT_DIR}/extras"
+LIB_DIR="${SCRIPT_DIR}/lib"
+MOD_COMM="${MOD_DIR}/commons"
+MOD_TRANS="${MOD_DIR}/trans"
+MOD_HAND="${MOD_DIR}/handbook"
+REPO_DIR="${REPODOC_HOME:-${HOME}}/.repodoc"
+REPO_TMP_DIR="${REPO_DIR}/tmp"
+REPO_CONF_DIR="${REPO_DIR}/config"
+REPODOC_LOG="${REPO_DIR}/repodoc.log"
+
+# Misc vars
+COLS=$(stty size)
+COLS=${COLS##* }
+
+# Options by default
+SHOW_INFO=true
+SHOW_ALL_RESULTS=true
+GENERATE_LOG=true
+
+# Importing libs
+source "${LIB_DIR}/libcore.sh"
+needlib colors.sh xpath.sh xml.sh docpath.sh
+
+# If no args, show usage
+[[ $# -eq 0 ]] && { show_version_usage; exit 0; }
+
+# Check version/help and specific options request
+# and generate DOC_LIST
+unset DOC_LIST
+while [[ -n ${1} ]] ; do
+	case $1 in
+		-v|--version)
+			echo "RepoDoc ${VERSION}"
+			exit 0
+		;;
+		-h|--help)
+			show_version_usage
+			exit 0
+		;;
+		-l|--list-mode)
+			SHOW_INFO=false
+			SHOW_ALL_RESULTS=false
+			GENERATE_LOG=false
+		;;
+		*)
+			if [[ -f ${1} ]] ; then
+				DOC_LIST="${DOC_LIST} ${1}"
+			else
+				echo >&2 "(EE) ${1} does not exist"
+				exit 1
+			fi
+		;;
+	esac
+	shift
 done
+
+check_all ${DOC_LIST}
