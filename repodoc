@@ -170,6 +170,10 @@ while [[ -n ${1} ]] ; do
 			show_version_usage
 			exit 0
 		;;
+		-o|--output)
+			REPO_OUT="${FRONTEND_DIR}/${2}"
+			shift
+		;;
 		-r|--raw)
 			REPO_OUT="none"
 		;;
@@ -186,6 +190,10 @@ while [[ -n ${1} ]] ; do
 done
 
 if [[ ${REPO_OUT} != "none" ]]; then
+	if ! [[ -x ${REPO_OUT} ]]; then
+		echo >&2 "(EE) ${REPO_OUT} does not exist"
+		exit 1
+	fi
 	( check_all ${DOC_LIST} | ${REPO_OUT} )
 else
 	check_all ${DOC_LIST}

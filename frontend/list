@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+###
+# List Mode parse
+#
+
+LIB_DIR="${0%/frontend/*}/lib"
+COLS=$(tput cols)
+
+# Importing libs
+source ${LIB_DIR}/frontend_core.sh
+source ${LIB_DIR}/colors.sh
+source ${LIB_DIR}/docpath.sh
+
+post_read_keys() {
+	local WWW_DIR
+	WWW_DIR=$(extract-web-dir ${DIR})
+	printf " * %-*s " $((COLS-10)) "${WWW_DIR}/${DOC_NAME}"
+	# Reset global_result
+	global_result=0
+}
+
+post_module_result() {
+	(( MOD_RESULT > global_result )) && global_result=${MOD_RESULT}
+}
+
+post_read_doc() {
+	result_output ${global_result}
+}
+
+init_frontend
