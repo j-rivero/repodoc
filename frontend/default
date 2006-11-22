@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+
+###
+# Default Mode parse
+#
+
+REPO_DIR="${REPODOC_HOME:-${HOME}}/.repodoc"
+REPODOC_LOG="${REPO_DIR}/repodoc.log"
+LIB_DIR="${0%/frontend/*}/lib"
+
+# Importing libs
+source ${LIB_DIR}/frontend_core.sh
+source ${LIB_DIR}/colors.sh
+source ${LIB_DIR}/docpath.sh
+
+show_log() {
+	local LOG_VIEWER TMP_OPT
+
+	# Set up the log viewer app
+	LOG_VIEWER="${PAGER:-less} ${REPODOC_LOG}"
+	#${REPODOC_LOG}
+
+	echo
+	echo -n "Do you want to see the error log? [y/N] "
+	read -n 1 TMP_OPT < /dev/tty
+	[[ ${TMP_OPT} = "y" ]] && ${LOG_VIEWER}
+	echo
+}
+
+post_read_keys() {
+	# Remove old log
+	[[ -f ${REPODOC_LOG} ]] && rm ${REPODOC_LOG}
+
+	echo " ---------- Info ------------------------------"
+	echo " Doc: ${DOC_NAME}"
+	echo " Dir: ${DIR}"
+	echo " Lang: ${LANGUAGE}"
+	echo -n " Trans: $(${TRANSLATION} && echo yes || echo no)"
+	ORIGINAL_DOC=$(localize-path "${DIR}/${DOC_NAME}" "en")
+	[[ -f ${ORIGINAL_DOC} ]] || echo -n " (OBSOLETE DOCUMENT)"
+	echo
+	echo " Doc-type: ${DOC_TYPE}"
+	echo " ----------------------------------------------"
+	echo
+}
+
+pre_module_result() {
+	printf " * Processing module %-10s " ${MOD_NAME}
+}
+
+post_module_result() {
+	if ! result_output ${MOD_RESULT}; then
+		cat << EOF >> ${REPODOC_LOG}
+------- Module ${MOD_NAME} -------
+Result: ${OUTPUT_RESULT}
+
+EOF
+		# Checking if output is not empty
+		if [[ -n ${MOD_OUTPUT} ]]; then
+			# Output is just plain text
+			cat <<- EOF >> ${REPODOC_LOG}
+		Reason:
+		${MOD_OUTPUT}
+		EOF
+		fi
+	fi
+}
+
+post_read_doc() {
+	if [[ -f ${REPODOC_LOG} ]]; then
+		show_log
+	fi
+	echo
+}
+
+init_frontend

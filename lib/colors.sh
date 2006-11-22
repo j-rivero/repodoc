@@ -37,3 +37,26 @@ blue() {
 white() {
 	echo -e "${WHITE}$*${OFF}"
 }
+
+# Format functions
+result_output() {
+        local res
+
+        case $1 in
+                0)
+                        OUTPUT_RESULT=ok
+                        res=$(green 'ok')
+                ;;
+                1)
+                        OUTPUT_RESULT=warning
+                        res=$(yellow '??')
+                ;;
+                2)
+                        OUTPUT_RESULT=critical
+                        res=$(red '!!')
+                ;;
+        esac
+
+        echo -e "[ ${res} ]"
+        return $1
+}

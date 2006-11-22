@@ -147,6 +147,9 @@ REPO_TMP_DIR="${REPO_DIR}/tmp"
 REPO_CONF_DIR="${REPO_DIR}/config"
 FRONTEND_DIR="${SCRIPT_DIR}/frontend"
 
+# Options by default
+REPO_OUT="${FRONTEND_DIR}/default"
+
 # Importing libs
 source "${LIB_DIR}/libcore.sh"
 needlib xpath.sh xml.sh docpath.sh boundary.sh
@@ -167,6 +170,9 @@ while [[ -n ${1} ]] ; do
 			show_version_usage
 			exit 0
 		;;
+		-r|--raw)
+			REPO_OUT="none"
+		;;
 		*)
 			if [[ -f ${1} ]] ; then
 				DOC_LIST="${DOC_LIST} ${1}"
@@ -179,4 +185,9 @@ while [[ -n ${1} ]] ; do
 	shift
 done
 
-check_all ${DOC_LIST}
+if [[ ${REPO_OUT} != "none" ]]; then
+	( check_all ${DOC_LIST} | ${REPO_OUT} )
+else
+	check_all ${DOC_LIST}
+fi
+
