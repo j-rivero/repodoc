@@ -23,93 +23,21 @@ EOH
 create_environment() {
 	# Create dirs. -p will create REPO_DIR if needed.
 	[[ -d ${REPO_TMP_DIR} ]] || mkdir -p "${REPO_TMP_DIR}"
-
-	# Remove old log
-	[[ -f ${REPODOC_LOG} ]] && rm ${REPODOC_LOG}
-}
-
-# ------
-# GENERATE OUTPUT Function. Private
-#
-generate_output() {
-	local res OUTPUT_RESULT
-
-	case $1 in
-		0)
-			OUTPUT_RESULT=ok
-			res=$(green 'ok')
-		;;
-		1)
-			OUTPUT_RESULT=warning
-			res=$(yellow '??')
-		;;
-		2)
-			OUTPUT_RESULT=critical
-			res=$(red '!!')
-		;;
-	esac
-
-	echo -e "[ ${res} ]"
-
-	# Log message
-	if ${GENERATE_LOG} ; then
-		# Module header
-		cat << EOF >> ${REPODOC_LOG}
-------- Module ${MODULE_NAME} -------
-Result: ${OUTPUT_RESULT}
-
-EOF
-
-		# Checking if output is not empty
-		if [[ -n ${OUTPUT_TEXT} ]] ; then
-			# Output is just plain text
-			cat <<- EOF >> ${REPODOC_LOG}
-		Reason:
-		${OUTPUT_TEXT}
-		EOF
-		fi
-
-		return $1
-	else
-		return 0
-	fi
-}
-
-# ------
-# SHOW LOG Function. Private
-#
-show_log() {
-	local LOG_VIEWER TMP_OPT
-
-	# Set up the log viewer app
-	LOG_VIEWER="${PAGER:-less} ${REPODOC_LOG}"
-
-	echo
-	echo -n "Do you want to see the error log? [y/N] "
-	read -n 1 TMP_OPT
-	[[ ${TMP_OPT} = "y" ]] && ${LOG_VIEWER}
-	echo
 }
 
 # ------
 # CHECK DOC Function. Private
 #
 check() {
-	unset global_result
+	local DOC_SUM DOC_NAME DIR DOC DOMAIN LANGUAGE TRANSLATION \
+		WWW_DIR CVS_ROOT DOC_TYPE ORIGINAL_DOC MOD \
+		needtest execmodule tmp_mod
 
 	# Adjusting the main variables
+	DOC_SUM=$(boundary ${1})
 	DOC_NAME=${1##*/}
 	DIR=$(build-full-path ${1})
 	DOC=${DIR}/${DOC_NAME}
-
-	shift
-
-	# Check if doc exists
-	if [[ ! -f ${DOC} ]] ; then
-		echo "Document Not Found!"
-		echo "${DOC_NAME} does not exist in ${DIR}"
-		continue
-	fi
 
 	# Starting environment and variables
 	create_environment
@@ -121,29 +49,20 @@ check() {
 	ORIGINAL_DOC=$(localize-path ${DOC} "en")
 	[[ "${LANGUAGE}" == "en" ]] && TRANSLATION=false || TRANSLATION=true
 
-	if ${SHOW_INFO} ; then
-		echo " ---------- Info ------------------------------"
-		echo "Doc: " ${DOC_NAME}
-		echo "Dir: " ${DIR}
-		echo "Lang: " ${LANGUAGE}
-		echo -n "Trans: " $(${TRANSLATION} && echo yes || echo no)
-		[[ -f ${ORIGINAL_DOC} ]] || echo -n " (OBSOLETE DOCUMENT)"
-		echo
-		echo "Doc-type: " ${DOC_TYPE}
-		#echo "www-dir: " $WWW_DIR
-		#echo "domain: " $DOMAIN
-		#echo "cvs_root: " $CVS_ROOT
+	echo ${DOC_SUM}
+	echo "DOC_NAME ${DOC_NAME}"
+	echo "DIR ${DIR}"
+	echo "LANGUAGE ${LANGUAGE}"
+	echo -n "TRANSLATION $(${TRANSLATION} && echo "true" || echo "false")"
+	#[[ -f ${ORIGINAL_DOC} ]] || echo -n " (OBSOLETE DOCUMENT)"
+	echo
+	echo "DOC_TYPE ${DOC_TYPE}"
+	#echo "WWW_DIR ${WWW_DIR}"
+	#echo "DOMAIN ${DOMAIN}"
+	#echo "CVS_ROOT ${CVS_ROOT}"
 
-		#echo "original_doc: " $ORIGINAL_DOC
-		#echo "Level: " $SCRIPT_LEVEL
-		echo " ----------------------------------------------"
-		echo
-	fi
-
-	${SHOW_ALL_RESULTS} || printf " * %-*s " $((COLS-10)) "${WWW_DIR}/${DOC_NAME}"
-
-	# Set up VIEW_LOG to "false" until an error appears
-	VIEW_LOG=false
+	#echo "ORIGINAL_DOC ${ORIGINAL_DOC}"
+	#echo "LEVEL ${SCRIPT_LEVEL}"
 
 	# Handling modules
 	for MOD in ${MOD_DIR}/* ; do
@@ -178,31 +97,30 @@ check() {
 		tmpmod=${MOD##*/}
 
 		if ${execmodule} ; then
-			${SHOW_ALL_RESULTS} && printf " * Processing module %-10s " ${tmpmod%.module}
+			echo ${DOC_SUM}
+			echo ${tmpmod%.module}
 			# Call exec_module (function from module). generate_output is
 			# a bit special since it propagates its argument as its exit status.
 			exec_module
-			result=$?
-			if ${SHOW_ALL_RESULTS} ; then
-				generate_output ${result} || VIEW_LOG=true
-			else
-				[[ ${result} -gt ${global_result:=0} ]] && global_result=${result}
-			fi
+			echo ${?}
+			[[ ! -z ${OUTPUT_TEXT} ]] && echo "${OUTPUT_TEXT}"
+			unset OUTPUT_TEXT
 		fi
+
 	done
-
-	${SHOW_ALL_RESULTS} || generate_output ${global_result} || VIEW_LOG=true
-
-	# Show the log if needed
-	${VIEW_LOG} && show_log
 }
 
 # -----
 # CHECK LIST OF DOCS Function.
 #
 check_all() {
+	local DOCS_SUM
+
+	DOCS_SUM=$(boundary "all ${*}")
+
 	## Check every argument
 	while [[ -n ${1} ]] ; do
+		echo ${DOCS_SUM}
 		check ${1}
 		shift
 	done
@@ -227,20 +145,11 @@ MOD_HAND="${MOD_DIR}/handbook"
 REPO_DIR="${REPODOC_HOME:-${HOME}}/.repodoc"
 REPO_TMP_DIR="${REPO_DIR}/tmp"
 REPO_CONF_DIR="${REPO_DIR}/config"
-REPODOC_LOG="${REPO_DIR}/repodoc.log"
-
-# Misc vars
-COLS=$(stty size)
-COLS=${COLS##* }
-
-# Options by default
-SHOW_INFO=true
-SHOW_ALL_RESULTS=true
-GENERATE_LOG=true
+FRONTEND_DIR="${SCRIPT_DIR}/frontend"
 
 # Importing libs
 source "${LIB_DIR}/libcore.sh"
-needlib colors.sh xpath.sh xml.sh docpath.sh
+needlib xpath.sh xml.sh docpath.sh boundary.sh
 
 # If no args, show usage
 [[ $# -eq 0 ]] && { show_version_usage; exit 0; }
@@ -257,11 +166,6 @@ while [[ -n ${1} ]] ; do
 		-h|--help)
 			show_version_usage
 			exit 0
-		;;
-		-l|--list-mode)
-			SHOW_INFO=false
-			SHOW_ALL_RESULTS=false
-			GENERATE_LOG=false
 		;;
 		*)
 			if [[ -f ${1} ]] ; then
