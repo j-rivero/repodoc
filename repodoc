@@ -13,7 +13,12 @@ The RepoDoc Tool version ${VERSION}
 Distributed under the terms of the GPLv2
 Copyright 2005-2006 The RepoDoc Team
 
-Usage: repodoc [--help|-h] [--version|-v] [--list-mode|-l] DOCUMENTS
+Usage: repodoc [OPTIONS] DOCUMENTS
+
+	-h, --help		display this help and exit
+	-v, --version		output version information and exit
+	-o, --output [F]	use [F] frontend
+	-r, --raw		not use any frontend
 EOH
 }
 
