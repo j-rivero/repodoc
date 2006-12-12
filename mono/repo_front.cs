@@ -1,7 +1,6 @@
 /* vim: set noet tw=80 sts=8 sw=8 ts=8 nolist: */
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Repodoc;
 
