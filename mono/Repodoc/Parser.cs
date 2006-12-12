@@ -1,5 +1,7 @@
 /* vim: set noet tw=80 sts=8 sw=8 ts=8 nolist: */
 
+using System;
+
 namespace Repodoc
 {
 	public abstract class ParserTask {
@@ -26,7 +28,7 @@ namespace Repodoc
 			tIn = t;
 		}
 
-		public void parse()
+		public void run()
 		{
 			boundary_docs = tIn.ReadLine();
 			parse_docs();
@@ -72,8 +74,7 @@ namespace Repodoc
 				on_parse_module_pre();
 
 				on_parse_module_name(s);
-				int res = System.Convert.ToInt32(
-						tIn.ReadLine());
+				int res = Convert.ToInt32(tIn.ReadLine());
 				switch (res) {
 					case 0:
 						on_parse_module_ok();
