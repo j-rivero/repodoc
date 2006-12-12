@@ -1,10 +1,10 @@
 all: repo_front.exe
 
-RepodocParser.dll: RepodocParser.cs
-	mcs -t:library $<
+Repodoc.dll: Repodoc/Parser.cs
+	mcs -t:library -out:$@ $<
 
-repo_front.exe: RepodocParser.dll
-	mcs -r:RepodocParser.dll repo_front.cs
+repo_front.exe: Repodoc.dll
+	mcs -r:Repodoc.dll -out:$@ repo_front.cs
 
 clean:
 	$(RM) *.dll *.exe
