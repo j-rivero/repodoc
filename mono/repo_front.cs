@@ -101,6 +101,8 @@ class DocsTreeView : Gtk.TreeView {
 		Gtk.TreeStore mres_store = new Gtk.TreeStore(
 				typeof(IParsed));
 		Model = mres_store;
+
+		Selection.Changed += new EventHandler(OnSelection);
 		
 		Gtk.TreeIter iter = new Gtk.TreeIter();
 		foreach (ParsedDocument doc in r.Docs) {
@@ -141,6 +143,18 @@ class DocsTreeView : Gtk.TreeView {
 		}
 		throw new Exception("Unknown result value");
 	}
+
+	private void OnSelection(object o, EventArgs args)
+        {
+                Gtk.TreeModel model;
+                Gtk.TreeIter iter;
+                IParsed selected=null;
+
+                if (Selection.GetSelected(out model, out iter))
+			selected = (IParsed) model.GetValue (iter, 0);
+
+		System.Console.Write(selected.Output);
+        }
 }
 
 class repo_front {
