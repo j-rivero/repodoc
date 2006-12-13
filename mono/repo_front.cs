@@ -141,15 +141,6 @@ class DocsTreeView : Gtk.TreeView {
 		}
 		throw new Exception("Unknown result value");
 	}
-
-	public int TotalResult(ParsedDocument doc)
-	{
-		int r = 0;
-		foreach (ModuleResult m in doc.Results)
-			r = Math.Max(m.Result, r);
-		return r;
-	}
-
 }
 
 class repo_front {
