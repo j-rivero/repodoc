@@ -88,8 +88,14 @@ class OurParserTask : ParserTask {
 }
 
 class DocsTreeView : Gtk.TreeView {
+	
+	public Gtk.TextView tv;
+
 	public DocsTreeView(OurParserTask r)
 	{
+		tv = new Gtk.TextView();
+		tv.Editable = false;
+
 		AppendColumn("Result", new Gtk.CellRendererPixbuf());
 		AppendColumn("Name", new Gtk.CellRendererText());
 
@@ -152,7 +158,7 @@ class DocsTreeView : Gtk.TreeView {
 
                 if (Selection.GetSelected(out model, out iter)) {
 			selected = (IParsed)model.GetValue(iter, 0);
-			Console.Write(selected.Output);
+			tv.Buffer.Text = selected.Output;
 		}
         }
 }
@@ -168,7 +174,12 @@ class repo_front {
 		Gtk.Window window = new Gtk.Window("Repodoc - Gtk# frontend");
 		Gtk.ScrolledWindow sw = new Gtk.ScrolledWindow();
 		sw.Add(t);
-		window.Add(sw);
+		Gtk.VPaned vp = new Gtk.VPaned();
+		vp.Add(sw);
+		Gtk.ScrolledWindow sw2 = new Gtk.ScrolledWindow();
+		sw2.Add(t.tv);
+		vp.Add(sw2);
+		window.Add(vp);
 		window.SetDefaultSize(400, 300);
 		window.DeleteEvent += delete_event;
 		window.ShowAll();
