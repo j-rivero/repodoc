@@ -90,35 +90,50 @@ class OurParserTask : ParserTask {
 class DocsTreeView : Gtk.TreeView {
 	public DocsTreeView(OurParserTask r)
 	{
-		AppendColumn("",
-				new Gtk.CellRendererPixbuf(),
-				"stock-id",
-				0);
-		AppendColumn("Document/Module name",
-				new Gtk.CellRendererText(),
-				"text",
-				1);
-		Gtk.TreeStore nameListStore = new Gtk.TreeStore(
-				typeof (string), typeof (string));
-		Model=nameListStore;
+		AppendColumn("Result", new Gtk.CellRendererPixbuf());
+		AppendColumn("Name", new Gtk.CellRendererText());
+
+		Columns[0].SetCellDataFunc(Columns[0].CellRenderers[0],
+				new Gtk.TreeCellDataFunc(RenderIcon));
+		Columns[1].SetCellDataFunc(Columns[1].CellRenderers[0],
+				new Gtk.TreeCellDataFunc(RenderName));
+
+		Gtk.TreeStore mres_store = new Gtk.TreeStore(
+				typeof(IParsed));
+		Model = mres_store;
 		
 		Gtk.TreeIter iter = new Gtk.TreeIter();
 		foreach (ParsedDocument doc in r.Docs) {
-			iter = nameListStore.AppendValues(
-					Icon(TotalResult(doc)), DocName(doc));
-
-			foreach (ModuleResult m in doc.Results) {
+			iter = mres_store.AppendValues(doc);
+			foreach (IParsed m in doc.Results)
 				if (m.Result > 0)
-					nameListStore.AppendValues(iter,
-							Icon(m.Result),
-							m.Name);
-			}
+					mres_store.AppendValues(iter, m);
 		}
 	}
 
-	public string Icon(int result)
+	private void RenderIcon(
+			Gtk.TreeViewColumn column,
+			Gtk.CellRenderer cell,
+			Gtk.TreeModel model,
+			Gtk.TreeIter iter)
 	{
-		switch(result)
+		IParsed m = (IParsed)model.GetValue(iter, 0);
+		(cell as Gtk.CellRendererPixbuf).StockId = Icon(m);
+	}
+
+	private void RenderName(
+			Gtk.TreeViewColumn column,
+			Gtk.CellRenderer cell,
+			Gtk.TreeModel model,
+			Gtk.TreeIter iter)
+	{
+		INamed m = (INamed)model.GetValue(iter, 0);
+		(cell as Gtk.CellRendererText).Text = m.Name;
+	}
+
+	public string Icon(IParsed m)
+	{
+		switch (m.Result)
 		{
 			case 0: return Gtk.Stock.DialogInfo;
 			case 1: return Gtk.Stock.DialogWarning;
@@ -135,13 +150,6 @@ class DocsTreeView : Gtk.TreeView {
 		return r;
 	}
 
-	public string DocName(ParsedDocument doc)
-	{
-		string dir = doc.Keys["DIR"];
-
-		return dir.Substring(dir.LastIndexOf("/doc/") + 1) +
-			"/" + doc.Keys["DOC_NAME"];
-	}
 }
 
 class repo_front {
