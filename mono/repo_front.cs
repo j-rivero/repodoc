@@ -88,14 +88,11 @@ class OurParserTask : ParserTask {
 }
 
 class DocsTreeView : Gtk.TreeView {
-	
 	public Gtk.TextView tv;
 
-	public DocsTreeView(OurParserTask r)
+	public DocsTreeView(Gtk.TextView rtv, OurParserTask r)
 	{
-		tv = new Gtk.TextView();
-		tv.Editable = false;
-
+		tv = rtv;
 		AppendColumn("Result", new Gtk.CellRendererPixbuf());
 		AppendColumn("Name", new Gtk.CellRendererText());
 
@@ -170,19 +167,31 @@ class repo_front {
 		r.run();
 
 		Gtk.Application.Init();
-		DocsTreeView t = new DocsTreeView(r);
+
 		Gtk.Window window = new Gtk.Window("Repodoc - Gtk# frontend");
 		Gtk.ScrolledWindow sw = new Gtk.ScrolledWindow();
+
+		Gtk.TextView tv = new Gtk.TextView();
+		tv.Editable = false;
+
+		Pango.FontDescription fontdesc = Pango.FontDescription.FromString("Monospace");
+		tv.ModifyFont(fontdesc);
+
+		DocsTreeView t = new DocsTreeView(tv, r);
 		sw.Add(t);
+
 		Gtk.VPaned vp = new Gtk.VPaned();
 		vp.Add(sw);
-		Gtk.ScrolledWindow sw2 = new Gtk.ScrolledWindow();
-		sw2.Add(t.tv);
-		vp.Add(sw2);
 		window.Add(vp);
+
+		Gtk.ScrolledWindow sw2 = new Gtk.ScrolledWindow();
+		sw2.Add(tv);
+		vp.Add(sw2);
+
 		window.SetDefaultSize(400, 300);
 		window.DeleteEvent += delete_event;
 		window.ShowAll();
+
 		Gtk.Application.Run();
 	}
 
