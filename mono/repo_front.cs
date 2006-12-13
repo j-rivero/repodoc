@@ -148,12 +148,12 @@ class DocsTreeView : Gtk.TreeView {
         {
                 Gtk.TreeModel model;
                 Gtk.TreeIter iter;
-                IParsed selected=null;
+                IParsed selected = null;
 
-                if (Selection.GetSelected(out model, out iter))
-			selected = (IParsed) model.GetValue (iter, 0);
-
-		System.Console.Write(selected.Output);
+                if (Selection.GetSelected(out model, out iter)) {
+			selected = (IParsed)model.GetValue(iter, 0);
+			Console.Write(selected.Output);
+		}
         }
 }
 
