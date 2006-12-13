@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using Repodoc;
-using Gtk;
 
 class OurParserTask : ParserTask {
 	private IList<ParsedDocument> docs;
@@ -91,20 +90,28 @@ class OurParserTask : ParserTask {
 class DocsTreeView : Gtk.TreeView {
 	public DocsTreeView(OurParserTask r)
 	{
-		// Define Treeview
-		AppendColumn("", new Gtk.CellRendererPixbuf(), "stock-id", 0);
-		AppendColumn("Document/Module name", new Gtk.CellRendererText(), "text", 1);
-		Gtk.TreeStore nameListStore = new Gtk.TreeStore(typeof (string), typeof (string));
+		AppendColumn("",
+				new Gtk.CellRendererPixbuf(),
+				"stock-id",
+				0);
+		AppendColumn("Document/Module name",
+				new Gtk.CellRendererText(),
+				"text",
+				1);
+		Gtk.TreeStore nameListStore = new Gtk.TreeStore(
+				typeof (string), typeof (string));
 		Model=nameListStore;
 		
-		// Append elements to the tree
 		Gtk.TreeIter iter = new Gtk.TreeIter();
 		foreach (ParsedDocument doc in r.Docs) {
-			iter = nameListStore.AppendValues(Icon(TotalResult(doc)), DocName(doc));		
-			
+			iter = nameListStore.AppendValues(
+					Icon(TotalResult(doc)), DocName(doc));
+
 			foreach (ModuleResult m in doc.Results) {
 				if (m.Result > 0)
-					nameListStore.AppendValues(iter, Icon(m.Result), m.Name);
+					nameListStore.AppendValues(iter,
+							Icon(m.Result),
+							m.Name);
 			}
 		}
 	}
@@ -124,49 +131,39 @@ class DocsTreeView : Gtk.TreeView {
 	{
 		int r = 0;
 		foreach (ModuleResult m in doc.Results)
-			r=Math.Max(m.Result,r);
+			r = Math.Max(m.Result, r);
 		return r;
 	}
 
 	public string DocName(ParsedDocument doc)
 	{
-		string name="", dir="";
-	
-		foreach (KeyValuePair<string, string> e in doc.Keys) {
-			switch (e.Key)
-			{
-				case "DOC_NAME":
-					name=e.Value;
-					break;
-				case "DIR":
-					dir=e.Value;
-					break;
-			}
-		}
-		return dir.Substring(dir.IndexOf("htdocs/doc/")+7)+"/"+name;
+		string dir = doc.Keys["DIR"];
+
+		return dir.Substring(dir.LastIndexOf("/doc/") + 1) +
+			"/" + doc.Keys["DOC_NAME"];
 	}
 }
 
 class repo_front {
 	static void Main(string[] args)
 	{
-		OurParserTask r = new OurParserTask(System.Console.In);
+		OurParserTask r = new OurParserTask(Console.In);
 		r.run();
 
 		Gtk.Application.Init();
 		DocsTreeView t = new DocsTreeView(r);
 		Gtk.Window window = new Gtk.Window("Repodoc - Gtk# frontend");
-		Gtk.ScrolledWindow sw = new  Gtk.ScrolledWindow();
+		Gtk.ScrolledWindow sw = new Gtk.ScrolledWindow();
 		sw.Add(t);
 		window.Add(sw);
-		window.SetDefaultSize(400,300);
+		window.SetDefaultSize(400, 300);
 		window.DeleteEvent += delete_event;
 		window.ShowAll();
 		Gtk.Application.Run();
 	}
 
-	static void delete_event (object obj, DeleteEventArgs args)
+	static void delete_event (object obj, Gtk.DeleteEventArgs args)
 	{
-		Application.Quit();
+		Gtk.Application.Quit();
 	}
 }
