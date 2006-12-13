@@ -90,7 +90,7 @@ namespace Repodoc
 				while ((s = tIn.ReadLine()) != boundary_doc) {
 					if (s == null || s == boundary_docs)
 						break;
-					output = output + s;
+					output = output + s + "\n";
 				}
 				on_parse_module_output(output);
 
