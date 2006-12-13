@@ -6,17 +6,12 @@ using System.Collections.Generic;
 namespace Repodoc
 {
 	public interface IParsed {
-		int Result
-		{
-			get;
-		}
+		int Result { get; }
+		string Output { get; }
 	}
 
 	public interface INamed {
-		string Name
-		{
-			get;
-		}
+		string Name { get; }
 	}
 
 	public class ModuleResult : IParsed, INamed {
@@ -81,6 +76,23 @@ namespace Repodoc
 				foreach (IParsed i in Results)
 					r = Math.Max(i.Result, r);
 				return r;
+			}
+		}
+
+		public string Output
+		{
+			get {
+				bool nl = false;
+				string o = "";
+				foreach (KeyValuePair<string, string> i 
+						in Keys) {
+					if (nl == true)
+						o += "\n";
+					o += "'" + i.Key + "' = '" +
+						i.Value + "'";
+					nl = true;
+				}
+				return o;
 			}
 		}
 	}
