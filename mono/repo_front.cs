@@ -173,6 +173,7 @@ class repo_front {
 
 		Gtk.TextView tv = new Gtk.TextView();
 		tv.Editable = false;
+		tv.CursorVisible = false;
 
 		Pango.FontDescription fontdesc = Pango.FontDescription.FromString("Monospace");
 		tv.ModifyFont(fontdesc);
@@ -181,14 +182,15 @@ class repo_front {
 		sw.Add(t);
 
 		Gtk.VPaned vp = new Gtk.VPaned();
-		vp.Add(sw);
+		vp.BorderWidth = 6;
+		vp.Pack1(sw, true, true);
 		window.Add(vp);
 
 		Gtk.ScrolledWindow sw2 = new Gtk.ScrolledWindow();
 		sw2.Add(tv);
-		vp.Add(sw2);
+		vp.Pack2(sw2, true, true);
 
-		window.SetDefaultSize(400, 300);
+		window.SetDefaultSize(500, 400);
 		window.DeleteEvent += delete_event;
 		window.ShowAll();
 
