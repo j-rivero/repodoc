@@ -133,6 +133,15 @@ class DocsTreeView : Gtk.TreeView {
 			Gtk.TreeIter iter)
 	{
 		INamed m = (INamed)model.GetValue(iter, 0);
+		IParsed n = (IParsed)model.GetValue(iter, 0);
+
+		if (model.IterHasChild(iter) || n.Result == 0)
+			(cell as Gtk.CellRendererText).FontDesc =
+				Pango.FontDescription.FromString("Bold");
+		else
+			(cell as Gtk.CellRendererText).FontDesc =
+				Pango.FontDescription.FromString("Normal");
+
 		(cell as Gtk.CellRendererText).Text = m.Name;
 	}
 
