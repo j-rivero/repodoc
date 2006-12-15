@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+###
+# Gtk-sharp frontend
+#
+MONO_DIR="${0%/frontend/*}/mono"
+EXE="repo_front.exe"
+
+if [[ -x ${MONO_DIR}/${EXE} ]]; then
+	exec mono ${MONO_DIR}/${EXE}
+else
+	echo >&2 "(EE) The gtk frontend ('${MONO_DIR}/${EXE}') does not exist."
+fi
+
+# vim: set ft=sh:
