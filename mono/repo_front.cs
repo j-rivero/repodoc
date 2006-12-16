@@ -93,13 +93,17 @@ class DocsTreeView : Gtk.TreeView {
 	public DocsTreeView(Gtk.TextView rtv, OurParserTask r)
 	{
 		tv = rtv;
-		AppendColumn("Result", new Gtk.CellRendererPixbuf());
 		AppendColumn("Name", new Gtk.CellRendererText());
+		AppendColumn("Result", new Gtk.CellRendererPixbuf());
+
+		RulesHint = true;
 
 		Columns[0].SetCellDataFunc(Columns[0].CellRenderers[0],
-				new Gtk.TreeCellDataFunc(RenderIcon));
-		Columns[1].SetCellDataFunc(Columns[1].CellRenderers[0],
 				new Gtk.TreeCellDataFunc(RenderName));
+		Columns[1].SetCellDataFunc(Columns[1].CellRenderers[0],
+				new Gtk.TreeCellDataFunc(RenderIcon));
+
+		Columns[0].Expand = true;
 
 		Gtk.TreeStore mres_store = new Gtk.TreeStore(
 				typeof(IParsed));
