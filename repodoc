@@ -77,6 +77,10 @@ check() {
 		#  whole module processing in a subshell.
 		unset OUTPUT_TEXT LEVEL MODULE_NAME KEYWORDS exec_module ${!NEED_*} n needtest
 
+		MODULE_NAME=${MOD#${MOD_DIR}/}
+		MODULE_NAME=${MODULE_NAME%.module}
+		[[ -z ${REPO_SKIP_MODULES//* ${MODULE_NAME} *} ]] && continue
+
 		# Read the module
 		source "${MOD}"
 
@@ -151,6 +155,7 @@ REPO_DIR="${REPODOC_HOME:-${HOME}}/.repodoc"
 REPO_TMP_DIR="${REPO_DIR}/tmp"
 REPO_CONF_DIR="${REPO_DIR}/config"
 FRONTEND_DIR="${SCRIPT_DIR}/frontend"
+REPO_SKIP_MODULES=" ${REPODOC_SKIP_MODULES} "
 
 # Options by default
 REPO_OUT="${FRONTEND_DIR}/default"

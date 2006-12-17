@@ -3,7 +3,6 @@
 
 needlib xpath.sh
 
-MODULE_NAME="Version"
 KEYWORDS="-* metadoc inserts"
 NEED_TRANSLATION=true
 

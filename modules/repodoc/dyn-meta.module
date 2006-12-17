@@ -3,7 +3,6 @@
 
 needlib xml.sh
 
-MODULE_NAME="Dynamic metadoc"
 KEYWORDS="-* dynamic"
 
 LEVEL="BASIC"

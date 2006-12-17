@@ -3,7 +3,6 @@
 
 needlib xpath.sh
 
-MODULE_NAME="Links"
 KEYWORDS="* -metadoc"
 
 LEVEL="BASIC"

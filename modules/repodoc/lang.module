@@ -3,7 +3,6 @@
 
 needlib xml.sh
 
-MODULE_NAME="Lang"
 
 KEYWORDS="guide"
 LEVEL="BASIC"

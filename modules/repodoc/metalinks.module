@@ -3,7 +3,6 @@
 
 needlib xpath.sh docpath.sh
 
-MODULE_NAME="Metadoc links"
 KEYWORDS="metadoc"
 NEED_TRANSLATION=true
 

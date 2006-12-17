@@ -3,7 +3,6 @@
 
 needlib xml.sh
 
-MODULE_NAME="Path"
 KEYWORDS="* -metadoc -sections -inserts -mainpage -dynamic -project"
 
 LEVEL="BASIC"

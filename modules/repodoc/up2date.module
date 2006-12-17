@@ -3,7 +3,6 @@
 
 needlib xpath.sh
 
-MODULE_NAME="Up2date"
 KEYWORDS="* -metadoc -inserts -dynamic"
 NEED_TRANSLATION=true
 
