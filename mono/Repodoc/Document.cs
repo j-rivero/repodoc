@@ -84,7 +84,7 @@ namespace Repodoc
 			get {
 				bool nl = false;
 				string o = "";
-				foreach (KeyValuePair<string, string> i 
+				foreach (KeyValuePair<string, string> i
 						in Keys) {
 					if (nl == true)
 						o += "\n";

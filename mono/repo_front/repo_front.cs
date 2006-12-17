@@ -17,7 +17,7 @@ class repo_front {
 		tv.Editable = false;
 		tv.CursorVisible = false;
 
-		Pango.FontDescription fontdesc = 
+		Pango.FontDescription fontdesc =
 			Pango.FontDescription.FromString("Monospace");
 		tv.ModifyFont(fontdesc);
 
