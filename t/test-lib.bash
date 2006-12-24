@@ -99,5 +99,7 @@ testp=0
 testf=0
 
 FILESDIR="${0%%-*}"
+FILESDIR="${FILESDIR#./}"
 
-echo "*** ${0%.bash} ***"
+T_MYSELF=${0%.bash}
+echo "*** ${T_MYSELF#./} ***"

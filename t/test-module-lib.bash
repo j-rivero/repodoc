@@ -11,7 +11,7 @@ MODULE_FILE=${MODULE_FILE#*-}.module
 . ./test-lib.bash
 source ../lib/libcore.sh
 
-case ${0} in
+case ${0#./} in
 	t2*)
 		source ../modules/repodoc/"${MODULE_FILE}"
 	;;
