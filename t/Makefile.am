@@ -1,7 +1,13 @@
 CLEANFILES = *~
 MAINTAINERCLEANFILES = Makefile.in
 
-SUBDIRS = .
+SUBDIRS = t10004 \
+		  t20000 \
+		  t20001 \
+		  t20002 \
+		  t20003 \
+		  t20004 \
+		  .
 
 TESTS_ENVIRONMENT = env bash
 
