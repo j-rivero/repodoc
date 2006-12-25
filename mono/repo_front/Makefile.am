@@ -9,6 +9,8 @@ repo_front_SRCS = docs_tree_view.cs \
 
 EXTRA_DIST = $(repo_front_SRCS)
 
+if ENABLE_GTK
+
 repofrontdir = $(pkgdatadir)/mono
 repofront_SCRIPTS = repo_front.exe
 
@@ -16,3 +18,5 @@ repo_front_ADD = -pkg:gtk-sharp-2.0 -lib:../Repodoc -r:Repodoc.dll
 
 repo_front.exe: $(repo_front_SRCS)
 	@GMCS@ -out:$@ $^ $(repo_front_ADD)
+
+endif

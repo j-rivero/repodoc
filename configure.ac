@@ -17,18 +17,31 @@ if test "x$PKG_CONFIG" = "xno"; then
 fi
 dnl }}}
 
-dnl {{{ CS compiler
-AC_PATH_PROG(GMCS, gmcs, no)
-CS="C#"
-if test "x$GMCS" = "xno" ; then
-	AC_MSG_ERROR([you need a $CS compiler that compiles $CS code])
-fi
-AC_SUBST(GMCS)
-dnl }}}
+dnl {{{ gtk frontend
+AC_MSG_CHECKING([whether to build Gtk frontend])
+AC_ARG_ENABLE([gtk],
+			  AC_HELP_STRING([--enable-gtk], [Build a Gtk frontend]),
+			  [ENABLE_GTK=$enableval
+			   AC_MSG_RESULT([$enableval])],
+			  [ENABLE_GTK=no
+			   AC_MSG_RESULT([no])])
+if test "x$ENABLE_GTK" = "xyes" ; then
+	dnl {{{ CS compiler
+	AC_PATH_PROG(GMCS, gmcs, no)
+	CS="C#"
+	if test "x$GMCS" = "xno" ; then
+		AC_MSG_ERROR([you need a $CS compiler that compiles $CS code])
+	fi
+	AC_SUBST(GMCS)
+	dnl }}}
 
-dnl {{{ gtk-sharp
-GTKSHARP_REQUIRED_VERSION=2.8
-PKG_CHECK_MODULES(GTKSHARP, gtk-sharp-2.0 >= $GTKSHARP_REQUIRED_VERSION)
+	dnl {{{ gtk-sharp
+	GTKSHARP_REQUIRED_VERSION=2.8
+	PKG_CHECK_MODULES(GTKSHARP, gtk-sharp-2.0 >= $GTKSHARP_REQUIRED_VERSION)
+	dnl }}}
+fi
+AC_SUBST([ENABLE_GTK])
+AM_CONDITIONAL([ENABLE_GTK], test "x$ENABLE_GTK" = "xyes")
 dnl }}}
 
 dnl {{{ libxml2 check
@@ -40,7 +53,7 @@ dnl }}}
 
 unset BASH
 AC_PATH_PROGS(BASH, bash)
-if test x$BASH = "x" ; then
+if test "x$BASH" = "x" ; then
 	AC_MSG_ERROR([bash is required])
 fi
 
