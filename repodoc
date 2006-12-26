@@ -201,7 +201,11 @@ done
 
 if [[ ${REPO_OUT} != "none" ]]; then
 	if ! [[ -x ${REPO_OUT} ]]; then
-		echo >&2 "(EE) ${REPO_OUT} does not exist"
+		echo >&2 "(EE) '${REPO_OUT##*/}' frontend does not exist"
+		echo >&2 "Select one of this list:"
+		for i in "${FRONTEND_DIR}"/* ; do
+			[[ -x "${i}" ]] && echo >&2 " - ${i##*/}"
+		done
 		exit 1
 	fi
 	( check_all ${DOC_LIST} | ${REPO_OUT} )
