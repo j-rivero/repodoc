@@ -11,9 +11,12 @@ SUBDIRS = extras mono lib modules frontend t .
 mainscriptsdir = $(pkgdatadir)
 mainscripts_SCRIPTS = repodoc docman
 
-install-data-local: install-symlinks
+install-data-local: create-bindir install-symlinks
 
 uninstall-local: remove-symlinks
+
+create-bindir:
+	$(INSTALL) -d $(DESTDIR)$(bindir)
 
 install-symlinks:
 	$(LN_S) $(DESTDIR)$(pkgdatadir)/repodoc $(DESTDIR)$(bindir)/repodoc
