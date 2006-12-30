@@ -1,6 +1,0 @@
-CLEANFILES = *~
-MAINTAINERCLEANFILES = Makefile.in
-
-SUBDIRS = .
-
-EXTRA_DIST = correct wrong

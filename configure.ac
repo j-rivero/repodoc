@@ -89,10 +89,4 @@ AC_OUTPUT(
 		  mono/Repodoc/Makefile
 		  mono/repo_front/Makefile
 		  t/Makefile
-		  t/t10004/Makefile
-		  t/t20000/Makefile
-		  t/t20001/Makefile
-		  t/t20002/Makefile
-		  t/t20003/Makefile
-		  t/t20004/Makefile
 		  )
