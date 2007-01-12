@@ -5,7 +5,8 @@ SUBDIRS = .
 
 DOCMANMODS = bump.module \
 			 get.module \
-			 sync.module
+			 sync.module \
+			 patch.module
 
 EXTRA_DIST = $(DOCMANMODS)
 
