@@ -1,7 +1,6 @@
 #!/bin/bash
 
 MOD_DESCRIPTION="Sync translations metainfo with original docs"
-MOD_NAME="sync"
 
 needlib docpath.sh xpath.sh xml.sh
 

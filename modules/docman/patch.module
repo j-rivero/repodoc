@@ -1,7 +1,6 @@
 #!/bin/bash
 
 MOD_DESCRIPTION="Patch documents from a file or a bug number"
-MOD_NAME="patch"
 
 needlib docpath.sh xpath.sh xml.sh
 

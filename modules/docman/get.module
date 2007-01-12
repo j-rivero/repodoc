@@ -1,7 +1,6 @@
 #!/bin/bash
 
 MOD_DESCRIPTION="Download xml docs sources from Gentoo"
-MOD_NAME="get"
 
 mod_help() {
 	cat << EOH

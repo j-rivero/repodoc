@@ -1,7 +1,6 @@
 #!/bin/bash
 
 MOD_DESCRIPTION="Bump doc version and/or date"
-MOD_NAME="bump"
 
 needlib docpath.sh xpath.sh xml.sh
 
