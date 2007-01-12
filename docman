@@ -63,7 +63,7 @@ case $1 in
 	-l|--list-commands)
 		echo "Docman ${VERSION}. List of supported commands:"
 		# List all modules
-		for m in "${MOD_DIR}"/* ; do
+		for m in "${MOD_DIR}"/*.module ; do
 			show_command_help ${m}
 		done
 		exit 0

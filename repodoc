@@ -70,7 +70,7 @@ check() {
 	#echo "LEVEL ${SCRIPT_LEVEL}"
 
 	# Handling modules
-	for MOD in ${MOD_DIR}/* ; do
+	for MOD in ${MOD_DIR}/*.module ; do
 		# This vars are set by the modules. This is a pedantic thing
 		#  meant to help me keeping my sanity.
 		# TODO: Remove this once we figure out how to cleanly do the
