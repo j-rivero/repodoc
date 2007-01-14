@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # Copyright 2005-2006 The RepoDoc Team
 
-VERSION="0.1_beta3"
+VERSION="0.1_beta4"
 
 # -----
 # SHOW_VERSION_USAGE Function. Private
@@ -11,7 +11,7 @@ show_version_usage() {
 	cat << EOH
 The Docman Tool version ${VERSION}
 Distributed under the terms of the GPLv2
-Copyright 2005-2006 The RepoDoc Team
+Copyright 2005-2007 The RepoDoc Team
 
 Usage: docman [--help|-h] [--version|-v] [--list-commands|-l] COMMAND [PARAMS] FILES
 EOH
