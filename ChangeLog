@@ -4,6 +4,46 @@
 # [MOD] - Modified feature
 # [FIX] - Fixed a bug
 
+* 0.1_beta4 ( 2007-01-13 )
+
+	- [NEW] Test-suite support. A fully working mechanism to easily write
+	test which help to check if repodoc package is going to work fine in a
+	system. Tests can be activated using the usual FEATURE test.
+
+	Lots of core, lib and module tests were written thanks to the efforts
+	of: Ferdy, Frangor and Jacobo.
+
+	- [NEW] "metalinks" repodoc-module. Checks metadoc links.
+	metalinks parses all <files>/<file> links and checks whether:
+	  1. the target document exists.
+	  2. the link points to the proper translation.
+
+	- [NEW] "patch" docman-module.  Initial import. patch module is able
+	to work directly with bugzilla, download and applying the patches in
+	just one step. Also provide a fake-patching to know if an error is
+	going to happen and warn the user before. Still experimental, use
+	under your own risk.
+	
+	- [NEW] Parseable output. Change repodoc output to show plain and
+	parseable results. Patch provided by Francesc Gordillo.
+	
+	- [NEW] Front-ends supports. Thanks to parseable output, repodoc is
+	able to show results info in different ways. Default and list options
+	were ported to the new front-end mechanism.
+
+	- [NEW] "gtk" front-end. New graphical front-end written in GTK# and
+	mono. Thanks to Ferdy and Frangor.
+
+	- [NEW] REPODOC_SKIP_MODULES support. Setting this variable as
+	a list of space-separated names will just do repodoc to ignore the
+	modules someone doesn't want.
+
+	- [NEW] Autotools support. With all the new features, languages, and
+	files added to repodoc, was necessary to use a solution to organize
+	the building process. Thanks to Ferdy for adding Autotools support.
+	
+	- [MOD] Lots of code cleaning and fixes.
+
 * 0.1_beta3 ( 2006-12-08 )
 
 	- [NEW] Docman tool. The docman tool is just a wrapper, with no
