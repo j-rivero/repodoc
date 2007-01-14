@@ -11,8 +11,8 @@ Usage: docman get [params] doc
 Run without params will use english as default language.
 
 params:
-  --lang-xx    Download translation identified by \"xx\" lang code
-  --direct-url Allow to use an url as input"
+  --lang-xx    Download translation identified by "xx" lang code
+  --direct-url Allow to use an url as input
 EOH
 }
 
