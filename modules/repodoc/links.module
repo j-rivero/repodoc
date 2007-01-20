@@ -36,6 +36,10 @@ exec_module() {
 				# This is a GuideXML internal link
 				external=false
 
+				# Handbook chapters and sections are dynamically 
+				# generated, we can't check them.
+				[[ ${DOC_TYPE} == "sections" ]] && break
+
 				[[ -z $(doxpath ${DOC} $(anchor2xpath ${link})) ]] \
 					&& found=false || found=true
 			;;
